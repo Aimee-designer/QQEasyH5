@@ -8,13 +8,13 @@
     --brand-light: rgba(0, 153, 255, 0.12);
     --brand-glow: rgba(0, 153, 255, 0.4);
     --bg: #0D1117;
-    --bg-secondary: #161B22;
-    --bg-tertiary: #21262D;
+    --bg-secondary: #1C2128;
+    --bg-tertiary: #2D333B;
     --text-primary: rgba(255, 255, 255, 0.92);
     --text-secondary: rgba(139, 148, 158, 0.8);
     --text-tertiary: rgba(139, 148, 158, 0.5);
     --white: #1C2128;
-    --border: #30363D;
+    --border: #3D444D;
     --accent-purple: #A855F7;
     --accent-pink: #EC4899;
     --accent-cyan: #06B6D4;
@@ -78,8 +78,8 @@ body,
 /* ===== 主题切换按钮 ===== */
 .theme-toggle-btn {
     position: relative;
-    width: 44px; height: 24px;
-    border-radius: 12px;
+    width: 48px; height: 26px;
+    border-radius: 13px;
     border: 1px solid var(--border);
     background: var(--bg-tertiary);
     cursor: pointer;
@@ -91,7 +91,7 @@ body,
 .theme-toggle-btn:hover { border-color: var(--brand); }
 
 .theme-toggle-thumb {
-    width: 18px; height: 18px;
+    width: 20px; height: 20px;
     border-radius: 50%;
     background: var(--text-primary);
     display: flex; align-items: center; justify-content: center;
@@ -105,13 +105,13 @@ body,
 
 /* 深色模式: 月亮在左 */
 :root:not([data-theme="light"]) .theme-toggle-thumb,
-[data-theme="dark"] .theme-toggle-thumb { transform: translateX(0); background: #30363D; }
+[data-theme="dark"] .theme-toggle-thumb { transform: translateX(0); background: #E0E0E0; }
 :root:not([data-theme="light"]) .theme-toggle-thumb .icon-moon,
 [data-theme="dark"] .theme-toggle-thumb .icon-moon { opacity: 1; transform: rotate(0deg); }
 :root:not([data-theme="light"]) .theme-toggle-thumb .icon-sun,
 [data-theme="dark"] .theme-toggle-thumb .icon-sun { opacity: 0; transform: rotate(-90deg); }
 
 /* 浅色模式: 太阳在右 */
-[data-theme="light"] .theme-toggle-thumb { transform: translateX(20px); background: #FFB800; }
+[data-theme="light"] .theme-toggle-thumb { transform: translateX(22px); background: #FFB800; }
 [data-theme="light"] .theme-toggle-thumb .icon-moon { opacity: 0; transform: rotate(90deg); }
 [data-theme="light"] .theme-toggle-thumb .icon-sun { opacity: 1; transform: rotate(0deg); }

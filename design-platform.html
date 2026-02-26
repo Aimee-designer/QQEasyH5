@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能运营设计配置平台</title>
     <link rel="stylesheet" href="easydesign-theme.css">
     <script>
-        (function(){var t=localStorage.getItem('easydesign_theme')||'light';document.documentElement.setAttribute('data-theme',t);})();
+        (function(){var t=localStorage.getItem('easydesign_theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();
     </script>
     <style>
         /* 旧变量兼容映射 */
         :root {
             --primary-gold: var(--brand-light);
-            --primary-yellow: var(--brand);
+            --primary-yellow: #C8C8CD;
             --primary-orange: var(--brand);
             --bg-light: var(--bg);
             --bg-white: var(--bg-secondary);
@@ -23,7 +23,7 @@
         }
         [data-theme="light"] {
             --primary-gold: rgba(0, 153, 255, 0.08);
-            --primary-yellow: #0099FF;
+            --primary-yellow: #E5E5EA;
             --primary-orange: #0099FF;
             --bg-light: #F5F7FA;
             --bg-white: #FFFFFF;
@@ -265,6 +265,15 @@
             border-radius: 38px;
             overflow: hidden;
             background: var(--primary-yellow);
+            /* 手机框内强制浅色，不受外部主题影响 */
+            --bg-tertiary: #F2F2F7;
+            --bg-secondary: #FFFFFF;
+            --brand-light: rgba(0, 153, 255, 0.08);
+            --text-primary: rgba(0, 0, 0, 0.88);
+            --text-secondary: rgba(60, 60, 67, 0.6);
+            --text-tertiary: rgba(60, 60, 67, 0.36);
+            --border: #E5E5EA;
+            --primary-gold: rgba(0, 153, 255, 0.08);
         }
         
         .canvas-wrapper { width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden; }
@@ -310,13 +319,14 @@
         .action-btn {
             width: 24px; height: 24px;
             border-radius: 50%;
-            background: var(--bg-white);
-            border: 1px solid #E5E5E5;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 12px;
+            color: var(--text-primary);
         }
         
         .action-btn:hover { background: var(--accent-red); border-color: var(--accent-red); color: #fff; }
@@ -942,9 +952,6 @@
                 </select>
             </div>
             <div class="toolbar-right">
-                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="切换主题">
-                    <div class="theme-toggle-thumb"></div>
-                </button>
                 <button class="toolbar-btn" onclick="saveConfig()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                     保存
@@ -2442,6 +2449,23 @@
             html.setAttribute('data-theme', next);
             localStorage.setItem('easydesign_theme', next);
         }
+    </script>
+
+    <!-- 左下角主题切换 -->
+    <div class="theme-switch-wrapper" style="position:fixed;bottom:20px;left:20px;z-index:999;display:flex;align-items:center;gap:10px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:24px;padding:6px 16px 6px 14px;box-shadow:0 4px 16px rgba(0,0,0,0.25);cursor:pointer;" onclick="toggleTheme()">
+        <span style="font-size:13px;font-weight:600;color:var(--text-primary);white-space:nowrap;" id="themeLabel">深色风格</span>
+        <div class="theme-toggle-btn" id="themeToggle" style="position:relative;width:48px;height:26px;border-radius:13px;flex-shrink:0;">
+            <div class="theme-toggle-thumb"></div>
+        </div>
+    </div>
+    <script>
+        function updateThemeLabel() {
+            var label = document.getElementById('themeLabel');
+            if (label) label.textContent = document.documentElement.getAttribute('data-theme') === 'light' ? '浅色风格' : '深色风格';
+        }
+        updateThemeLabel();
+        var _origToggle = toggleTheme;
+        toggleTheme = function() { _origToggle(); updateThemeLabel(); };
     </script>
 </body>
 </html>

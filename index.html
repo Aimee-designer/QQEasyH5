@@ -46,6 +46,24 @@
         .card-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
         .card-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
         .card-arrow { margin-top: 16px; font-size: 13px; color: #FEDF9C; }
+        .section { max-width: 960px; width: 100%; margin-bottom: 40px; }
+        .section:last-child { margin-bottom: 0; }
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            padding-left: 4px;
+        }
+        .footer-info {
+            margin-top: 60px;
+            text-align: center;
+            color: rgba(255,255,255,0.2);
+            font-size: 12px;
+            line-height: 1.8;
+        }
         @media (max-width: 640px) {
             .logo { width: 120px; height: 120px; border-radius: 30px; }
             h1 { font-size: 24px; }
@@ -59,34 +77,54 @@
     <h1>ISUX EasyDesign</h1>
     <p class="subtitle">帮助 ISUX Designer 更 Easy 完成运营设计<br>选择一个模块开始体验吧！</p>
 
-    <div class="cards">
-        <a class="card" href="design-platform.html">
-            <div class="card-icon">🛠️</div>
-            <div class="card-title">智能运营H5配置平台</div>
-            <div class="card-desc">拖拽式可视化设计工具，支持组件配置、主题切换与 HTML 导出</div>
-            <div class="card-arrow">打开体验 →</div>
-        </a>
+    <div class="section">
+        <div class="section-title">设计工具</div>
+        <div class="cards">
+            <a class="card" href="design-platform.html">
+                <div class="card-icon">🛠️</div>
+                <div class="card-title">智能运营H5配置平台</div>
+                <div class="card-desc">拖拽式可视化设计工具，支持组件配置、主题切换与 HTML 导出</div>
+                <div class="card-arrow">打开体验 →</div>
+            </a>
 
-        <a class="card" href="https://isux-easydispersion.netlify.app/" target="_blank">
-            <div class="card-icon">🎨</div>
-            <div class="card-title">QQ宝藏宣发设计</div>
-            <div class="card-desc">支持公众号长图和小红书多图模式，提供模板系统、多媒体上传与高清导出</div>
-            <div class="card-arrow">打开体验 ↗</div>
-        </a>
+            <a class="card" href="https://isux-easydispersion.netlify.app/" target="_blank">
+                <div class="card-icon">🎨</div>
+                <div class="card-title">QQ宝藏宣发设计</div>
+                <div class="card-desc">支持公众号长图和小红书多图模式，提供模板系统、多媒体上传与高清导出</div>
+                <div class="card-arrow">打开体验 ↗</div>
+            </a>
 
-        <a class="card" href="h5-preview.html">
-            <div class="card-icon">📱</div>
-            <div class="card-title">H5 活动页面预览</div>
-            <div class="card-desc">SVIP福利社完整 H5 页面效果，包含抽奖、优惠券、任务等模块</div>
-            <div class="card-arrow">打开体验 →</div>
-        </a>
+            <a class="card" href="https://isux-easyvisual.netlify.app/" target="_blank">
+                <div class="card-icon">✨</div>
+                <div class="card-title">动态视觉生成器</div>
+                <div class="card-desc">基于 Three.js 的动态视觉生成工具，快速生成炫酷的运营视觉效果</div>
+                <div class="card-arrow">打开体验 ↗</div>
+            </a>
+        </div>
+    </div>
 
-        <a class="card" href="responsive-preview.html">
-            <div class="card-icon">📐</div>
-            <div class="card-title">多机型响应式预览</div>
-            <div class="card-desc">在不同 iOS/Android 机型尺寸下预览活动页面的适配效果</div>
-            <div class="card-arrow">打开体验 →</div>
-        </a>
+    <div class="section">
+        <div class="section-title">页面体验</div>
+        <div class="cards">
+            <a class="card" href="h5-preview.html">
+                <div class="card-icon">📱</div>
+                <div class="card-title">H5 活动页面预览</div>
+                <div class="card-desc">SVIP福利社完整 H5 页面效果，包含抽奖、优惠券、任务等模块</div>
+                <div class="card-arrow">打开体验 →</div>
+            </a>
+
+            <a class="card" href="responsive-preview.html">
+                <div class="card-icon">📐</div>
+                <div class="card-title">多机型响应式预览</div>
+                <div class="card-desc">在不同 iOS/Android 机型尺寸下预览活动页面的适配效果</div>
+                <div class="card-arrow">打开体验 →</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer-info">
+        <div>v1.0.0</div>
+        <div>Developer: siyanghao (郝思阳)</div>
     </div>
 </body>
 </html>
