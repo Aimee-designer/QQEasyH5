@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QQ会员日活动 - 项目总览</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0D1117;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .logo { width: 64px; height: 64px; border-radius: 16px; margin-bottom: 24px; }
+        h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .subtitle { color: rgba(255,255,255,0.5); font-size: 14px; margin-bottom: 48px; }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 960px;
+            width: 100%;
+        }
+        .card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 28px 24px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        .card-icon { font-size: 32px; margin-bottom: 16px; }
+        .card-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .card-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+        .card-arrow { margin-top: 16px; font-size: 13px; color: #FEDF9C; }
+    </style>
+</head>
+<body>
+    <img class="logo" src="LOGO.png" alt="Logo">
+    <h1>QQ会员日活动</h1>
+    <p class="subtitle">选择一个模块开始体验</p>
+
+    <div class="cards">
+        <a class="card" href="h5-preview.html">
+            <div class="card-icon">📱</div>
+            <div class="card-title">H5 活动页面</div>
+            <div class="card-desc">SVIP福利社完整 H5 页面效果，包含抽奖、优惠券、任务等模块</div>
+            <div class="card-arrow">打开体验 →</div>
+        </a>
+
+        <a class="card" href="responsive-preview.html">
+            <div class="card-icon">📐</div>
+            <div class="card-title">多机型响应式预览</div>
+            <div class="card-desc">在不同 iOS/Android 机型尺寸下预览活动页面的适配效果</div>
+            <div class="card-arrow">打开体验 →</div>
+        </a>
+
+        <a class="card" href="design-platform.html">
+            <div class="card-icon">🛠️</div>
+            <div class="card-title">智能运营配置平台</div>
+            <div class="card-desc">拖拽式可视化设计工具，支持组件配置、主题切换与 HTML 导出</div>
+            <div class="card-arrow">打开体验 →</div>
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+/* ============================================
+   EasyDesign 主题系统 - 从 QQEasyDesign 迁移
+   ============================================ */
+
+/* ===== 深色主题（默认） ===== */
+:root {
+    --brand: #0099FF;
+    --brand-light: rgba(0, 153, 255, 0.12);
+    --brand-glow: rgba(0, 153, 255, 0.4);
+    --bg: #0D1117;
+    --bg-secondary: #161B22;
+    --bg-tertiary: #21262D;
+    --text-primary: rgba(255, 255, 255, 0.92);
+    --text-secondary: rgba(139, 148, 158, 0.8);
+    --text-tertiary: rgba(139, 148, 158, 0.5);
+    --white: #1C2128;
+    --border: #30363D;
+    --accent-purple: #A855F7;
+    --accent-pink: #EC4899;
+    --accent-cyan: #06B6D4;
+    --accent-red: #EF4444;
+    --gradient-1: linear-gradient(135deg, #4FACFE 0%, #00F2FE 100%);
+    --gradient-2: linear-gradient(90deg, #4FACFE, #00F2FE);
+    --theme-transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== 浅色主题 ===== */
+[data-theme="light"] {
+    --bg: #F5F7FA;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #EDF0F5;
+    --text-primary: rgba(0, 0, 0, 0.88);
+    --text-secondary: rgba(60, 60, 67, 0.6);
+    --text-tertiary: rgba(60, 60, 67, 0.36);
+    --white: #FFFFFF;
+    --border: #E0E4EA;
+    --brand-light: rgba(0, 153, 255, 0.08);
+    --brand-glow: rgba(0, 153, 255, 0.25);
+}
+
+/* ===== 主题过渡动画 ===== */
+body,
+.toolbar, .left-panel, .right-panel, .center-panel,
+.panel-header, .category-tab, .component-card,
+.toolbar-btn, .search-input, .device-select,
+.property-header, .property-group, .property-input,
+.phone-container, .modal-overlay, .modal-content,
+.toast, .backpack-page, .backpack-item,
+.rules-sheet-content, .sidebar-inner,
+.module-card, .coupon-item, .prize-card,
+.grand-prize, .lottery-btn, .task-btn,
+.coupon-btn, .reward-tag, .event-card,
+.scheme-btn, .control-btn,
+.theme-toggle-btn {
+    transition: background-color var(--theme-transition),
+                border-color var(--theme-transition),
+                color var(--theme-transition),
+                box-shadow var(--theme-transition);
+}
+
+/* ===== 基础动画 ===== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== 滚动条 ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* ===== 主题切换按钮 ===== */
+.theme-toggle-btn {
+    position: relative;
+    width: 44px; height: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-tertiary);
+    cursor: pointer;
+    display: flex; align-items: center;
+    padding: 0 3px;
+    transition: all var(--theme-transition);
+    overflow: hidden;
+}
+.theme-toggle-btn:hover { border-color: var(--brand); }
+
+.theme-toggle-thumb {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background var(--theme-transition);
+    position: relative; z-index: 1;
+    flex-shrink: 0;
+}
+.theme-toggle-thumb svg { width: 12px; height: 12px; transition: opacity 0.3s, transform 0.4s; }
+.theme-toggle-thumb .icon-moon { position: absolute; }
+.theme-toggle-thumb .icon-sun { position: absolute; }
+
+/* 深色模式: 月亮在左 */
+:root:not([data-theme="light"]) .theme-toggle-thumb,
+[data-theme="dark"] .theme-toggle-thumb { transform: translateX(0); background: #30363D; }
+:root:not([data-theme="light"]) .theme-toggle-thumb .icon-moon,
+[data-theme="dark"] .theme-toggle-thumb .icon-moon { opacity: 1; transform: rotate(0deg); }
+:root:not([data-theme="light"]) .theme-toggle-thumb .icon-sun,
+[data-theme="dark"] .theme-toggle-thumb .icon-sun { opacity: 0; transform: rotate(-90deg); }
+
+/* 浅色模式: 太阳在右 */
+[data-theme="light"] .theme-toggle-thumb { transform: translateX(20px); background: #FFB800; }
+[data-theme="light"] .theme-toggle-thumb .icon-moon { opacity: 0; transform: rotate(90deg); }
+[data-theme="light"] .theme-toggle-thumb .icon-sun { opacity: 1; transform: rotate(0deg); }

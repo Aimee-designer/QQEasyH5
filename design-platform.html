@@ -1,0 +1,2447 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能运营设计配置平台</title>
+    <link rel="stylesheet" href="easydesign-theme.css">
+    <script>
+        (function(){var t=localStorage.getItem('easydesign_theme')||'light';document.documentElement.setAttribute('data-theme',t);})();
+    </script>
+    <style>
+        /* 旧变量兼容映射 */
+        :root {
+            --primary-gold: var(--brand-light);
+            --primary-yellow: var(--brand);
+            --primary-orange: var(--brand);
+            --bg-light: var(--bg);
+            --bg-white: var(--bg-secondary);
+            --bg-dark: #0D1117;
+            --text-muted: var(--text-secondary);
+            --accent-blue: var(--brand);
+            --accent-red: #EF4444;
+        }
+        [data-theme="light"] {
+            --primary-gold: rgba(0, 153, 255, 0.08);
+            --primary-yellow: #0099FF;
+            --primary-orange: #0099FF;
+            --bg-light: #F5F7FA;
+            --bg-white: #FFFFFF;
+            --bg-dark: #1A1A1A;
+            --text-muted: rgba(60, 60, 67, 0.6);
+            --accent-blue: #0099FF;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        [data-theme="light"] body {
+            background-image:
+                linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+        }
+        
+        .platform-container { display: flex; flex-direction: column; height: 100vh; }
+        
+        /* 顶部工具栏 */
+        .toolbar {
+            height: 64px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        [data-theme="light"] .toolbar { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        
+        .toolbar-left { display: flex; align-items: center; gap: 12px; }
+        
+        .logo {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .logo img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+        
+        .toolbar-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+        .toolbar-center { display: flex; align-items: center; gap: 16px; }
+        
+        .device-select {
+            padding: 8px 32px 8px 12px;
+            font-size: 13px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            min-width: 200px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            cursor: pointer;
+        }
+        
+        .device-select:focus { outline: none; border-color: var(--brand); }
+        
+        .toolbar-right { display: flex; align-items: center; gap: 10px; }
+        
+        .toolbar-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .toolbar-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-light); box-shadow: 0 0 20px rgba(0, 212, 255, 0.1); transform: translateY(-1px); }
+        [data-theme="light"] .toolbar-btn:hover { box-shadow: 0 0 12px rgba(0, 153, 255, 0.06); }
+        
+        .toolbar-btn.primary {
+            background: var(--brand);
+            border: none;
+            color: #fff;
+        }
+        
+        .toolbar-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 153, 255, 0.4); }
+        [data-theme="light"] .toolbar-btn.primary:hover { box-shadow: 0 8px 24px rgba(0, 153, 255, 0.2); }
+        .toolbar-btn svg { width: 16px; height: 16px; }
+        
+        /* 主内容区三栏布局 */
+        .main-content { display: flex; flex: 1; overflow: hidden; }
+        
+        /* 左侧组件面板 */
+        .left-panel {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+        [data-theme="light"] .left-panel { box-shadow: 2px 0 8px rgba(0,0,0,0.04); }
+        
+        .panel-header { padding: 16px; border-bottom: 1px solid var(--border); }
+        .panel-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
+        .search-box { position: relative; }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 12px 10px 36px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .search-input:focus { outline: none; border-color: var(--brand); background: var(--bg-secondary); }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px; height: 16px;
+            color: var(--text-muted);
+        }
+        
+        .category-tabs {
+            display: flex;
+            gap: 6px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+        
+        .category-tabs::-webkit-scrollbar { display: none; }
+        
+        .category-tab {
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            cursor: pointer;
+            border: none;
+            white-space: nowrap;
+        }
+        
+        .category-tab:hover { color: var(--text-primary); background: var(--border); }
+        .category-tab.active { background: var(--brand-light); color: var(--brand); }
+        
+        .component-list { flex: 1; overflow-y: auto; padding: 16px; }
+        .component-list::-webkit-scrollbar { width: 4px; }
+        .component-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+        
+        .component-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        
+        .component-card {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: grab;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .component-card:hover { border-color: var(--brand); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 153, 255, 0.15); }
+        .component-card:active { cursor: grabbing; }
+        .component-card.dragging { opacity: 0.5; }
+        
+        .component-thumb {
+            width: 100%; height: 60px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        
+        .component-name { font-size: 12px; font-weight: 500; color: var(--text-secondary); text-align: center; }
+        
+        /* 中间画布区域 */
+        .center-panel {
+            flex: 1;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .center-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+        [data-theme="light"] .center-panel::before {
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+        }
+        
+        .phone-container {
+            position: relative;
+            background: #1a1a1a;
+            border-radius: 45px;
+            padding: 10px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .phone-screen {
+            width: 375px; height: 812px;
+            border-radius: 38px;
+            overflow: hidden;
+            background: var(--primary-yellow);
+        }
+        
+        .canvas-wrapper { width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden; }
+        .canvas-wrapper::-webkit-scrollbar { display: none; }
+        
+        .canvas-content { min-height: 100%; background: var(--primary-yellow); position: relative; padding-bottom: 20px; }
+        
+        .canvas-empty {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .canvas-empty-icon { margin-bottom: 16px; opacity: 0.5; }
+        .canvas-empty-text { font-size: 14px; font-weight: 500; }
+        
+        .canvas-component {
+            position: relative;
+            margin: 12px 16px;
+            background: #fff;
+            border-radius: 16px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .canvas-component.hero-component {
+            margin: 0;
+            border-radius: 0;
+            background: transparent;
+        }
+        
+        .canvas-component:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); }
+        .canvas-component.hero-component:hover { box-shadow: none; }
+        .canvas-component.selected { border-color: var(--brand); box-shadow: 0 0 0 4px rgba(0, 153, 255, 0.2); }
+        .canvas-component.drag-over { border-color: var(--brand); border-style: dashed; }
+        
+        .component-actions { position: absolute; top: -10px; right: -10px; display: none; gap: 4px; }
+        .canvas-component.selected .component-actions { display: flex; }
+        
+        .action-btn {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: var(--bg-white);
+            border: 1px solid #E5E5E5;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .action-btn:hover { background: var(--accent-red); border-color: var(--accent-red); color: #fff; }
+        
+        /* 右侧属性面板 */
+        .right-panel {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+        [data-theme="light"] .right-panel { box-shadow: -2px 0 8px rgba(0,0,0,0.04); }
+        
+        .property-header { 
+            padding: 12px 14px; 
+            border-bottom: 1px solid var(--border); 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .property-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+        .property-badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            color: var(--text-secondary);
+        }
+        .property-badge.active {
+            background: var(--brand-light);
+            color: var(--brand);
+        }
+        .property-content { flex: 1; overflow-y: auto; padding: 12px; padding-bottom: 0; display: flex; flex-direction: column; }
+        .property-content::-webkit-scrollbar { width: 3px; }
+        .property-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+        
+        .property-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-muted);
+            padding: 40px 20px;
+        }
+        
+        .property-empty-icon { margin-bottom: 16px; opacity: 0.4; }
+        .property-empty-text { font-size: 13px; font-weight: 500; margin-bottom: 8px; }
+        .property-empty-hint { font-size: 11px; color: #bbb; text-align: center; line-height: 1.5; }
+        
+        /* 步骤指引样式 */
+        .step-guide {
+            background: var(--brand-light);
+            border: 1px solid rgba(0, 153, 255, 0.2);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .step-guide-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--brand);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .step-guide-content {
+            flex: 1;
+        }
+        .step-guide-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        .step-guide-desc {
+            font-size: 10px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        
+        .property-group { margin-bottom: 14px; }
+        
+        .property-group-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .property-item { margin-bottom: 10px; }
+        .property-item:last-child { margin-bottom: 0; }
+        .property-label { 
+            font-size: 11px; 
+            font-weight: 500; 
+            color: var(--text-secondary); 
+            margin-bottom: 4px; 
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .property-label .tip {
+            font-size: 9px;
+            color: #bbb;
+            font-weight: 400;
+        }
+        
+        .property-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 12px;
+            transition: all 0.2s;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .property-input:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.15); }
+        .property-input::placeholder { color: var(--text-secondary); }
+        
+        /* 紧凑型上传区域 */
+        .image-upload {
+            width: 100%; 
+            height: 70px;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: var(--bg-tertiary);
+            transition: all 0.2s;
+        }
+        
+        .image-upload:hover { border-color: var(--brand); background: var(--brand-light); }
+        .image-upload-icon { margin-bottom: 4px; color: #bbb; }
+        .image-upload-icon svg { width: 20px; height: 20px; }
+        .image-upload-text { font-size: 11px; color: var(--text-muted); }
+        .image-upload-hint { font-size: 9px; color: #ccc; margin-top: 2px; }
+        
+        /* 配色方案紧凑布局 */
+        .color-scheme { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+        
+        .color-preset {
+            width: 28px; height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            transition: all 0.15s ease;
+        }
+        
+        .color-preset:hover { transform: scale(1.08); }
+        .color-preset.active { border-color: var(--text-primary); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .color-preset.active::after { content: '✓'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        
+        /* 自定义颜色紧凑网格 */
+        .color-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .color-picker-item { display: flex; flex-direction: column; gap: 3px; }
+        .color-picker-label { font-size: 9px; color: var(--text-muted); text-align: center; }
+        
+        .color-picker-input { width: 100%; height: 24px; border: none; border-radius: 4px; cursor: pointer; padding: 0; }
+        .color-picker-input::-webkit-color-swatch-wrapper { padding: 0; }
+        .color-picker-input::-webkit-color-swatch { border: 1px solid #E5E5E5; border-radius: 3px; }
+        
+        .color-hex-input {
+            width: 100%;
+            padding: 3px 4px;
+            border: 1px solid #E5E5E5;
+            border-radius: 3px;
+            font-size: 9px;
+            font-family: monospace;
+            text-align: center;
+        }
+        
+        .color-hex-input:focus { outline: none; border-color: var(--brand); }
+        
+        .color-confirm-btn {
+            width: 100%;
+            padding: 6px;
+            margin-top: 6px;
+            border: none;
+            border-radius: 4px;
+            background: var(--brand);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .color-confirm-btn:hover { opacity: 0.85; }
+        
+        /* 紧凑型数量控制 */
+        .count-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .list-count-btn {
+            width: 26px;
+            height: 26px;
+            border: 1px solid #E5E5E5;
+            border-radius: 4px;
+            background: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+        .list-count-btn:hover { background: var(--bg-tertiary); border-color: var(--brand); }
+        .list-count-btn:active { transform: scale(0.95); }
+        
+        .count-input {
+            width: 50px;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #E5E5E5;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .count-hint {
+            font-size: 9px;
+            color: #bbb;
+            margin-top: 4px;
+        }
+        
+        /* 删除按钮紧凑样式 */
+        .delete-btn {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #FFD5D5;
+            border-radius: 6px;
+            background: #FFF8F8;
+            color: var(--accent-red);
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        
+        .delete-btn:hover { background: var(--accent-red); color: #fff; border-color: var(--accent-red); }
+        .delete-btn svg { width: 12px; height: 12px; }
+        
+        /* 布局选项紧凑样式 */
+        .lottery-layout-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+        .lottery-layout-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+            background: var(--bg-tertiary);
+        }
+        .lottery-layout-option:hover {
+            border-color: var(--text-tertiary);
+        }
+        .lottery-layout-option.selected,
+        .lottery-layout-option:has(input:checked) {
+            border-color: var(--brand);
+            background: var(--brand-light);
+        }
+        .lottery-layout-option input[type="radio"] {
+            margin-right: 6px;
+            accent-color: var(--brand);
+        }
+        .layout-option-text {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .layout-option-hint {
+            font-size: 9px;
+            color: var(--text-tertiary);
+        }
+        
+        /* 按钮文字颜色选择 */
+        .btn-text-color-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-text-color-row label {
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-text-color-row input[type="radio"] {
+            accent-color: var(--brand);
+        }
+        
+        /* 折叠面板样式 */
+        .collapsible-section {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .collapsible-header {
+            padding: 8px 10px;
+            background: var(--bg-tertiary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: background 0.2s;
+        }
+        .collapsible-header:hover {
+            background: var(--bg);
+        }
+        .collapsible-header .arrow {
+            transition: transform 0.2s;
+            font-size: 10px;
+            color: var(--text-tertiary);
+        }
+        .collapsible-section.open .collapsible-header .arrow {
+            transform: rotate(180deg);
+        }
+        .collapsible-content {
+            padding: 10px;
+            display: none;
+        }
+        .collapsible-section.open .collapsible-content {
+            display: block;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 80px; left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        
+        .preview-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .preview-modal.active { display: flex; }
+        
+        .preview-modal-close {
+            position: absolute;
+            top: 20px; right: 20px;
+            width: 40px; height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #fff;
+            font-size: 20px;
+        }
+        
+        .preview-modal-close:hover { background: rgba(255, 255, 255, 0.2); }
+        
+        @media (max-height: 950px) { .phone-container { transform: scale(0.85); } }
+        @media (max-height: 800px) { .phone-container { transform: scale(0.7); } }
+        
+        /* 组件内样式 */
+        .module-card { padding: 16px; }
+        .module-card.image-card { padding: 0; background: #fff; border-radius: 12px; overflow: hidden; }
+        .module-title { font-size: 17px; font-weight: 600; color: #000; margin-bottom: 16px; }
+        
+        /* 可点击上传的图片 */
+        .clickable-img { cursor: pointer; transition: all 0.2s; position: relative; }
+        .clickable-img-wrapper { position: relative; display: inline-block; }
+        .clickable-img-wrapper::after {
+            content: '点击替换';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            border-radius: inherit;
+            pointer-events: none;
+        }
+        .clickable-img-wrapper:hover::after { opacity: 1; }
+        
+        .coupon-item {
+            background: var(--brand-light);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .coupon-item:last-child { margin-bottom: 0; }
+        .coupon-left { display: flex; align-items: center; gap: 10px; }
+        .coupon-icon { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; }
+        .coupon-info .coupon-tag { font-size: 12px; color: rgba(0,0,0,0.9); margin-bottom: 4px; }
+        .coupon-info .coupon-name { font-size: 14px; font-weight: 600; color: #000; }
+        
+        .coupon-btn {
+            background: var(--primary-gold);
+            border: none;
+            border-radius: 16px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #000;
+            cursor: pointer;
+        }
+        
+        .lottery-header { margin-bottom: 16px; }
+        .lottery-subtitle { font-size: 12px; color: rgba(60, 60, 67, 0.76); display: flex; justify-content: space-between; margin-top: 8px; }
+        .lottery-count .num { color: var(--accent-red); font-weight: 600; }
+        
+        .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+        .prize-card { background: var(--bg-tertiary); border-radius: 12px; padding: 8px; text-align: center; }
+        .prize-card img { width: 48px; height: 48px; object-fit: contain; margin-bottom: 4px; }
+        .prize-card-title { font-size: 10px; color: rgba(0,0,0,0.9); }
+        
+        /* 轮播奖品样式 */
+        .prize-carousel-container { margin-bottom: 12px; }
+        .prize-carousel { scrollbar-width: none; -ms-overflow-style: none; }
+        .prize-carousel::-webkit-scrollbar { display: none; }
+        .prize-carousel-item { background: var(--bg-tertiary); border-radius: 12px; padding: 8px; text-align: center; }
+        .prize-carousel-item img { width: 48px; height: 48px; object-fit: contain; margin-bottom: 4px; }
+        
+        .lottery-btn {
+            width: 100%;
+            background: var(--primary-gold);
+            border: none;
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+        }
+        
+        .task-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .task-item:last-child { border-bottom: none; }
+        .task-info h4 { font-size: 14px; font-weight: 500; color: #000; margin-bottom: 4px; }
+        .task-info p { font-size: 10px; color: rgba(60, 60, 67, 0.76); }
+        
+        .task-btn {
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: 16px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+        
+        .task-btn.primary { background: var(--primary-gold); }
+        
+        .event-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .event-grid.single-column { grid-template-columns: 1fr; }
+        .event-card { border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; }
+        .event-card img { width: 100%; height: 80px; object-fit: cover; }
+        .event-grid.single-column .event-card img { height: 100px; }
+        .event-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 10px 10px; background: linear-gradient(0deg, rgba(62,62,133,0.9), transparent); }
+        .event-title { font-size: 14px; font-weight: 600; color: #fff; border-radius: 4px; }
+        .event-desc { font-size: 10px; color: rgba(255,255,255,0.9); }
+        .event-replace-hint {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .clickable-event-card:hover .event-replace-hint { opacity: 1; }
+        
+        .progress-container { background: var(--brand-light); border-radius: 12px; padding: 16px 12px; }
+        .progress-columns { display: flex; justify-content: space-between; gap: 8px; }
+        .progress-column { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .progress-label { font-size: 10px; color: var(--text-tertiary); }
+        .progress-label.active { color: var(--text-primary); font-weight: 500; }
+        .progress-segment { width: 100%; height: 4px; background: rgba(0,0,0,0.1); border-radius: 2px; overflow: hidden; }
+        .progress-segment-fill { height: 100%; width: 0; background: var(--primary-orange); border-radius: 2px; }
+        .progress-segment.completed .progress-segment-fill { width: 100%; }
+        .reward-tag { font-size: 10px; padding: 4px 10px; border-radius: 10px; background: var(--bg-tertiary); color: var(--text-tertiary); }
+        .reward-tag.claimable { background: var(--brand); color: #fff; }
+        
+        .editable-text { cursor: text; transition: all 0.2s ease; }
+        .editable-text:hover { background: var(--brand-light); border-radius: 4px; }
+        .editable-text:focus { outline: 2px solid var(--brand); outline-offset: 2px; background: var(--brand-light); }
+        
+        /* 功能导流组件样式 */
+        .app-download-card {
+            background: var(--bg-tertiary);
+            border-radius: 16px;
+        }
+        .app-download-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .app-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 0.5px solid var(--border);
+            background: var(--bg-tertiary);
+        }
+        .app-icon {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .app-info {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+        .app-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .app-desc {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .app-download-btn {
+            background: var(--primary-orange);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .app-download-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="platform-container">
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <div class="logo"><img src="assets/logo.png" alt="Logo"></div>
+                <span class="toolbar-title">智能运营设计配置平台</span>
+            </div>
+            <div class="toolbar-center">
+                <select class="device-select" id="deviceSelect">
+                    <option value="375,812">iPhone X/XS/11 Pro (375×812)</option>
+                    <option value="393,852">iPhone 16/16 Pro (393×852)</option>
+                    <option value="430,932">iPhone 16 Plus/Pro Max (430×932)</option>
+                    <option value="424,945">华为 Mate 60 Pro (424×945)</option>
+                    <option value="412,915">小米 14 Pro (412×915)</option>
+                    <option value="360,800">OPPO/vivo 主流机型 (360×800)</option>
+                </select>
+            </div>
+            <div class="toolbar-right">
+                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="切换主题">
+                    <div class="theme-toggle-thumb"></div>
+                </button>
+                <button class="toolbar-btn" onclick="saveConfig()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                    保存
+                </button>
+                <button class="toolbar-btn" onclick="previewPage()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    预览
+                </button>
+                <button class="toolbar-btn primary" onclick="exportHTML()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    导出HTML
+                </button>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="panel-header">
+                    <div class="panel-title">组件库</div>
+                    <div class="search-box">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                        <input type="text" class="search-input" placeholder="搜索组件..." id="componentSearch" oninput="searchComponents(this.value)">
+                    </div>
+                </div>
+                <div class="category-tabs">
+                    <button class="category-tab active" data-category="all">全部</button>
+                    <button class="category-tab" data-category="lottery">抽奖</button>
+                    <button class="category-tab" data-category="coupon">优惠券</button>
+                    <button class="category-tab" data-category="task">任务</button>
+                    <button class="category-tab" data-category="event">活动</button>
+                    <button class="category-tab" data-category="progress">进度</button>
+                </div>
+                <div class="component-list">
+                    <div class="component-grid" id="componentGrid"></div>
+                </div>
+            </div>
+            
+            <div class="center-panel">
+                <div class="phone-container" id="phoneContainer">
+                    <div class="phone-screen" id="phoneScreen">
+                        <div class="canvas-wrapper">
+                            <div class="canvas-content" id="canvasContent">
+                                <div class="canvas-empty" id="canvasEmpty">
+                                    <div class="canvas-empty-icon">
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12" y2="18.01" stroke-width="2"/></svg>
+                                    </div>
+                                    <div class="canvas-empty-text">拖拽左侧组件到此处</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="right-panel">
+                <div class="property-header">
+                    <span class="property-title">属性配置</span>
+                    <span class="property-badge" id="componentBadge">未选择</span>
+                </div>
+                <div class="property-content" id="propertyContent">
+                    <div class="property-empty" id="propertyEmpty">
+                        <div class="property-empty-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1.5">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <div class="property-empty-text">选择组件开始编辑</div>
+                        <div class="property-empty-hint">从左侧拖拽组件到画布<br>或点击画布中的组件进行编辑</div>
+                    </div>
+                    
+                    <div id="propertyEditor" style="display: none;">
+                        <!-- 步骤指引 -->
+                        <div class="step-guide" id="stepGuide">
+                            <div class="step-guide-icon">1</div>
+                            <div class="step-guide-content">
+                                <div class="step-guide-title" id="stepGuideTitle">编辑组件内容</div>
+                                <div class="step-guide-desc" id="stepGuideDesc">修改下方文案和配置，实时预览效果</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 主视觉专用编辑区 -->
+                        <div class="property-group" id="heroEditorGroup" style="display: none;">
+                            <div class="property-group-title">📷 媒体上传</div>
+                            <div class="property-item">
+                                <div class="image-upload hero-upload" onclick="document.getElementById('heroMediaInput').click()">
+                                    <div class="image-upload-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    </div>
+                                    <div class="image-upload-text">点击上传视频或图片</div>
+                                    <div class="image-upload-hint">支持 MP4/PNG/JPG，建议1:1</div>
+                                </div>
+                                <input type="file" id="heroMediaInput" accept="video/mp4,image/png,image/jpeg,image/jpg" style="display: none;" onchange="handleHeroMediaUpload(event)">
+                            </div>
+                            <div class="property-item" id="heroMediaPreview" style="display:none;">
+                                <label class="property-label">已上传</label>
+                                <div id="heroPreviewContainer" style="width:100%;border-radius:6px;overflow:hidden;background:#f5f5f5;max-height:120px;"></div>
+                                <button class="delete-btn" style="margin-top:6px;" onclick="clearHeroMedia()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                    清除媒体
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 纯图片编辑区 -->
+                        <div class="property-group" id="imageEditorGroup" style="display: none;">
+                            <div class="property-group-title">📷 图片上传</div>
+                            <div class="property-item">
+                                <div class="image-upload" onclick="document.getElementById('pureImageInput').click()">
+                                    <div class="image-upload-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                                    </div>
+                                    <div class="image-upload-text">点击上传图片</div>
+                                    <div class="image-upload-hint">支持 PNG/JPG 格式</div>
+                                </div>
+                                <input type="file" id="pureImageInput" accept="image/png,image/jpeg,image/jpg" style="display: none;" onchange="handlePureImageUpload(event)">
+                            </div>
+                            <div class="property-item" id="imagePreviewSection" style="display:none;">
+                                <label class="property-label">已上传</label>
+                                <div id="imagePreviewContainer" style="width:100%;border-radius:6px;overflow:hidden;background:#f5f5f5;max-height:100px;"></div>
+                                <button class="delete-btn" style="margin-top:6px;" onclick="clearPureImage()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                    清除图片
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 功能导流专属编辑区 -->
+                        <div class="property-group" id="appDownloadEditorGroup" style="display: none;">
+                            <div class="property-group-title">📱 应用信息</div>
+                            <div class="property-item">
+                                <label class="property-label">应用图标</label>
+                                <div class="image-upload" style="height:60px;" onclick="document.getElementById('appIconInput').click()">
+                                    <div class="image-upload-icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                                    </div>
+                                    <div class="image-upload-text">上传应用图标</div>
+                                    <div class="image-upload-hint">建议48×48正方形</div>
+                                </div>
+                                <input type="file" id="appIconInput" accept="image/png,image/jpeg,image/jpg" style="display: none;" onchange="handleAppIconUpload(event)">
+                            </div>
+                            <div class="property-item">
+                                <label class="property-label">应用名称 <span class="tip">必填</span></label>
+                                <input type="text" class="property-input" id="propAppName" placeholder="如：腾讯视频" oninput="updateProp('appName', this.value)">
+                            </div>
+                            <div class="property-item">
+                                <label class="property-label">应用描述 <span class="tip">选填</span></label>
+                                <input type="text" class="property-input" id="propAppDesc" placeholder="如：海量高清视频在线观看" oninput="updateProp('appDesc', this.value)">
+                            </div>
+                            <div class="property-item">
+                                <label class="property-label">按钮文字</label>
+                                <input type="text" class="property-input" id="propAppButtonText" placeholder="如：立即下载" oninput="updateProp('buttonText', this.value)">
+                            </div>
+                        </div>
+                        
+                        <!-- 通用文案编辑区 -->
+                        <div class="property-group" id="textEditorGroup">
+                            <div class="property-group-title">✏️ 文案编辑</div>
+                            <div class="property-item">
+                                <label class="property-label">标题 <span class="tip">必填</span></label>
+                                <input type="text" class="property-input" id="propTitle" placeholder="如：新年福利大放送" oninput="updateProp('title', this.value)">
+                            </div>
+                            <div class="property-item">
+                                <label class="property-label">副标题 <span class="tip">选填</span></label>
+                                <input type="text" class="property-input" id="propSubtitle" placeholder="如：限时优惠，先到先得" oninput="updateProp('subtitle', this.value)">
+                            </div>
+                            <div class="property-item" id="buttonTextItem">
+                                <label class="property-label">按钮文字</label>
+                                <input type="text" class="property-input" id="propButtonText" placeholder="如：立即领取" oninput="updateProp('buttonText', this.value)">
+                            </div>
+                        </div>
+                        
+                        <!-- 列表数量配置区 -->
+                        <div class="property-group" id="listCountGroup" style="display:none;">
+                            <div class="property-group-title">📋 列表配置</div>
+                            <div class="property-item">
+                                <label class="property-label">显示数量</label>
+                                <div class="count-control">
+                                    <button class="list-count-btn" onclick="adjustListCount(-1)">−</button>
+                                    <input type="number" class="count-input" id="propListCount" value="2" min="1" max="6" onchange="setListCount(parseInt(this.value))">
+                                    <button class="list-count-btn" onclick="adjustListCount(1)">+</button>
+                                </div>
+                                <div class="count-hint" id="listCountHint">当前2项，最多6项</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 进度条阶段配置区 -->
+                        <div class="property-group" id="progressStageGroup" style="display:none;">
+                            <div class="property-group-title">📊 阶段配置</div>
+                            <div class="property-item">
+                                <label class="property-label">阶段数量</label>
+                                <div class="count-control">
+                                    <button class="list-count-btn" onclick="adjustProgressStages(-1)">−</button>
+                                    <input type="number" class="count-input" id="propStageCount" value="3" min="2" max="5" onchange="setProgressStages(parseInt(this.value))">
+                                    <button class="list-count-btn" onclick="adjustProgressStages(1)">+</button>
+                                </div>
+                                <div class="count-hint" id="stageCountHint">当前3阶段，2-5可选</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 抽奖布局配置区 -->
+                        <div class="property-group" id="lotteryLayoutGroup" style="display:none;">
+                            <div class="property-group-title">🎰 奖品布局</div>
+                            <div class="property-item">
+                                <div class="lottery-layout-options">
+                                    <label class="lottery-layout-option">
+                                        <input type="radio" name="lotteryLayout" value="3" onchange="setLotteryLayout(3)">
+                                        <div>
+                                            <div class="layout-option-text">3个</div>
+                                            <div class="layout-option-hint">一排</div>
+                                        </div>
+                                    </label>
+                                    <label class="lottery-layout-option">
+                                        <input type="radio" name="lotteryLayout" value="6" checked onchange="setLotteryLayout(6)">
+                                        <div>
+                                            <div class="layout-option-text">6个</div>
+                                            <div class="layout-option-hint">两排</div>
+                                        </div>
+                                    </label>
+                                    <label class="lottery-layout-option">
+                                        <input type="radio" name="lotteryLayout" value="9" onchange="setLotteryLayout(9)">
+                                        <div>
+                                            <div class="layout-option-text">9个</div>
+                                            <div class="layout-option-hint">三排</div>
+                                        </div>
+                                    </label>
+                                    <label class="lottery-layout-option">
+                                        <input type="radio" name="lotteryLayout" value="carousel" onchange="setLotteryLayout('carousel')">
+                                        <div>
+                                            <div class="layout-option-text">轮播</div>
+                                            <div class="layout-option-hint">9+个</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="property-item" id="lotteryCarouselCountGroup" style="display:none;">
+                                <label class="property-label">轮播数量</label>
+                                <div class="count-control">
+                                    <button class="list-count-btn" onclick="adjustLotteryCarouselCount(-1)">−</button>
+                                    <input type="number" class="count-input" id="propLotteryCarouselCount" value="12" min="10" max="20" onchange="setLotteryCarouselCount(parseInt(this.value))">
+                                    <button class="list-count-btn" onclick="adjustLotteryCarouselCount(1)">+</button>
+                                </div>
+                                <div class="count-hint" id="lotteryCarouselHint">当前12个，10-20可选</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 配色方案 - 折叠面板 -->
+                        <div class="collapsible-section open" id="colorSection">
+                            <div class="collapsible-header" onclick="toggleCollapsible('colorSection')">
+                                <span>🎨 配色方案</span>
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div class="color-scheme" id="colorScheme">
+                                    <div class="color-preset active" style="background: #FEDF9C;" data-scheme="gold" onclick="applyColorScheme('gold')" title="金色"></div>
+                                    <div class="color-preset" style="background: #667eea;" data-scheme="purple" onclick="applyColorScheme('purple')" title="紫色"></div>
+                                    <div class="color-preset" style="background: #11998e;" data-scheme="green" onclick="applyColorScheme('green')" title="绿色"></div>
+                                    <div class="color-preset" style="background: #ee0979;" data-scheme="red" onclick="applyColorScheme('red')" title="红色"></div>
+                                    <div class="color-preset" style="background: #0099ff;" data-scheme="blue" onclick="applyColorScheme('blue')" title="蓝色"></div>
+                                    <div class="color-preset" style="background: #F68910;" data-scheme="orange" onclick="applyColorScheme('orange')" title="橙色"></div>
+                                </div>
+                                
+                                <div class="property-item">
+                                    <label class="property-label">按钮文字</label>
+                                    <div class="btn-text-color-row">
+                                        <label>
+                                            <input type="radio" name="btnTextColor" value="#000000" checked onchange="updateButtonTextColor(this.value)"> 黑色
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="btnTextColor" value="#ffffff" onchange="updateButtonTextColor(this.value)"> 白色
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 自定义颜色 - 折叠面板 -->
+                        <div class="collapsible-section" id="customColorSection">
+                            <div class="collapsible-header" onclick="toggleCollapsible('customColorSection')">
+                                <span>🔧 自定义颜色</span>
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="collapsible-content">
+                                <div class="color-picker-grid">
+                                    <div class="color-picker-item">
+                                        <span class="color-picker-label">按钮色</span>
+                                        <input type="color" class="color-picker-input" id="primaryColor" value="#FEDF9C" oninput="updateCustomColor('primary', this.value)">
+                                        <input type="text" class="color-hex-input" id="primaryHex" value="#FEDF9C" onchange="updateColorFromHex('primary', this.value)">
+                                    </div>
+                                    <div class="color-picker-item">
+                                        <span class="color-picker-label">强调色</span>
+                                        <input type="color" class="color-picker-input" id="accentColor" value="#F68910" oninput="updateCustomColor('accent', this.value)">
+                                        <input type="text" class="color-hex-input" id="accentHex" value="#F68910" onchange="updateColorFromHex('accent', this.value)">
+                                    </div>
+                                    <div class="color-picker-item">
+                                        <span class="color-picker-label">背景色</span>
+                                        <input type="color" class="color-picker-input" id="bgColor" value="#FFE23A" oninput="updateCustomColor('background', this.value)">
+                                        <input type="text" class="color-hex-input" id="bgHex" value="#FFE23A" onchange="updateColorFromHex('background', this.value)">
+                                    </div>
+                                </div>
+                                <button class="color-confirm-btn" onclick="applyCustomColors()">应用配色</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 删除按钮固定在底部 -->
+                    <div id="deleteButtonWrapper" style="display:none;padding:12px;border-top:1px solid #f0f0f0;margin-top:auto;">
+                        <button class="delete-btn" onclick="deleteSelectedComponent()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            删除此组件
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast" id="toast"></div>
+    
+    <div class="preview-modal" id="previewModal">
+        <button class="preview-modal-close" onclick="closePreview()">✕</button>
+        <div class="phone-container">
+            <div class="phone-screen" id="previewScreen">
+                <div class="canvas-wrapper">
+                    <div class="canvas-content" id="previewContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 组件类型定义（含缩略图）
+        const componentTypes = [
+            { type: 'hero', name: '主视觉', category: 'event' },
+            { type: 'coupon', name: '优惠券', category: 'coupon' },
+            { type: 'lottery', name: '抽奖', category: 'lottery' },
+            { type: 'task', name: '任务列表', category: 'task' },
+            { type: 'event', name: '图文banner', category: 'event' },
+            { type: 'progress', name: '邀请助力', category: 'progress' },
+            { type: 'image', name: '纯图片', category: 'event' },
+            { type: 'appDownload', name: '功能导流', category: 'event' },
+        ];
+        
+        // 获取组件缩略图HTML
+        function getComponentThumbnail(type) {
+            const thumbs = {
+                hero: `<div style="width:100%;height:100%;background:#FEDF9C;display:flex;align-items:center;justify-content:center;border-radius:6px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                </div>`,
+                coupon: `<div style="width:100%;height:100%;background:#FFF8E3;border-radius:6px;padding:6px;display:flex;flex-direction:column;gap:4px;">
+                    <div style="flex:1;background:#FEDF9C;border-radius:4px;display:flex;align-items:center;padding:0 6px;">
+                        <div style="width:12px;height:12px;background:#F68910;border-radius:2px;margin-right:4px;"></div>
+                        <div style="flex:1;height:4px;background:rgba(0,0,0,0.1);border-radius:2px;"></div>
+                        <div style="width:20px;height:10px;background:#F68910;border-radius:8px;margin-left:4px;"></div>
+                    </div>
+                    <div style="flex:1;background:#FEDF9C;border-radius:4px;display:flex;align-items:center;padding:0 6px;">
+                        <div style="width:12px;height:12px;background:#F68910;border-radius:2px;margin-right:4px;"></div>
+                        <div style="flex:1;height:4px;background:rgba(0,0,0,0.1);border-radius:2px;"></div>
+                        <div style="width:20px;height:10px;background:#F68910;border-radius:8px;margin-left:4px;"></div>
+                    </div>
+                </div>`,
+                lottery: `<div style="width:100%;height:100%;background:#FFF8E3;border-radius:6px;padding:6px;display:flex;flex-direction:column;gap:4px;">
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;flex:1;">
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                    </div>
+                    <div style="height:12px;background:#FEDF9C;border-radius:4px;"></div>
+                </div>`,
+                task: `<div style="width:100%;height:100%;background:#fff;border-radius:6px;padding:6px;display:flex;flex-direction:column;gap:4px;">
+                    <div style="display:flex;align-items:center;gap:4px;">
+                        <div style="flex:1;height:4px;background:#ddd;border-radius:2px;"></div>
+                        <div style="width:20px;height:10px;background:#FEDF9C;border-radius:8px;"></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:4px;">
+                        <div style="flex:1;height:4px;background:#ddd;border-radius:2px;"></div>
+                        <div style="width:20px;height:10px;background:#f0f0f0;border-radius:8px;"></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:4px;">
+                        <div style="flex:1;height:4px;background:#ddd;border-radius:2px;"></div>
+                        <div style="width:20px;height:10px;background:#f0f0f0;border-radius:8px;"></div>
+                    </div>
+                </div>`,
+                event: `<div style="width:100%;height:100%;background:#FFF8E3;border-radius:6px;padding:4px;display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                    <div style="background:#f5f5f5;border-radius:4px;position:relative;overflow:hidden;">
+                        <div style="position:absolute;bottom:0;left:0;right:0;height:40%;background:#FEDF9C;"></div>
+                    </div>
+                    <div style="background:#f5f5f5;border-radius:4px;position:relative;overflow:hidden;">
+                        <div style="position:absolute;bottom:0;left:0;right:0;height:40%;background:#F68910;"></div>
+                    </div>
+                </div>`,
+                progress: `<div style="width:100%;height:100%;background:#FFF8E3;border-radius:6px;padding:8px 6px;display:flex;flex-direction:column;justify-content:center;gap:6px;">
+                    <div style="display:flex;gap:4px;">
+                        <div style="flex:1;height:4px;background:#F68910;border-radius:2px;"></div>
+                        <div style="flex:1;height:4px;background:rgba(0,0,0,0.1);border-radius:2px;"></div>
+                        <div style="flex:1;height:4px;background:rgba(0,0,0,0.1);border-radius:2px;"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                        <div style="width:16px;height:8px;background:#F68910;border-radius:4px;"></div>
+                        <div style="width:16px;height:8px;background:rgba(0,0,0,0.1);border-radius:4px;"></div>
+                        <div style="width:16px;height:8px;background:rgba(0,0,0,0.1);border-radius:4px;"></div>
+                    </div>
+                </div>`,
+                image: `<div style="width:100%;height:100%;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;border:1px dashed #ddd;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                </div>`,
+                appDownload: `<div style="width:100%;height:100%;background:#fff;border-radius:6px;padding:8px;display:flex;align-items:center;gap:6px;box-sizing:border-box;">
+                    <div style="width:28px;height:28px;background:#FEDF9C;border-radius:6px;flex-shrink:0;"></div>
+                    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+                        <div style="height:6px;background:#333;border-radius:3px;width:70%;"></div>
+                        <div style="height:4px;background:#ddd;border-radius:2px;width:90%;"></div>
+                    </div>
+                    <div style="width:28px;height:16px;background:#F68910;border-radius:8px;flex-shrink:0;"></div>
+                </div>`
+            };
+            return thumbs[type] || '<div style="width:100%;height:100%;background:#f5f5f5;border-radius:6px;"></div>';
+        }
+        
+        // 配色方案（增加文字颜色）
+        const colorSchemes = {
+            gold: { primary: '#FEDF9C', accent: '#F68910', background: '#FFE23A', btnBg: '#FFF8E3', textColor: '#000000' },
+            purple: { primary: '#667eea', accent: '#764ba2', background: '#EEE5FF', btnBg: '#F5F0FF', textColor: '#ffffff' },
+            green: { primary: '#11998e', accent: '#055751', background: '#E0FFF5', btnBg: '#F0FFF8', textColor: '#ffffff' },
+            red: { primary: '#ee0979', accent: '#85002e', background: '#FFE5E5', btnBg: '#FFF5F0', textColor: '#ffffff' },
+            blue: { primary: '#0099ff', accent: '#0066cc', background: '#E5F5FF', btnBg: '#F0FAFF', textColor: '#ffffff' },
+            orange: { primary: '#F68910', accent: '#8f4c00', background: '#FFF3E0', btnBg: '#FFF8F0', textColor: '#ffffff' }
+        };
+        
+        // 状态管理
+        let canvasComponents = [];
+        let selectedComponentId = null;
+        let currentColorScheme = 'gold';
+        let customColors = { ...colorSchemes.gold, textColor: '#000000' };
+        let componentIdCounter = 0;
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initComponentGrid();
+            initCategoryTabs();
+            initDragAndDrop();
+            initDeviceSelect();
+            loadFromLocalStorage();
+        });
+        
+        // 初始化组件网格
+        function initComponentGrid() {
+            const grid = document.getElementById('componentGrid');
+            grid.innerHTML = componentTypes.map(comp => `
+                <div class="component-card" draggable="true" data-type="${comp.type}" data-category="${comp.category}">
+                    <div class="component-thumb">${getComponentThumbnail(comp.type)}</div>
+                    <div class="component-name">${comp.name}</div>
+                </div>
+            `).join('');
+            
+            // 为组件卡片绑定拖拽和点击事件
+            grid.querySelectorAll('.component-card').forEach(card => {
+                // 拖拽事件
+                card.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('componentType', this.dataset.type);
+                    e.dataTransfer.setData('isNew', 'true');
+                    this.classList.add('dragging');
+                });
+                card.addEventListener('dragend', function() { 
+                    this.classList.remove('dragging'); 
+                });
+                // 点击添加组件
+                card.addEventListener('click', function() {
+                    addComponentToCanvas(this.dataset.type);
+                });
+            });
+        }
+        
+        // 初始化分类标签
+        function initCategoryTabs() {
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    filterComponents(this.dataset.category);
+                });
+            });
+        }
+        
+        // 过滤组件
+        function filterComponents(category) {
+            document.querySelectorAll('.component-card').forEach(card => {
+                card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
+            });
+        }
+        
+        // 搜索组件
+        function searchComponents(keyword) {
+            const kw = keyword.toLowerCase();
+            document.querySelectorAll('.component-card').forEach(card => {
+                const name = card.querySelector('.component-name').textContent.toLowerCase();
+                card.style.display = name.includes(kw) ? 'block' : 'none';
+            });
+        }
+        
+        // 初始化拖拽（画布区域）
+        function initDragAndDrop() {
+            const canvas = document.getElementById('canvasContent');
+            
+            canvas.addEventListener('dragover', function(e) { e.preventDefault(); });
+            canvas.addEventListener('drop', function(e) {
+                e.preventDefault();
+                if (e.dataTransfer.getData('isNew') === 'true') {
+                    addComponentToCanvas(e.dataTransfer.getData('componentType'));
+                }
+            });
+        }
+        
+        // 初始化设备选择
+        function initDeviceSelect() {
+            document.getElementById('deviceSelect').addEventListener('change', function() {
+                const [w, h] = this.value.split(',').map(Number);
+                const screen = document.getElementById('phoneScreen');
+                screen.style.width = w + 'px';
+                screen.style.height = h + 'px';
+            });
+        }
+        
+        // 添加组件到画布
+        function addComponentToCanvas(type) {
+            const id = 'comp_' + (++componentIdCounter);
+            canvasComponents.push({ id, type, props: getDefaultProps(type) });
+            renderCanvas();
+            selectComponent(id);
+            showToast('已添加');
+        }
+        
+        // 获取默认属性
+        function getDefaultProps(type) {
+            const defaults = {
+                hero: { title: '主视觉', mediaType: 'image', mediaUrl: '', aspectRatio: '1:1' },
+                coupon: { title: '第一弹「神券」', items: [{ name: '满38-16优惠券', tag: '专属礼' }, { name: '满100-5优惠券', tag: '专属礼' }], buttonText: '开心收下' },
+                lottery: { title: '第二弹「9抽赢大奖」', subtitle: '剩余抽奖次数：9/11', buttonText: '立即抽奖', layout: 6, prizes: [] },
+                task: { title: '做任务领抽奖机会', tasks: [{ name: '领SVIP专享机会', desc: 'SVIP用户可额外获得1次抽奖机会', btn: '领取' }, { name: '订阅福利社通知', desc: '完成订阅获得1次抽奖机会', btn: '前往' }] },
+                event: { title: '2月大事件', events: [{ title: 'SVIP启航2026', desc: '60抽必得12个月SVIP' }, { title: 'SVIP×王者荣耀', desc: '开通得稀有史诗皮肤' }] },
+                progress: { title: '邀好友助力', subtitle: '累计获得15助力值可解锁最高4次机会', milestones: ['1人', '5人', '10人'], current: 1 },
+                image: { title: '纯图片', imageUrl: '' },
+                appDownload: { title: '', appName: '腾讯视频', appDesc: '海量高清视频在线观看', buttonText: '立即下载', iconUrl: '' }
+            };
+            return defaults[type] || { title: '组件' };
+        }
+        
+        // 渲染画布
+        function renderCanvas() {
+            const canvas = document.getElementById('canvasContent');
+            const empty = document.getElementById('canvasEmpty');
+            
+            empty.style.display = canvasComponents.length === 0 ? 'block' : 'none';
+            canvas.querySelectorAll('.canvas-component').forEach(el => el.remove());
+            
+            canvasComponents.forEach(comp => {
+                const el = document.createElement('div');
+                const isHero = comp.type === 'hero';
+                el.className = 'canvas-component' + (isHero ? ' hero-component' : '') + (comp.id === selectedComponentId ? ' selected' : '');
+                el.id = comp.id;
+                el.draggable = true;
+                el.innerHTML = renderComponentHTML(comp) + `<div class="component-actions"><button class="action-btn" onclick="event.stopPropagation();deleteComponent('${comp.id}')" title="删除">✕</button></div>`;
+                
+                el.addEventListener('click', () => selectComponent(comp.id));
+                el.addEventListener('dragstart', e => { e.dataTransfer.setData('componentId', comp.id); e.dataTransfer.setData('isNew', 'false'); el.classList.add('dragging'); });
+                el.addEventListener('dragend', () => el.classList.remove('dragging'));
+                el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
+                el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+                el.addEventListener('drop', e => {
+                    e.preventDefault(); e.stopPropagation(); el.classList.remove('drag-over');
+                    const draggedId = e.dataTransfer.getData('componentId');
+                    if (e.dataTransfer.getData('isNew') === 'false' && draggedId && draggedId !== comp.id) reorderComponents(draggedId, comp.id);
+                });
+                
+                canvas.appendChild(el);
+            });
+            
+            applyColorsToCanvas();
+        }
+        
+        // 渲染组件HTML
+        // 注意：模块标题始终为黑色，只有主色背景上的文本使用textColor
+        function renderComponentHTML(comp) {
+            const txtColor = customColors.textColor || '#000';
+            const titleColor = '#000'; // 模块标题固定黑色
+            switch(comp.type) {
+                case 'hero':
+                    const heroStyle = 'width:100%;aspect-ratio:1/1;display:block;object-fit:cover;';
+                    if (comp.props.mediaUrl) {
+                        if (comp.props.mediaType === 'video') {
+                            return `<div class="hero-module" style="margin:0;border-radius:0;overflow:hidden;"><video src="${comp.props.mediaUrl}" style="${heroStyle}" autoplay loop muted playsinline></video></div>`;
+                        } else {
+                            return `<div class="hero-module" style="margin:0;border-radius:0;overflow:hidden;"><img src="${comp.props.mediaUrl}" style="${heroStyle}"></div>`;
+                        }
+                    } else {
+                        return `<div class="hero-module hero-placeholder" style="width:100%;aspect-ratio:1/1;background:${customColors.primary};display:flex;flex-direction:column;align-items:center;justify-content:center;color:${txtColor};"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><div style="font-size:14px;font-weight:500;margin-top:12px;">主视觉区域</div><div style="font-size:12px;opacity:0.8;margin-top:4px;">上传视频或图片</div></div>`;
+                    }
+                case 'coupon':
+                    return `<div class="module-card"><div class="module-title editable-text" contenteditable="true" style="color:${titleColor}">${comp.props.title}</div><div>${comp.props.items.map((item, idx) => `<div class="coupon-item"><div class="coupon-left"><span class="clickable-img-wrapper" style="border-radius:8px;"><img class="coupon-icon clickable-img" src="${item.icon || 'assets/CodeBubbyAssets/45_550/33.png'}" data-comp-id="${comp.id}" data-item-idx="${idx}" data-img-type="coupon" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/40x40/FFF8E3/F68910?text=C'"></span><div class="coupon-info"><div class="coupon-tag editable-text" contenteditable="true">${item.tag}</div><div class="coupon-name editable-text" contenteditable="true">${item.name}</div></div></div><button class="coupon-btn" style="color:${txtColor}">${comp.props.buttonText}</button></div>`).join('')}</div></div>`;
+                case 'lottery':
+                    const layout = comp.props.layout || 6;
+                    const isCarousel = layout === 'carousel' || layout > 9;
+                    let prizeCount = isCarousel ? (comp.props.prizes && comp.props.prizes.length > 9 ? comp.props.prizes.length : 12) : layout;
+                    
+                    // 确保prizes数组有足够的元素
+                    if (!comp.props.prizes) comp.props.prizes = [];
+                    while (comp.props.prizes.length < prizeCount) {
+                        comp.props.prizes.push('');
+                    }
+                    
+                    let prizeGridHtml = '';
+                    if (isCarousel) {
+                        // 轮播模式：一排横向滚动
+                        prizeGridHtml = `<div class="prize-carousel-container" style="overflow:hidden;position:relative;">
+                            <div class="prize-carousel" style="display:flex;gap:8px;overflow-x:auto;padding:8px 0;scroll-behavior:smooth;">
+                                ${Array.from({length: prizeCount}, (_, i) => `<div class="prize-card prize-carousel-item" style="flex:0 0 72px;min-width:72px;">
+                                    <span class="clickable-img-wrapper" style="border-radius:8px;"><img class="clickable-img" src="${comp.props.prizes[i] || 'assets/CodeBubbyAssets/45_550/'+(39+(i%6))+'.png'}" data-comp-id="${comp.id}" data-item-idx="${i}" data-img-type="lottery" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/48x48/F5F5F5/999?text=P'"></span>
+                                    <div class="prize-card-title">奖品${i+1}</div>
+                                </div>`).join('')}
+                            </div>
+                            <div class="carousel-indicator" style="text-align:center;margin-top:8px;">
+                                <span style="font-size:10px;color:#999;">← 左右滑动查看更多奖品 →</span>
+                            </div>
+                        </div>`;
+                    } else {
+                        // 网格模式：3/6/9个
+                        prizeGridHtml = `<div class="prize-grid" style="grid-template-rows:repeat(${Math.ceil(prizeCount/3)}, 1fr);">
+                            ${Array.from({length: prizeCount}, (_, i) => `<div class="prize-card">
+                                <span class="clickable-img-wrapper" style="border-radius:8px;"><img class="clickable-img" src="${comp.props.prizes[i] || 'assets/CodeBubbyAssets/45_550/'+(39+(i%6))+'.png'}" data-comp-id="${comp.id}" data-item-idx="${i}" data-img-type="lottery" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/48x48/F5F5F5/999?text=P'"></span>
+                                <div class="prize-card-title">奖品${i+1}</div>
+                            </div>`).join('')}
+                        </div>`;
+                    }
+                    
+                    return `<div class="module-card"><div class="lottery-header"><div class="module-title editable-text" contenteditable="true" style="color:${titleColor}">${comp.props.title}</div><div class="lottery-subtitle"><span class="editable-text" contenteditable="true">${comp.props.subtitle}</span><span style="color:#214CA5;cursor:pointer;">我的奖励</span></div></div>${prizeGridHtml}<button class="lottery-btn" style="color:${txtColor}">${comp.props.buttonText}</button></div>`;
+                case 'task':
+                    return `<div class="module-card"><div class="module-title editable-text" contenteditable="true" style="color:${titleColor}">${comp.props.title}</div><div>${comp.props.tasks.map((t,i) => `<div class="task-item"><div class="task-info"><h4 class="editable-text" contenteditable="true">${t.name}</h4><p class="editable-text" contenteditable="true">${t.desc}</p></div><button class="task-btn ${i===0?'primary':''}" style="${i===0?'color:'+txtColor:''}">${t.btn}</button></div>`).join('')}</div></div>`;
+                case 'event':
+                    // 根据数量决定布局：单数用单列，双数用双列
+                    const eventCount = comp.props.events.length;
+                    const isSingleColumn = eventCount % 2 !== 0;
+                    const gridClass = isSingleColumn ? 'event-grid single-column' : 'event-grid';
+                    return `<div class="module-card"><div class="module-title editable-text" contenteditable="true" style="color:${titleColor}">${comp.props.title}</div><div class="${gridClass}">${comp.props.events.map((ev,i) => `<div class="event-card clickable-event-card"><img class="clickable-img" src="${ev.image || 'assets/CodeBubbyAssets/45_550/'+(48+(i%4))+'.png'}" data-comp-id="${comp.id}" data-item-idx="${i}" data-img-type="event" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/160x80/667eea/fff?text=E'"><div class="event-overlay"><div class="event-title editable-text" contenteditable="true">${ev.title}</div><div class="event-desc editable-text" contenteditable="true">${ev.desc}</div></div><div class="event-replace-hint">点击替换</div></div>`).join('')}</div></div>`;
+                case 'progress':
+                    return `<div class="module-card"><div class="module-title editable-text" contenteditable="true" style="color:${titleColor}">${comp.props.title}</div><p style="font-size:10px;color:rgba(60,60,67,0.76);margin-bottom:12px;" class="editable-text" contenteditable="true">${comp.props.subtitle}</p><div class="progress-container"><div class="progress-columns">${comp.props.milestones.map((m,i) => `<div class="progress-column"><span class="progress-label ${i<comp.props.current?'active':''}">${m}</span><div class="progress-segment ${i<comp.props.current?'completed':''}"><div class="progress-segment-fill"></div></div><div class="reward-tag ${i<comp.props.current?'claimable':''}">${i<comp.props.current?'可领取':'未领取'}</div></div>`).join('')}</div></div></div>`;
+                case 'image':
+                    if (comp.props.imageUrl) {
+                        return `<div class="module-card image-card"><img src="${comp.props.imageUrl}" style="width:100%;display:block;border-radius:12px;"></div>`;
+                    } else {
+                        return `<div class="module-card image-card image-placeholder" style="min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border-radius:12px;" onclick="triggerImageUpload('${comp.id}')"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><div style="font-size:12px;color:#999;margin-top:8px;">点击上传图片</div></div>`;
+                    }
+                case 'appDownload':
+                    const appIconUrl = comp.props.iconUrl || 'assets/logo.png';
+                    return `<div class="module-card app-download-card" style="padding:12px 16px;">
+                        <div class="app-download-content" style="display:flex;align-items:center;gap:12px;">
+                            <div class="app-icon-wrapper clickable-img-wrapper" style="width:48px;height:48px;border-radius:12px;overflow:hidden;flex-shrink:0;background:#f5f5f5;border:0.5px solid rgba(0,0,0,0.08);">
+                                <img class="app-icon clickable-img" src="${appIconUrl}" style="width:100%;height:100%;object-fit:cover;" data-comp-id="${comp.id}" data-item-idx="0" data-img-type="appIcon" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/48x48/FEDF9C/F68910?text=APP'">
+                            </div>
+                            <div class="app-info" style="flex:1;min-width:0;">
+                                <div class="app-name editable-text" contenteditable="true" style="font-size:15px;font-weight:600;color:#000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${comp.props.appName || '应用名称'}</div>
+                                <div class="app-desc editable-text" contenteditable="true" style="font-size:12px;color:#999;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${comp.props.appDesc || '应用描述'}</div>
+                            </div>
+                            <button class="app-download-btn" style="background:${customColors.primary};color:${txtColor};border:none;border-radius:20px;padding:8px 16px;font-size:13px;font-weight:500;white-space:nowrap;flex-shrink:0;">${comp.props.buttonText || '立即下载'}</button>
+                        </div>
+                    </div>`;
+                default:
+                    return `<div class="module-card"><div class="module-title" style="color:${titleColor}">${comp.props.title||'组件'}</div></div>`;
+            }
+        }
+        
+        // 重排序
+        function reorderComponents(draggedId, targetId) {
+            const di = canvasComponents.findIndex(c => c.id === draggedId);
+            const ti = canvasComponents.findIndex(c => c.id === targetId);
+            if (di !== -1 && ti !== -1) {
+                const [removed] = canvasComponents.splice(di, 1);
+                canvasComponents.splice(ti, 0, removed);
+                renderCanvas();
+            }
+        }
+        
+        // 选择组件
+        function selectComponent(id) {
+            selectedComponentId = id;
+            document.querySelectorAll('.canvas-component').forEach(el => el.classList.toggle('selected', el.id === id));
+            const comp = canvasComponents.find(c => c.id === id);
+            if (comp) showPropertyEditor(comp);
+        }
+        
+        // 显示属性编辑器
+        function showPropertyEditor(comp) {
+            document.getElementById('propertyEmpty').style.display = 'none';
+            document.getElementById('propertyEditor').style.display = 'block';
+            document.getElementById('deleteButtonWrapper').style.display = 'block';
+            document.getElementById('propTitle').value = comp.props.title || '';
+            document.getElementById('propSubtitle').value = comp.props.subtitle || '';
+            document.getElementById('propButtonText').value = comp.props.buttonText || '';
+            
+            // 更新组件徽章
+            const componentNames = {
+                hero: '主视觉', coupon: '优惠券', lottery: '抽奖', 
+                task: '任务列表', event: '图文banner', progress: '邀请助力', image: '纯图片',
+                appDownload: '功能导流'
+            };
+            const badge = document.getElementById('componentBadge');
+            badge.textContent = componentNames[comp.type] || comp.type;
+            badge.classList.add('active');
+            
+            // 更新步骤指引
+            const stepGuides = {
+                hero: { title: '上传主视觉素材', desc: '上传视频或图片，作为页面顶部展示' },
+                coupon: { title: '配置优惠券', desc: '点击画布中的图标可替换，调整数量和文案' },
+                lottery: { title: '配置抽奖模块', desc: '选择布局方式，点击奖品图片可替换' },
+                task: { title: '配置任务列表', desc: '调整任务数量，修改标题和按钮文案' },
+                event: { title: '配置活动入口', desc: '点击活动图片可替换，修改标题描述' },
+                progress: { title: '配置进度助力', desc: '调整阶段数量，设置助力目标' },
+                image: { title: '上传展示图片', desc: '上传需要展示的图片素材' },
+                appDownload: { title: '配置App导流', desc: '点击图标可替换，修改应用名称和描述' }
+            };
+            const guide = stepGuides[comp.type] || { title: '编辑组件', desc: '修改下方配置项' };
+            document.getElementById('stepGuideTitle').textContent = guide.title;
+            document.getElementById('stepGuideDesc').textContent = guide.desc;
+            
+            // 根据组件类型显示/隐藏编辑区
+            const isHero = comp.type === 'hero';
+            const isImage = comp.type === 'image';
+            const isAppDownload = comp.type === 'appDownload';
+            document.getElementById('heroEditorGroup').style.display = isHero ? 'block' : 'none';
+            document.getElementById('imageEditorGroup').style.display = isImage ? 'block' : 'none';
+            document.getElementById('appDownloadEditorGroup').style.display = isAppDownload ? 'block' : 'none';
+            document.getElementById('textEditorGroup').style.display = (isHero || isImage || isAppDownload) ? 'none' : 'block';
+            
+            // 功能导流组件专属属性
+            if (isAppDownload) {
+                document.getElementById('propAppName').value = comp.props.appName || '';
+                document.getElementById('propAppDesc').value = comp.props.appDesc || '';
+                document.getElementById('propAppButtonText').value = comp.props.buttonText || '';
+            }
+            
+            // 按钮文字项特殊处理（进度条不需要按钮文字）
+            const needsButtonText = !['progress', 'appDownload'].includes(comp.type);
+            const buttonTextItem = document.getElementById('buttonTextItem');
+            if (buttonTextItem) {
+                buttonTextItem.style.display = needsButtonText ? 'block' : 'none';
+            }
+            
+            // 列表配置（优惠券、任务列表、图文banner）
+            const hasListConfig = ['coupon', 'task', 'event'].includes(comp.type);
+            document.getElementById('listCountGroup').style.display = hasListConfig ? 'block' : 'none';
+            if (hasListConfig) {
+                const count = getListCount(comp);
+                document.getElementById('propListCount').value = count;
+                document.getElementById('listCountHint').textContent = `当前${count}项，最多6项`;
+            }
+            
+            // 进度条阶段配置
+            const isProgress = comp.type === 'progress';
+            document.getElementById('progressStageGroup').style.display = isProgress ? 'block' : 'none';
+            if (isProgress) {
+                const stageCount = comp.props.milestones ? comp.props.milestones.length : 3;
+                document.getElementById('propStageCount').value = stageCount;
+                document.getElementById('stageCountHint').textContent = `当前${stageCount}阶段，2-5可选`;
+            }
+            
+            // 抽奖布局配置
+            const isLottery = comp.type === 'lottery';
+            document.getElementById('lotteryLayoutGroup').style.display = isLottery ? 'block' : 'none';
+            if (isLottery) {
+                const layout = comp.props.layout || 6;
+                // 同步单选按钮状态
+                document.querySelectorAll('input[name="lotteryLayout"]').forEach(radio => {
+                    radio.checked = (radio.value === String(layout));
+                });
+                // 显示/隐藏轮播数量配置
+                const isCarousel = layout === 'carousel' || layout > 9;
+                document.getElementById('lotteryCarouselCountGroup').style.display = isCarousel ? 'block' : 'none';
+                if (isCarousel) {
+                    const carouselCount = comp.props.prizes ? comp.props.prizes.length : 12;
+                    document.getElementById('propLotteryCarouselCount').value = carouselCount > 9 ? carouselCount : 12;
+                    document.getElementById('lotteryCarouselHint').textContent = `当前${carouselCount > 9 ? carouselCount : 12}个，10-20可选`;
+                }
+            }
+            
+            // 主视觉预览
+            if (isHero && comp.props.mediaUrl) {
+                updateHeroPreview(comp.props.mediaType, comp.props.mediaUrl);
+            } else {
+                document.getElementById('heroMediaPreview').style.display = 'none';
+            }
+            
+            // 纯图片预览
+            if (isImage && comp.props.imageUrl) {
+                updateImagePreview(comp.props.imageUrl);
+            } else {
+                document.getElementById('imagePreviewSection').style.display = 'none';
+            }
+        }
+        
+        // 折叠面板切换
+        function toggleCollapsible(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.toggle('open');
+            }
+        }
+        
+        // 获取列表数量
+        function getListCount(comp) {
+            if (comp.type === 'coupon') return comp.props.items ? comp.props.items.length : 2;
+            if (comp.type === 'task') return comp.props.tasks ? comp.props.tasks.length : 2;
+            if (comp.type === 'event') return comp.props.events ? comp.props.events.length : 2;
+            return 0;
+        }
+        
+        // 调整列表数量
+        function adjustListCount(delta) {
+            const input = document.getElementById('propListCount');
+            const newValue = Math.max(1, Math.min(6, parseInt(input.value) + delta));
+            input.value = newValue;
+            setListCount(newValue);
+        }
+        
+        // 设置列表数量
+        function setListCount(count) {
+            if (!selectedComponentId) return;
+            const comp = canvasComponents.find(c => c.id === selectedComponentId);
+            if (!comp) return;
+            
+            count = Math.max(1, Math.min(6, count));
+            document.getElementById('propListCount').value = count;
+            document.getElementById('listCountHint').textContent = `当前${count}项，最多6项`;
+            
+            if (comp.type === 'coupon') {
+                const currentItems = comp.props.items || [];
+                if (count > currentItems.length) {
+                    for (let i = currentItems.length; i < count; i++) {
+                        currentItems.push({ name: `优惠券${i + 1}`, tag: '专属礼' });
+                    }
+                } else {
+                    currentItems.length = count;
+                }
+                comp.props.items = currentItems;
+            } else if (comp.type === 'task') {
+                const currentTasks = comp.props.tasks || [];
+                if (count > currentTasks.length) {
+                    for (let i = currentTasks.length; i < count; i++) {
+                        currentTasks.push({ name: `任务${i + 1}`, desc: '完成任务获得奖励', btn: '前往' });
+                    }
+                } else {
+                    currentTasks.length = count;
+                }
+                comp.props.tasks = currentTasks;
+            } else if (comp.type === 'event') {
+                const currentEvents = comp.props.events || [];
+                if (count > currentEvents.length) {
+                    for (let i = currentEvents.length; i < count; i++) {
+                        currentEvents.push({ title: `活动${i + 1}`, desc: '活动描述' });
+                    }
+                } else {
+                    currentEvents.length = count;
+                }
+                comp.props.events = currentEvents;
+            }
+            
+            renderCanvas();
+            showToast(`${count}项`);
+        }
+        
+        // 调整进度条阶段数量
+        function adjustProgressStages(delta) {
+            const input = document.getElementById('propStageCount');
+            const newValue = Math.max(2, Math.min(5, parseInt(input.value) + delta));
+            input.value = newValue;
+            setProgressStages(newValue);
+        }
+        
+        // 设置进度条阶段数量
+        function setProgressStages(count) {
+            if (!selectedComponentId) return;
+            const comp = canvasComponents.find(c => c.id === selectedComponentId);
+            if (!comp || comp.type !== 'progress') return;
+            
+            count = Math.max(2, Math.min(5, count));
+            document.getElementById('propStageCount').value = count;
+            document.getElementById('stageCountHint').textContent = `当前${count}阶段，2-5可选`;
+            
+            // 默认阶段标签
+            const defaultMilestones = ['1人', '3人', '5人', '10人', '15人'];
+            const currentMilestones = comp.props.milestones || [];
+            
+            if (count > currentMilestones.length) {
+                // 增加阶段
+                for (let i = currentMilestones.length; i < count; i++) {
+                    currentMilestones.push(defaultMilestones[i] || `${(i + 1) * 5}人`);
+                }
+            } else {
+                // 减少阶段
+                currentMilestones.length = count;
+            }
+            
+            // 确保current不超过阶段数
+            if (comp.props.current > count) {
+                comp.props.current = count;
+            }
+            
+            comp.props.milestones = currentMilestones;
+            renderCanvas();
+            showToast(`${count}阶段`);
+        }
+        
+        // 设置抽奖布局
+        function setLotteryLayout(layout) {
+            if (!selectedComponentId) return;
+            const comp = canvasComponents.find(c => c.id === selectedComponentId);
+            if (!comp || comp.type !== 'lottery') return;
+            
+            const isCarousel = layout === 'carousel';
+            comp.props.layout = isCarousel ? 'carousel' : parseInt(layout);
+            
+            // 显示/隐藏轮播数量配置
+            document.getElementById('lotteryCarouselCountGroup').style.display = isCarousel ? 'block' : 'none';
+            
+            // 根据布局调整奖品数组长度
+            let targetCount = isCarousel ? 12 : parseInt(layout);
+            if (!comp.props.prizes) comp.props.prizes = [];
+            
+            if (isCarousel && comp.props.prizes.length < 10) {
+                // 轮播模式默认12个
+                targetCount = 12;
+            }
+            
+            // 调整数组长度
+            while (comp.props.prizes.length < targetCount) {
+                comp.props.prizes.push('');
+            }
+            if (!isCarousel) {
+                comp.props.prizes.length = targetCount;
+            }
+            
+            renderCanvas();
+            
+            const layoutNames = { 3: '3个', 6: '6个', 9: '9个', 'carousel': '轮播' };
+            showToast(`布局：${layoutNames[layout] || layout}`);
+        }
+        
+        // 调整轮播奖品数量
+        function adjustLotteryCarouselCount(delta) {
+            const input = document.getElementById('propLotteryCarouselCount');
+            const newValue = Math.max(10, Math.min(20, parseInt(input.value) + delta));
+            input.value = newValue;
+            setLotteryCarouselCount(newValue);
+        }
+        
+        // 设置轮播奖品数量
+        function setLotteryCarouselCount(count) {
+            if (!selectedComponentId) return;
+            const comp = canvasComponents.find(c => c.id === selectedComponentId);
+            if (!comp || comp.type !== 'lottery') return;
+            
+            count = Math.max(10, Math.min(20, count));
+            document.getElementById('propLotteryCarouselCount').value = count;
+            document.getElementById('lotteryCarouselHint').textContent = `当前${count}个，10-20可选`;
+            
+            // 调整奖品数组长度
+            if (!comp.props.prizes) comp.props.prizes = [];
+            while (comp.props.prizes.length < count) {
+                comp.props.prizes.push('');
+            }
+            comp.props.prizes.length = count;
+            
+            renderCanvas();
+            showToast(`轮播：${count}个奖品`);
+        }
+        
+        // 处理主视觉媒体上传
+        function handleHeroMediaUpload(event) {
+            const file = event.target.files[0];
+            if (!file || !selectedComponentId) return;
+            
+            const comp = canvasComponents.find(c => c.id === selectedComponentId);
+            if (!comp || comp.type !== 'hero') return;
+            
+            const isVideo = file.type.startsWith('video/');
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                comp.props.mediaType = isVideo ? 'video' : 'image';
+                comp.props.mediaUrl = e.target.result;
+                renderCanvas();
+                updateHeroPreview(comp.props.mediaType, comp.props.mediaUrl);
+                showToast('已上传');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // 更新主视觉预览
+        function updateHeroPreview(type, url) {
+            const container = document.getElementById('heroPreviewContainer');
+            const previewSection = document.getElementById('heroMediaPreview');
+            
+            if (type === 'video') {
+                container.innerHTML = `<video src="${url}" style="width:100%;display:block;" controls muted></video>`;
+            } else {
+                container.innerHTML = `<img src="${url}" style="width:100%;display:block;">`;
+            }
+            previewSection.style.display = 'block';
+        }
+        
+        // 清除主视觉媒体
+        function clearHeroMedia() {
+            if (!selectedComponentId) return;
+            const comp = canvasComponents.find(c => c.id === selectedComponentId);
+            if (comp && comp.type === 'hero') {
+                comp.props.mediaUrl = '';
+                comp.props.mediaType = 'image';
+                renderCanvas();
+                document.getElementById('heroMediaPreview').style.display = 'none';
+                document.getElementById('heroMediaInput').value = '';
+                showToast('已清除');
+            }
+        }
+        
+        // 处理纯图片上传
+        function handlePureImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file || !selectedComponentId) return;
+            
+            const comp = canvasComponents.find(c => c.id === selectedComponentId);
+            if (!comp || comp.type !== 'image') return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                comp.props.imageUrl = e.target.result;
+                renderCanvas();
+                updateImagePreview(comp.props.imageUrl);
+                showToast('已上传');
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // 触发纯图片上传（从画布点击）
+        function triggerImageUpload(compId) {
+            selectComponent(compId);
+            setTimeout(() => {
+                document.getElementById('pureImageInput').click();
+            }, 100);
+        }
+        
+        // 更新纯图片预览
+        function updateImagePreview(url) {
+            const container = document.getElementById('imagePreviewContainer');
+            const previewSection = document.getElementById('imagePreviewSection');
+            container.innerHTML = `<img src="${url}" style="width:100%;display:block;">`;
+            previewSection.style.display = 'block';
+        }
+        
+        // 清除纯图片
+        function clearPureImage() {
+            if (!selectedComponentId) return;
+            const comp = canvasComponents.find(c => c.id === selectedComponentId);
+            if (comp && comp.type === 'image') {
+                comp.props.imageUrl = '';
+                renderCanvas();
+                document.getElementById('imagePreviewSection').style.display = 'none';
+                document.getElementById('pureImageInput').value = '';
+                showToast('已清除');
+            }
+        }
+        
+        // 更新属性
+        function updateProp(prop, value) {
+            if (!selectedComponentId) return;
+            const comp = canvasComponents.find(c => c.id === selectedComponentId);
+            if (comp) { comp.props[prop] = value; renderCanvas(); }
+        }
+        
+        // 删除组件
+        function deleteComponent(id) {
+            canvasComponents = canvasComponents.filter(c => c.id !== id);
+            if (selectedComponentId === id) {
+                selectedComponentId = null;
+                document.getElementById('propertyEmpty').style.display = 'flex';
+                document.getElementById('propertyEditor').style.display = 'none';
+                document.getElementById('deleteButtonWrapper').style.display = 'none';
+                // 重置徽章
+                const badge = document.getElementById('componentBadge');
+                badge.textContent = '未选择';
+                badge.classList.remove('active');
+            }
+            renderCanvas();
+            showToast('已删除');
+        }
+        
+        function deleteSelectedComponent() {
+            if (selectedComponentId) deleteComponent(selectedComponentId);
+        }
+        
+        // 点击图片触发上传（优惠券、抽奖、图文banner）
+        let currentUploadTarget = null;
+        
+        function triggerItemImageUpload(imgElement) {
+            event.stopPropagation();
+            currentUploadTarget = {
+                compId: imgElement.dataset.compId,
+                itemIdx: parseInt(imgElement.dataset.itemIdx),
+                imgType: imgElement.dataset.imgType
+            };
+            
+            // 创建临时input
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/png,image/jpeg,image/jpg';
+            input.onchange = handleItemImageUpload;
+            input.click();
+        }
+        
+        function handleItemImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file || !currentUploadTarget) return;
+            
+            const { compId, itemIdx, imgType } = currentUploadTarget;
+            const comp = canvasComponents.find(c => c.id === compId);
+            if (!comp) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageUrl = e.target.result;
+                
+                if (imgType === 'coupon') {
+                    if (!comp.props.items[itemIdx]) return;
+                    comp.props.items[itemIdx].icon = imageUrl;
+                } else if (imgType === 'lottery') {
+                    if (!comp.props.prizes) comp.props.prizes = [];
+                    comp.props.prizes[itemIdx] = imageUrl;
+                } else if (imgType === 'event') {
+                    if (!comp.props.events[itemIdx]) return;
+                    comp.props.events[itemIdx].image = imageUrl;
+                } else if (imgType === 'appIcon') {
+                    comp.props.iconUrl = imageUrl;
+                }
+                
+                renderCanvas();
+                showToast('已替换');
+                currentUploadTarget = null;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // 处理应用图标上传（从属性面板）
+        function handleAppIconUpload(event) {
+            const file = event.target.files[0];
+            if (!file || !selectedComponentId) return;
+            
+            const comp = canvasComponents.find(c => c.id === selectedComponentId);
+            if (!comp || comp.type !== 'appDownload') return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                comp.props.iconUrl = e.target.result;
+                renderCanvas();
+                showToast('图标已更新');
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // 配色方案
+        function applyColorScheme(scheme) {
+            currentColorScheme = scheme;
+            customColors = { ...colorSchemes[scheme] };
+            document.querySelectorAll('.color-preset').forEach(el => el.classList.toggle('active', el.dataset.scheme === scheme));
+            document.getElementById('primaryColor').value = customColors.primary;
+            document.getElementById('primaryHex').value = customColors.primary;
+            document.getElementById('accentColor').value = customColors.accent;
+            document.getElementById('accentHex').value = customColors.accent;
+            document.getElementById('bgColor').value = customColors.background;
+            document.getElementById('bgHex').value = customColors.background;
+            
+            // 同步按钮文字颜色单选按钮
+            const btnTextRadios = document.querySelectorAll('input[name="btnTextColor"]');
+            btnTextRadios.forEach(radio => {
+                radio.checked = (radio.value === customColors.textColor);
+            });
+            
+            applyColorsToCanvas();
+            renderCanvas();
+            showToast('已更新');
+        }
+        
+        // 计算颜色亮度，判断是否为浅色
+        function isLightColor(hexColor) {
+            const hex = hexColor.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            // 使用相对亮度公式
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            return luminance > 0.5;
+        }
+        
+        // 根据主色自动计算文字颜色
+        function getAutoTextColor(primaryColor) {
+            return isLightColor(primaryColor) ? '#000000' : '#ffffff';
+        }
+        
+        function updateCustomColor(type, value) {
+            const hexInput = document.getElementById(type === 'primary' ? 'primaryHex' : type === 'accent' ? 'accentHex' : 'bgHex');
+            if (hexInput) hexInput.value = value;
+        }
+        
+        function updateColorFromHex(type, value) {
+            if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
+                const colorInput = document.getElementById(type === 'primary' ? 'primaryColor' : type === 'accent' ? 'accentColor' : 'bgColor');
+                if (colorInput) colorInput.value = value;
+            }
+        }
+        
+        // 应用自定义颜色（点击确认按钮时调用）
+        function applyCustomColors() {
+            const primary = document.getElementById('primaryColor').value;
+            const accent = document.getElementById('accentColor').value;
+            const background = document.getElementById('bgColor').value;
+            
+            customColors.primary = primary;
+            customColors.accent = accent;
+            customColors.background = background;
+            // 从单选按钮获取按钮文字颜色
+            const checkedRadio = document.querySelector('input[name="btnTextColor"]:checked');
+            customColors.textColor = checkedRadio ? checkedRadio.value : '#000000';
+            
+            // 同步hex输入框
+            document.getElementById('primaryHex').value = primary;
+            document.getElementById('accentHex').value = accent;
+            document.getElementById('bgHex').value = background;
+            
+            // 清除预设选中状态
+            document.querySelectorAll('.color-preset').forEach(el => el.classList.remove('active'));
+            
+            applyColorsToCanvas();
+            showToast('已应用');
+        }
+        
+        function applyColorsToCanvas() {
+            // 只更新手机框内画布的颜色，不影响外部UI
+            const canvas = document.getElementById('canvasContent');
+            canvas.style.background = customColors.background;
+            
+            const txtColor = customColors.textColor || '#000';
+            
+            canvas.querySelectorAll('.coupon-btn, .lottery-btn, .task-btn.primary, .app-download-btn').forEach(el => {
+                el.style.background = customColors.primary;
+                el.style.color = txtColor;
+            });
+            canvas.querySelectorAll('.coupon-item').forEach(el => {
+                el.style.background = customColors.btnBg || customColors.primary + '33';
+            });
+            canvas.querySelectorAll('.progress-segment-fill, .reward-tag.claimable').forEach(el => {
+                el.style.background = customColors.accent;
+            });
+            // 进度条容器背景色与优惠券背景色联动
+            canvas.querySelectorAll('.progress-container').forEach(el => {
+                el.style.background = customColors.btnBg || customColors.primary + '33';
+            });
+            // 模块标题固定为黑色，不随配色方案改变
+            canvas.querySelectorAll('.module-title').forEach(el => {
+                el.style.color = '#000';
+            });
+            
+            // 更新左侧组件缩略图的配色
+            updateComponentThumbnails();
+        }
+        
+        // 更新按钮文字颜色（全局配置）
+        function updateButtonTextColor(color) {
+            customColors.textColor = color;
+            applyColorsToCanvas();
+            renderCanvas();
+            showToast(color === '#000000' ? '黑色文字' : '白色文字');
+        }
+        
+        // 更新左侧组件缩略图配色
+        function updateComponentThumbnails() {
+            const grid = document.getElementById('componentGrid');
+            if (!grid) return;
+            
+            grid.querySelectorAll('.component-card').forEach(card => {
+                const type = card.dataset.type;
+                const thumb = card.querySelector('.component-thumb');
+                if (thumb) {
+                    thumb.innerHTML = getComponentThumbnailWithColors(type);
+                }
+            });
+        }
+        
+        // 获取带当前配色的缩略图HTML
+        function getComponentThumbnailWithColors(type) {
+            const primary = customColors.primary;
+            const accent = customColors.accent;
+            const btnBg = customColors.btnBg || primary + '33';
+            
+            const thumbs = {
+                hero: `<div style="width:100%;height:100%;background:${primary};display:flex;align-items:center;justify-content:center;border-radius:6px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                </div>`,
+                coupon: `<div style="width:100%;height:100%;background:${btnBg};border-radius:6px;padding:6px;display:flex;flex-direction:column;gap:4px;">
+                    <div style="flex:1;background:${primary};border-radius:4px;display:flex;align-items:center;padding:0 6px;">
+                        <div style="width:12px;height:12px;background:${accent};border-radius:2px;margin-right:4px;"></div>
+                        <div style="flex:1;height:4px;background:rgba(0,0,0,0.1);border-radius:2px;"></div>
+                        <div style="width:20px;height:10px;background:${accent};border-radius:8px;margin-left:4px;"></div>
+                    </div>
+                    <div style="flex:1;background:${primary};border-radius:4px;display:flex;align-items:center;padding:0 6px;">
+                        <div style="width:12px;height:12px;background:${accent};border-radius:2px;margin-right:4px;"></div>
+                        <div style="flex:1;height:4px;background:rgba(0,0,0,0.1);border-radius:2px;"></div>
+                        <div style="width:20px;height:10px;background:${accent};border-radius:8px;margin-left:4px;"></div>
+                    </div>
+                </div>`,
+                lottery: `<div style="width:100%;height:100%;background:${btnBg};border-radius:6px;padding:6px;display:flex;flex-direction:column;gap:4px;">
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;flex:1;">
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                        <div style="background:#f5f5f5;border-radius:3px;"></div>
+                    </div>
+                    <div style="height:12px;background:${primary};border-radius:4px;"></div>
+                </div>`,
+                task: `<div style="width:100%;height:100%;background:#fff;border-radius:6px;padding:6px;display:flex;flex-direction:column;gap:4px;">
+                    <div style="display:flex;align-items:center;gap:4px;">
+                        <div style="flex:1;height:4px;background:#ddd;border-radius:2px;"></div>
+                        <div style="width:20px;height:10px;background:${primary};border-radius:8px;"></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:4px;">
+                        <div style="flex:1;height:4px;background:#ddd;border-radius:2px;"></div>
+                        <div style="width:20px;height:10px;background:#f0f0f0;border-radius:8px;"></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:4px;">
+                        <div style="flex:1;height:4px;background:#ddd;border-radius:2px;"></div>
+                        <div style="width:20px;height:10px;background:#f0f0f0;border-radius:8px;"></div>
+                    </div>
+                </div>`,
+                event: `<div style="width:100%;height:100%;background:#fff;border-radius:6px;padding:4px;display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                    <div style="background:#667eea;border-radius:4px;position:relative;overflow:hidden;">
+                        <div style="position:absolute;bottom:0;left:0;right:0;height:50%;background:rgba(0,0,0,0.3);"></div>
+                    </div>
+                    <div style="background:#11998e;border-radius:4px;position:relative;overflow:hidden;">
+                        <div style="position:absolute;bottom:0;left:0;right:0;height:50%;background:rgba(0,0,0,0.3);"></div>
+                    </div>
+                </div>`,
+                progress: `<div style="width:100%;height:100%;background:${btnBg};border-radius:6px;padding:8px 6px;display:flex;flex-direction:column;justify-content:center;gap:6px;">
+                    <div style="display:flex;gap:4px;">
+                        <div style="flex:1;height:4px;background:${accent};border-radius:2px;"></div>
+                        <div style="flex:1;height:4px;background:rgba(0,0,0,0.1);border-radius:2px;"></div>
+                        <div style="flex:1;height:4px;background:rgba(0,0,0,0.1);border-radius:2px;"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                        <div style="width:16px;height:8px;background:${accent};border-radius:4px;"></div>
+                        <div style="width:16px;height:8px;background:rgba(0,0,0,0.1);border-radius:4px;"></div>
+                        <div style="width:16px;height:8px;background:rgba(0,0,0,0.1);border-radius:4px;"></div>
+                    </div>
+                </div>`,
+                image: `<div style="width:100%;height:100%;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;border:1px dashed #ddd;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                </div>`,
+                appDownload: `<div style="width:100%;height:100%;background:#fff;border-radius:6px;padding:8px;display:flex;align-items:center;gap:6px;box-sizing:border-box;">
+                    <div style="width:28px;height:28px;background:${primary};border-radius:6px;flex-shrink:0;"></div>
+                    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+                        <div style="height:6px;background:#333;border-radius:3px;width:70%;"></div>
+                        <div style="height:4px;background:#ddd;border-radius:2px;width:90%;"></div>
+                    </div>
+                    <div style="width:28px;height:16px;background:${accent};border-radius:8px;flex-shrink:0;"></div>
+                </div>`,
+                banner: `<div style="width:100%;height:100%;background:${btnBg};border-radius:6px;display:flex;align-items:center;justify-content:center;">
+                    <div style="width:80%;height:60%;background:${accent};border-radius:4px;opacity:0.8;"></div>
+                </div>`
+            };
+            return thumbs[type] || '<div style="width:100%;height:100%;background:#f5f5f5;border-radius:6px;"></div>';
+        }
+        
+        // 图片上传
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file && selectedComponentId) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const comp = canvasComponents.find(c => c.id === selectedComponentId);
+                    if (comp) {
+                        comp.props.imageUrl = e.target.result;
+                        renderCanvas();
+                        showToast('已替换');
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // 保存配置
+        function saveConfig() {
+            const config = { components: canvasComponents, colors: customColors, scheme: currentColorScheme };
+            localStorage.setItem('platformConfig', JSON.stringify(config));
+            showToast('已保存');
+        }
+        
+        // 加载配置
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('platformConfig');
+            if (saved) {
+                try {
+                    const config = JSON.parse(saved);
+                    canvasComponents = config.components || [];
+                    customColors = config.colors || colorSchemes.gold;
+                    currentColorScheme = config.scheme || 'gold';
+                    componentIdCounter = canvasComponents.length;
+                    
+                    document.getElementById('primaryColor').value = customColors.primary;
+                    document.getElementById('primaryHex').value = customColors.primary;
+                    document.getElementById('accentColor').value = customColors.accent;
+                    document.getElementById('accentHex').value = customColors.accent;
+                    document.getElementById('bgColor').value = customColors.background;
+                    document.getElementById('bgHex').value = customColors.background;
+                    document.querySelectorAll('.color-preset').forEach(el => el.classList.toggle('active', el.dataset.scheme === currentColorScheme));
+                    
+                    // 同步按钮文字颜色单选按钮
+                    if (customColors.textColor) {
+                        const btnTextRadios = document.querySelectorAll('input[name="btnTextColor"]');
+                        btnTextRadios.forEach(radio => {
+                            radio.checked = (radio.value === customColors.textColor);
+                        });
+                    }
+                    
+                    renderCanvas();
+                } catch(e) { console.error('加载配置失败', e); }
+            }
+        }
+        
+        // 预览
+        function previewPage() {
+            const modal = document.getElementById('previewModal');
+            const content = document.getElementById('previewContent');
+            content.innerHTML = document.getElementById('canvasContent').innerHTML;
+            content.style.background = customColors.background;
+            modal.classList.add('active');
+        }
+        
+        function closePreview() {
+            document.getElementById('previewModal').classList.remove('active');
+        }
+        
+        // 导出HTML
+        function exportHTML() {
+            const canvasHTML = document.getElementById('canvasContent').innerHTML;
+            const styles = `<style>:root{--primary-gold:${customColors.primary};--primary-orange:${customColors.accent};--primary-yellow:${customColors.background};}body{font-family:'PingFang SC',sans-serif;background:${customColors.background};margin:0;padding:0;}${document.querySelector('style').textContent}</style>`;
+            
+            const html = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运营活动页面</title>
+    ${styles}
+</head>
+<body>
+    <div style="max-width:430px;margin:0 auto;min-height:100vh;background:${customColors.background};">
+        ${canvasHTML}
+    </div>
+</body>
+</html>`;
+            
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '运营活动页面.html';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('HTML已导出');
+        }
+        
+        // Toast提示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        /* 主题切换 */
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('easydesign_theme', next);
+        }
+    </script>
+</body>
+</html>

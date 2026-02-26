@@ -1,0 +1,2815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SVIP福利社</title>
+    <style>
+        :root {
+            --brand: #FEDF9C;
+            --brand-light: #FFF8E3;
+            --brand-glow: rgba(255, 179, 71, 0.4);
+            --bg: #FFE23A;
+            --bg-secondary: #fff;
+            --bg-tertiary: #F5F5F5;
+            --text-primary: #000;
+            --text-secondary: #999;
+            --text-tertiary: rgba(60, 60, 67, 0.36);
+            --white: #fff;
+            --border: #f0f0f0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            font-size: 100px;
+            background: #FFE23A;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            height: auto;
+        }
+        
+        body {
+            font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #FFE23A;
+            min-height: 100vh;
+            height: auto;
+            width: 100%;
+            max-width: 100vw;
+            margin: 0 auto;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+        }
+        
+        /* 隐藏滚动条但保持滚动功能 */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        
+        html, body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* 主容器 - 响应式宽度 */
+        .container {
+            width: 100%;
+            max-width: 100vw;
+            margin: 0 auto;
+            position: relative;
+            padding-bottom: 12.8vw; /* 48/375*100 */
+            touch-action: pan-y;
+        }
+        
+        /* 主KV区域 */
+        .main-kv {
+            width: 100%;
+            position: relative;
+        }
+        
+        .main-kv img,
+        .main-kv video {
+            width: 100%;
+            display: block;
+        }
+        
+        .main-kv::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 12.53vw; /* 47/375*100 */
+            background: linear-gradient(0deg, #FFE23A 0%, rgba(255, 226, 58, 0) 100%);
+            pointer-events: none;
+        }
+        
+        /* 侧边栏 */
+        .sidebar {
+            position: absolute;
+            right: 0;
+            top: 53.33vw; /* 200/375*100 */
+            width: 6.4vw; /* 24/375*100 */
+            z-index: 100;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .sidebar.hidden {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        
+        .sidebar-inner {
+            background: rgba(255, 255, 255, 0.61);
+            backdrop-filter: blur(26.78px);
+            -webkit-backdrop-filter: blur(26.78px);
+            border-top-left-radius: 1.6vw;
+            border-bottom-left-radius: 1.6vw;
+            padding: 1.87vw 0.8vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+        
+        .sidebar-btn {
+            font-size: 2.67vw;
+            font-weight: 600;
+            color: #000;
+            text-align: center;
+            cursor: pointer;
+            padding: 2.13vw 0;
+            position: relative;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            letter-spacing: 0.53vw;
+        }
+        
+        .sidebar-btn:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4.53vw;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-btn:active {
+            opacity: 0.7;
+        }
+        
+        /* 内容区域 */
+        .content-area {
+            padding: 0 4.27vw; /* 16/375*100 */
+            padding-bottom: 0 !important;
+            display: flex;
+            flex-direction: column;
+            gap: 3.2vw; /* 12/375*100 */
+            margin-top: 0;
+            margin-bottom: 0 !important;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 模块卡片通用样式 */
+        .module-card {
+            background: var(--bg-secondary);
+            border-radius: 4.27vw; /* 16/375*100 */
+            padding: 4.27vw; /* 16/375*100 */
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .module-card:nth-child(1) { animation-delay: 0.1s; }
+        .module-card:nth-child(2) { animation-delay: 0.2s; }
+        .module-card:nth-child(3) { animation-delay: 0.3s; }
+        .module-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(8vw);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 模块标题 */
+        .module-title {
+            font-size: 4.53vw; /* 17/375*100 */
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4.27vw;
+        }
+        
+        /* 优惠券卡片 */
+        .coupon-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3.2vw;
+        }
+        
+        .coupon-item {
+            background: #FFF8E3;
+            border-radius: 3.2vw;
+            padding: 3.2vw;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .coupon-item::before,
+        .coupon-item::after {
+            content: '';
+            position: absolute;
+            width: 3.2vw;
+            height: 3.2vw;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            right: 20.8vw;
+        }
+        
+        .coupon-item::before {
+            top: -1.6vw;
+        }
+        
+        .coupon-item::after {
+            bottom: -1.6vw;
+        }
+        
+        .coupon-left {
+            display: flex;
+            align-items: center;
+            gap: 2.67vw;
+            flex: 1;
+        }
+        
+        .coupon-icon {
+            width: 10.67vw;
+            height: 10.67vw;
+            border-radius: 1.87vw;
+            object-fit: cover;
+        }
+        
+        .coupon-info {
+            flex: 1;
+        }
+        
+        .coupon-tag {
+            font-size: 3.2vw;
+            color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            gap: 1.6vw;
+            margin-bottom: 1.07vw;
+        }
+        
+        .svip-tag {
+            background: rgba(247, 76, 48, 0.1);
+            color: #F74C30;
+            padding: 0.53vw 1.6vw;
+            border-radius: 0.8vw;
+            font-size: 2.67vw;
+        }
+        
+        .coupon-name {
+            font-size: 3.73vw;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .coupon-btn {
+            background: var(--brand);
+            border-radius: 4.27vw;
+            padding: 2.13vw 3.73vw;
+            font-size: 3.2vw;
+            font-weight: 500;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .coupon-btn:active {
+            opacity: 0.8;
+        }
+        
+        .coupon-btn.claimed {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+        
+        /* 领券模块头部 */
+        .coupon-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3.2vw;
+        }
+        
+        .coupon-header .module-title {
+            margin-bottom: 0;
+        }
+        
+        .claim-all-btn {
+            font-size: 3.2vw;
+            font-weight: 500;
+            color: #214CA5;
+            cursor: pointer;
+        }
+        
+        .claim-all-btn:active {
+            opacity: 0.7;
+        }
+        
+        .claim-all-btn.disabled {
+            color: #999;
+            pointer-events: none;
+        }
+        
+        .claim-all-btn.use-now {
+            color: #214CA5;
+            pointer-events: auto;
+        }
+        
+        /* 卡片聚焦动画 */
+        .coupon-item.focusing {
+            transform: scale(1.02);
+            box-shadow: 0 0 3.2vw var(--brand-glow);
+            border: 0.53vw solid var(--brand);
+        }
+        
+        .coupon-item {
+            transition: all 0.3s ease;
+        }
+        
+        /* 领取成功粒子效果 */
+        .success-particles {
+            position: absolute;
+            top: 50%;
+            right: 13.33vw;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2.13vw;
+            height: 2.13vw;
+            border-radius: 50%;
+            animation: particleExplode 0.6s ease-out forwards;
+        }
+        
+        @keyframes particleExplode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        
+        /* 按钮成功状态 */
+        .coupon-btn.btn-success .btn-text {
+            display: none;
+        }
+        
+        .coupon-btn .btn-check {
+            display: none;
+        }
+        
+        .coupon-btn.btn-success .btn-check {
+            display: inline;
+            animation: checkBounce 0.4s ease;
+        }
+        
+        @keyframes checkBounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 抽奖模块 */
+        .lottery-module {
+            padding: 4.27vw;
+        }
+        
+        .lottery-header {
+            display: flex;
+            flex-direction: column;
+            gap: 2.13vw;
+            margin-bottom: 4.27vw;
+        }
+        
+        .lottery-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .lottery-subtitle {
+            font-size: 3.2vw;
+            color: rgba(60, 60, 67, 0.76);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .lottery-count {
+            display: flex;
+            align-items: center;
+            gap: 1.07vw;
+        }
+        
+        .lottery-count .num {
+            font-weight: 600;
+            color: #F74C30;
+            font-size: 3.73vw;
+        }
+        
+        .my-rewards {
+            font-size: 3.2vw;
+            font-weight: 500;
+            color: #214CA5;
+            cursor: pointer;
+        }
+        
+        .my-rewards:active {
+            opacity: 0.7;
+        }
+        
+        /* 特等奖区域 */
+        .grand-prize {
+            background: #FFF6D9;
+            border: 1px solid #FEDF9C;
+            border-radius: 3.2vw;
+            padding: 0;
+            margin-bottom: 1.6vw;
+            position: relative;
+            height: 26.13vw;
+            box-sizing: border-box;
+        }
+        
+        .grand-prize-tag {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: var(--brand);
+            border-radius: 2.13vw 0 2.13vw 0;
+            padding: 0.8vw 1.6vw;
+            font-size: 2.67vw;
+            color: #824F0E;
+            z-index: 1;
+        }
+        
+        .grand-prize-tag::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -1.07vw;
+            border-style: solid;
+            border-width: 1.07vw 1.07vw 0 0;
+            border-color: #C4A970 transparent transparent transparent;
+        }
+        
+        .grand-prize-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+            padding: 0 3.2vw;
+        }
+        
+        .prize-item {
+            text-align: center;
+            flex: 1;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .prize-item:active {
+            opacity: 0.8;
+        }
+        
+        .prize-item img {
+            width: 16vw;
+            height: 16vw;
+            object-fit: contain;
+            margin-bottom: 1.07vw;
+        }
+        
+        .prize-item span {
+            font-size: 2.67vw;
+            font-weight: 500;
+            color: var(--text-primary);
+            display: block;
+        }
+        
+        /* 普通奖品网格 */
+        .prize-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.13vw;
+            margin-top: 0 !important;
+            margin-right: 0 !important;
+            margin-bottom: 3.2vw !important;
+            margin-left: 0 !important;
+            padding: 0 !important;
+        }
+        
+        /* 九宫格闪烁动画 */
+        .prize-card.flashing {
+            animation: flashHighlight 0.15s ease-in-out;
+            background: #FFF6E0 !important;
+            box-shadow: 0 0 2.13vw rgba(245, 166, 35, 0.6);
+        }
+        
+        @keyframes flashHighlight {
+            0%, 100% { background: #F5F5F5; }
+            50% { background: #FFF6E0; }
+        }
+        
+        .prize-card {
+            background: var(--bg-tertiary);
+            border-radius: 3.2vw;
+            padding: 0.53vw 1.6vw 1.6vw;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            height: 26.13vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .prize-card.highlight {
+            background: #FFF6D9;
+            border: 1px solid #FEDF9C;
+        }
+        
+        .prize-card:active {
+            opacity: 0.8;
+        }
+        
+        .prize-card.opened {
+            background: var(--bg-tertiary);
+            opacity: 0.6;
+        }
+        
+        .prize-card.opened::after {
+            content: '已抽';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 1.07vw 2.13vw;
+            border-radius: 1.07vw;
+            font-size: 2.67vw;
+        }
+        
+        .prize-card img {
+            width: 16vw;
+            height: 16vw;
+            object-fit: contain;
+        }
+        
+        .prize-card-title {
+            font-size: 2.67vw;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.9);
+            margin-top: 0.53vw;
+            line-height: 1.2;
+        }
+        
+        .prize-card-desc {
+            font-size: 2.67vw;
+            color: rgba(60, 60, 67, 0.56);
+            line-height: 1.2;
+        }
+        
+        /* 抽奖按钮 */
+        .lottery-btn {
+            width: 100%;
+            background: var(--brand);
+            border: none;
+            border-radius: 3.73vw;
+            padding: 4.27vw;
+            font-size: 4.53vw;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+            margin-top: 0 !important;
+            margin-right: 0 !important;
+            margin-bottom: 0 !important;
+            margin-left: 0 !important;
+            position: relative;
+            overflow: hidden;
+            display: block;
+        }
+        
+        .lottery-btn:active {
+            opacity: 0.9;
+        }
+        
+        .lottery-btn.spinning {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        
+        /* 方案B: 双按钮布局 */
+        .lottery-btn-group {
+            display: none;
+            gap: 2.67vw;
+            margin: 0;
+        }
+        
+        .lottery-btn-group.active {
+            display: flex;
+        }
+        
+        .lottery-btn-single {
+            display: block;
+        }
+        
+        .lottery-btn-single.hidden {
+            display: none;
+        }
+        
+        .lottery-btn-half {
+            flex: 1;
+            background: var(--brand);
+            border: none;
+            border-radius: 3.73vw;
+            padding: 4.27vw 2.13vw;
+            font-size: 4vw;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+            box-sizing: border-box;
+        }
+        
+        .lottery-btn-half:active {
+            opacity: 0.9;
+        }
+        
+        .lottery-btn-half.spinning {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        
+        .lottery-btn-half .btn-main {
+            font-size: 4.53vw;
+            font-weight: 600;
+        }
+        
+        .lottery-btn-half.btn-draw5 {
+            background: rgba(254, 223, 156, 0.7);
+        }
+        
+        
+        /* 绑定手机提示 */
+        .bind-phone-tip {
+            text-align: center;
+            font-size: 3.2vw;
+            color: #1A1C1E;
+            margin-top: 2.13vw;
+            padding-bottom: 0;
+        }
+        
+        .bind-phone-tip a {
+            color: #214CA5;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .bind-phone-tip a:active {
+            opacity: 0.7;
+        }
+        
+        /* 任务模块 */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3.2vw;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0;
+        }
+        
+        .task-info h4 {
+            font-size: 3.73vw;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 1.07vw;
+        }
+        
+        .task-info p {
+            font-size: 2.67vw;
+            color: rgba(60, 60, 67, 0.76);
+            max-width: 58.67vw;
+        }
+        
+        .task-btn {
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: 4.27vw;
+            padding: 2.13vw 3.73vw;
+            font-size: 3.2vw;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .task-btn:active {
+            opacity: 0.8;
+        }
+        
+        .task-btn.primary {
+            background: var(--brand);
+        }
+        
+        .task-btn.completed {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+        
+        /* 邀请好友进度条 */
+        .invite-section {
+            padding-top: 3.2vw;
+            margin-top: 2.13vw;
+        }
+        
+        .invite-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 3.2vw;
+        }
+        
+        .invite-info h4 {
+            font-size: 3.73vw;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 1.07vw;
+        }
+        
+        .invite-info p {
+            font-size: 2.67vw;
+            color: rgba(60, 60, 67, 0.76);
+        }
+        
+        .invite-count {
+            font-size: 2.67vw;
+            color: rgba(60, 60, 67, 0.56);
+            margin-left: 2.13vw;
+        }
+        
+        .invite-count .num {
+            font-weight: 600;
+            color: #F74C30;
+        }
+        
+        .progress-container {
+            background: rgba(255, 223, 156, 0.3);
+            border-radius: 3.2vw;
+            padding: 4.27vw 3.2vw;
+        }
+        
+        .progress-columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 2.13vw;
+        }
+        
+        .progress-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.13vw;
+        }
+        
+        .progress-label {
+            font-size: 2.67vw;
+            color: var(--text-secondary);
+            text-align: center;
+            transition: color 0.3s ease, font-weight 0.3s ease;
+        }
+        
+        .progress-label.active {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .progress-segment {
+            width: 100%;
+            height: 1.07vw;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 0.53vw;
+            overflow: hidden;
+        }
+        
+        .progress-segment-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #F68910, #FEDF9C);
+            border-radius: 0.53vw;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .progress-segment.completed .progress-segment-fill {
+            width: 100%;
+        }
+        
+        .reward-tag {
+            font-size: 2.4vw;
+            padding: 1.07vw 2.67vw;
+            border-radius: 2.67vw;
+            text-align: center;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .reward-tag.claimable {
+            background: #FEDF9C;
+            color: #000;
+            cursor: pointer;
+        }
+        
+        .reward-tag.claimed {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+        
+        .reward-tag.locked {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+        
+        /* 活动卡片 */
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.13vw;
+        }
+        
+        .event-card {
+            position: relative;
+            border-radius: 3.2vw;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .event-card:active {
+            opacity: 0.9;
+        }
+        
+        .event-card img {
+            width: 100%;
+            height: 29.33vw;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .event-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8vw 2.67vw 2.67vw;
+            background: linear-gradient(0deg, rgba(62, 62, 133, 0.9) 0%, transparent 100%);
+        }
+        
+        .event-overlay.blue {
+            background: linear-gradient(0deg, rgba(71, 147, 242, 0.9) 0%, transparent 100%);
+        }
+        
+        .event-overlay.gold {
+            background: linear-gradient(0deg, rgba(157, 125, 81, 0.9) 0%, transparent 100%);
+        }
+        
+        .event-title {
+            font-size: 3.2vw;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.53vw;
+        }
+        
+        .event-desc {
+            font-size: 2.67vw;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* 底部版权 */
+        .footer {
+            text-align: center;
+            height: 2.13vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0 !important;
+        }
+        
+        .footer-logo {
+            display: inline-block;
+            opacity: 0.2;
+            width: 19.2vw;
+            height: 10.13vw;
+        }
+        
+        .footer-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* 弹窗 - 固定定位 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            perspective: 800px;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 4.27vw;
+            padding: 6.4vw;
+            width: 69.33vw;
+            min-height: 85.33vw;
+            text-align: center;
+            transform: rotateY(180deg);
+            transition: none;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            transform-style: preserve-3d;
+        }
+        
+        .modal-overlay.active .modal-content {
+            animation: cardFlipIn 0.8s ease-out forwards;
+        }
+        
+        .modal-overlay:not(.active) .modal-content {
+            transform: rotateY(180deg);
+            animation: none;
+        }
+
+        @keyframes cardFlipIn {
+            0% {
+                transform: rotateY(180deg) scale(0.85);
+                opacity: 0;
+            }
+            15% {
+                opacity: 1;
+            }
+            65% {
+                transform: rotateY(-8deg) scale(1.02);
+            }
+            82% {
+                transform: rotateY(3deg) scale(1);
+            }
+            100% {
+                transform: rotateY(0deg) scale(1);
+            }
+        }
+        
+        /* 奖品图片弹跳动画 */
+        .modal-prize img.prize-bounce {
+            animation: prizeBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes prizeBounce {
+            0% {
+                transform: scale(1);
+            }
+            30% {
+                transform: scale(1.35);
+            }
+            50% {
+                transform: scale(0.9);
+            }
+            70% {
+                transform: scale(1.15);
+            }
+            85% {
+                transform: scale(0.97);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* 奖品名称淡入 */
+        .modal-prize-name.fade-in {
+            animation: nameFadeIn 0.4s ease forwards;
+        }
+
+        @keyframes nameFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 多奖品子项弹跳 */
+        .modal-prize-item img.prize-bounce {
+            animation: prizeBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        
+        /* 多奖品弹窗 */
+        .modal-content.multi-prize {
+            width: 80vw;
+            min-height: auto;
+            padding: 5.33vw;
+        }
+        
+        .modal-title {
+            font-size: 4.27vw;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .modal-subtitle {
+            font-size: 3.2vw;
+            color: var(--text-secondary);
+            margin-top: 1.07vw;
+        }
+        
+        .modal-prize {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-prize img {
+            width: 32vw;
+            height: 32vw;
+            object-fit: contain;
+        }
+        
+        /* 多奖品网格 */
+        .modal-prize-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.67vw;
+            padding: 4.27vw 0;
+        }
+        
+        .modal-prize-item {
+            width: 20vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.5) translateY(2.67vw);
+            animation: prizePopIn 0.4s ease forwards;
+        }
+        
+        .modal-prize-item img {
+            width: 16vw;
+            height: 16vw;
+            object-fit: contain;
+            background: var(--bg-tertiary);
+            border-radius: 2.67vw;
+            padding: 1.6vw;
+        }
+        
+        .modal-prize-item span {
+            font-size: 2.67vw;
+            color: var(--text-secondary);
+            margin-top: 1.07vw;
+            text-align: center;
+            line-height: 1.3;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        @keyframes prizePopIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) translateY(2.67vw);
+            }
+            60% {
+                transform: scale(1.1) translateY(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .modal-prize-name {
+            font-size: 3.73vw;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 2.13vw;
+        }
+        
+        .modal-btn {
+            background: var(--brand);
+            border: none;
+            border-radius: 3.73vw;
+            padding: 3.2vw 12.8vw;
+            font-size: 3.73vw;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        .modal-btn:active {
+            opacity: 0.9;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 4.27vw;
+            right: 4.27vw;
+            width: 6.4vw;
+            height: 6.4vw;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close::before,
+        .modal-close::after {
+            content: '';
+            position: absolute;
+            width: 3.2vw;
+            height: 0.53vw;
+            background: #666;
+        }
+        
+        .modal-close::before {
+            transform: rotate(45deg);
+        }
+        
+        .modal-close::after {
+            transform: rotate(-45deg);
+        }
+        
+        /* 抽奖动画 */
+        .lottery-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .lottery-animation.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 卡片翻转动画 */
+        .flip-cards {
+            display: flex;
+            gap: 4.27vw;
+            perspective: 1000px;
+        }
+        
+        .flip-card {
+            width: 21.33vw;
+            height: 26.67vw;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            cursor: pointer;
+        }
+        
+        .flip-card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 3.2vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .flip-card-front {
+            background: linear-gradient(135deg, #FEDF9C, #FFB347);
+            box-shadow: 0 1.07vw 5.33vw var(--brand-glow);
+        }
+        
+        .flip-card-front::before {
+            content: '?';
+            font-size: 8.53vw;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 0.53vw 1.07vw rgba(0, 0, 0, 0.2);
+        }
+        
+        .flip-card-back {
+            background: var(--bg-secondary);
+            transform: rotateY(180deg);
+            box-shadow: 0 1.07vw 5.33vw rgba(0, 0, 0, 0.2);
+        }
+        
+        .flip-card-back img {
+            width: 16vw;
+            height: 16vw;
+            object-fit: contain;
+        }
+        
+        /* 彩带效果 - 从顶部下落 */
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1001;
+        }
+        
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(var(--fall-distance)) rotate(var(--rot));
+            }
+        }
+        
+        /* 摇动提示 */
+        .shake-hint {
+            animation: shake 0.5s ease infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-1.33vw); }
+            75% { transform: translateX(1.33vw); }
+        }
+        
+        /* Toast提示 - 固定定位 */
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 3.73vw 7.47vw;
+            border-radius: 2.13vw;
+            font-size: 3.73vw;
+            z-index: 1002;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+        
+        /* 分辨率提示 - 默认隐藏，只在非iframe环境显示 */
+        .resolution-hint {
+            display: none;
+        }
+        
+        /* 背包页面 */
+        .backpack-page {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100vw;
+            max-width: 100vw;
+            height: 100vh;
+            background: #FFE23A;
+            z-index: 900;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .backpack-page.active {
+            right: 0;
+        }
+        
+        .backpack-page::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .backpack-header {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(180deg, #FFE23A 0%, #FFE23A 80%, rgba(255, 226, 58, 0) 100%);
+            padding: 4.27vw;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .backpack-back {
+            width: 8.53vw;
+            height: 8.53vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .backpack-back svg {
+            width: 5.33vw;
+            height: 5.33vw;
+        }
+        
+        .backpack-title {
+            flex: 1;
+            text-align: center;
+            font-size: 4.8vw;
+            font-weight: 600;
+            color: #000;
+            margin-right: 8.53vw;
+        }
+        
+        .backpack-content {
+            padding: 0 4.27vw 6.4vw;
+        }
+        
+        .backpack-section {
+            margin-bottom: 5.33vw;
+        }
+        
+        .backpack-section-title {
+            font-size: 4vw;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3.2vw;
+            padding-left: 1.07vw;
+        }
+        
+        .backpack-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3.2vw;
+        }
+        
+        .backpack-item {
+            background: var(--bg-secondary);
+            border-radius: 4.27vw;
+            padding: 4.27vw;
+            display: flex;
+            align-items: center;
+            gap: 3.2vw;
+            box-shadow: 0 0.53vw 2.13vw rgba(0, 0, 0, 0.06);
+        }
+        
+        .backpack-item-icon {
+            width: 14.93vw;
+            height: 14.93vw;
+            border-radius: 3.2vw;
+            background: linear-gradient(135deg, #FFF8DC 0%, #FFEAA7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .backpack-item-icon img {
+            width: 10.67vw;
+            height: 10.67vw;
+            object-fit: contain;
+        }
+        
+        .backpack-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .backpack-item-name {
+            font-size: 4vw;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.07vw;
+        }
+        
+        .backpack-item-desc {
+            font-size: 3.2vw;
+            color: var(--text-secondary);
+        }
+        
+        .backpack-item-status {
+            font-size: 3.2vw;
+            padding: 1.6vw 3.73vw;
+            border-radius: 3.73vw;
+            flex-shrink: 0;
+        }
+        
+        .backpack-item-status.unused {
+            background: var(--brand);
+            color: #000;
+            font-weight: 500;
+        }
+        
+        .backpack-item-status.used {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+        
+        .backpack-empty {
+            text-align: center;
+            padding: 16vw 5.33vw;
+            color: var(--text-secondary);
+        }
+        
+        .backpack-empty-icon {
+            font-size: 12.8vw;
+            margin-bottom: 4.27vw;
+            opacity: 0.5;
+        }
+        
+        .backpack-empty-text {
+            font-size: 3.73vw;
+        }
+        
+        /* 规则浮层 */
+        .rules-sheet {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 950;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .rules-sheet.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .rules-sheet-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .rules-sheet-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            max-height: 70vh;
+            background: var(--bg-secondary);
+            border-radius: 5.33vw 5.33vw 0 0;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .rules-sheet.active .rules-sheet-content {
+            transform: translateY(0);
+        }
+        
+        .rules-sheet-header {
+            padding: 5.33vw 5.33vw 4.27vw;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        
+        .rules-sheet-title {
+            font-size: 4.8vw;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .rules-sheet-close {
+            width: 7.47vw;
+            height: 7.47vw;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .rules-sheet-close::before,
+        .rules-sheet-close::after {
+            content: '';
+            position: absolute;
+            width: 3.73vw;
+            height: 0.53vw;
+            background: #666;
+        }
+        
+        .rules-sheet-close::before {
+            transform: rotate(45deg);
+        }
+        
+        .rules-sheet-close::after {
+            transform: rotate(-45deg);
+        }
+        
+        .rules-sheet-body {
+            padding: 5.33vw;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .rules-sheet-body::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .rules-section {
+            margin-bottom: 5.33vw;
+        }
+        
+        .rules-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .rules-section-title {
+            font-size: 4vw;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2.67vw;
+            display: flex;
+            align-items: center;
+            gap: 1.6vw;
+        }
+        
+        .rules-section-title::before {
+            content: '';
+            width: 1.07vw;
+            height: 3.73vw;
+            background: linear-gradient(180deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 0.53vw;
+        }
+        
+        .rules-text {
+            font-size: 3.47vw;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        .rules-list {
+            font-size: 3.47vw;
+            color: var(--text-secondary);
+            line-height: 2;
+            padding-left: 4.27vw;
+        }
+        
+        .rules-list li {
+            position: relative;
+        }
+        
+        .rules-list li::marker {
+            color: var(--brand);
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边栏 -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-btn" onclick="openBackpack()">背包</div>
+            <div class="sidebar-btn" onclick="openRules()">规则</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 主KV区域 -->
+        <div class="main-kv">
+            <video src="头图视频2.mp4" autoplay loop muted playsinline></video>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content-area">
+            <!-- 第一弹神券模块1 -->
+            <div class="module-card" id="couponModule1">
+                <div class="coupon-header">
+                    <h2 class="module-title">第一弹「美团神券」</h2>
+                    <span class="claim-all-btn" onclick="claimAllCoupons(this)">一键领取</span>
+                </div>
+                <div class="coupon-list">
+                    <div class="coupon-item">
+                        <div class="coupon-left">
+                            <img class="coupon-icon" src="assets/CodeBubbyAssets/45_550/33.png" alt="美团" />
+                            <div class="coupon-info">
+                                <div class="coupon-tag">美团专属礼</div>
+                                <div class="coupon-name">美团外卖满38-16</div>
+                            </div>
+                        </div>
+                        <button class="coupon-btn" onclick="claimCoupon(this)">
+                            <span class="btn-text">开心收下</span>
+                            <span class="btn-check">✓</span>
+                        </button>
+                        <div class="success-particles"></div>
+                    </div>
+                    <div class="coupon-item">
+                        <div class="coupon-left">
+                            <img class="coupon-icon" src="assets/CodeBubbyAssets/45_550/34.png" alt="美团" />
+                            <div class="coupon-info">
+                                <div class="coupon-tag">美团专属礼</div>
+                                <div class="coupon-name">美团100-5台球券</div>
+                            </div>
+                        </div>
+                        <button class="coupon-btn" onclick="claimCoupon(this)">
+                            <span class="btn-text">开心收下</span>
+                            <span class="btn-check">✓</span>
+                        </button>
+                        <div class="success-particles"></div>
+                    </div>
+                    <div class="coupon-item">
+                        <div class="coupon-left">
+                            <img class="coupon-icon" src="assets/CodeBubbyAssets/45_550/33.png" alt="美团" />
+                            <div class="coupon-info">
+                                <div class="coupon-tag">
+                                    美团惊喜礼
+                                    <span class="svip-tag">SVIP专享</span>
+                                </div>
+                                <div class="coupon-name">美团外卖108券包</div>
+                            </div>
+                        </div>
+                        <button class="coupon-btn" onclick="claimCoupon(this)">
+                            <span class="btn-text">开心收下</span>
+                            <span class="btn-check">✓</span>
+                        </button>
+                        <div class="success-particles"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 抽奖模块 -->
+            <div class="module-card lottery-module">
+                <div class="lottery-header">
+                    <div class="lottery-title-row">
+                        <h2 class="module-title" style="margin-bottom: 0;">第二弹「9抽赢Q币&美团无门槛券」</h2>
+                    </div>
+                    <div class="lottery-subtitle">
+                        <div class="lottery-count">
+                            剩余抽奖次数：<span class="num" id="lotteryCount">9</span>/11
+                        </div>
+                        <span class="my-rewards" onclick="showMyRewards()">我的奖励</span>
+                    </div>
+                </div>
+                
+                <!-- 特等奖区域 -->
+                <div class="grand-prize">
+                    <div class="grand-prize-tag">可拆3次</div>
+                    <div class="grand-prize-items">
+                        <div class="prize-item">
+                            <img src="assets/CodeBubbyAssets/45_550/36.png" alt="66Q币" />
+                            <span>66Q币</span>
+                        </div>
+                        <div class="prize-item">
+                            <img src="assets/CodeBubbyAssets/45_550/37.png" alt="3Q币" />
+                            <span>3Q币</span>
+                        </div>
+                        <div class="prize-item">
+                            <img src="assets/CodeBubbyAssets/45_550/38.png" alt="美团20元无门槛券" />
+                            <span>美团20元无门槛券</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 普通奖品网格 -->
+                <div class="prize-grid">
+                    <div class="prize-card" data-prize="svip1">
+                        <img src="assets/CodeBubbyAssets/45_550/39.png" alt="SVIP时长" />
+                        <div class="prize-card-title">SVIP时长</div>
+                        <div class="prize-card-desc">2个月</div>
+                    </div>
+                    <div class="prize-card" data-prize="svip2">
+                        <img src="assets/CodeBubbyAssets/45_550/40.png" alt="SVIP时长" />
+                        <div class="prize-card-title">SVIP时长</div>
+                        <div class="prize-card-desc">2个月</div>
+                    </div>
+                    <div class="prize-card highlight" data-prize="svip3">
+                        <img src="assets/CodeBubbyAssets/45_550/41.png" alt="SVIP时长" />
+                        <div class="prize-card-title">SVIP时长</div>
+                        <div class="prize-card-desc">2个月</div>
+                    </div>
+                    <div class="prize-card" data-prize="svip4">
+                        <img src="assets/CodeBubbyAssets/45_550/42.png" alt="SVIP时长" />
+                        <div class="prize-card-title">SVIP时长</div>
+                        <div class="prize-card-desc">2个月</div>
+                    </div>
+                    <div class="prize-card" data-prize="svip5">
+                        <img src="assets/CodeBubbyAssets/45_550/43.png" alt="SVIP时长" />
+                        <div class="prize-card-title">SVIP时长</div>
+                        <div class="prize-card-desc">2个月</div>
+                    </div>
+                    <div class="prize-card" data-prize="svip6">
+                        <img src="assets/CodeBubbyAssets/45_550/44.png" alt="SVIP时长" />
+                        <div class="prize-card-title">SVIP时长</div>
+                        <div class="prize-card-desc">2个月</div>
+                    </div>
+                    <div class="prize-card" data-prize="svip7">
+                        <img src="assets/CodeBubbyAssets/45_550/45.png" alt="SVIP时长" />
+                        <div class="prize-card-title">SVIP时长</div>
+                        <div class="prize-card-desc">2个月</div>
+                    </div>
+                    <div class="prize-card" data-prize="svip8">
+                        <img src="assets/CodeBubbyAssets/45_550/46.png" alt="SVIP时长" />
+                        <div class="prize-card-title">SVIP时长</div>
+                        <div class="prize-card-desc">2个月</div>
+                    </div>
+                    <div class="prize-card" data-prize="svip9">
+                        <img src="assets/CodeBubbyAssets/45_550/47.png" alt="SVIP时长" />
+                        <div class="prize-card-title">SVIP时长</div>
+                        <div class="prize-card-desc">2个月</div>
+                    </div>
+                </div>
+                
+                <button class="lottery-btn lottery-btn-single" id="lotteryBtn" onclick="startLottery()">立即抽奖</button>
+                
+                <!-- 方案B: 双按钮布局 -->
+                <div class="lottery-btn-group" id="lotteryBtnGroup">
+                    <button class="lottery-btn-half btn-draw1" onclick="startLottery(1)">
+                        <span class="btn-main">抽1次</span>
+                    </button>
+                    <button class="lottery-btn-half btn-draw5" onclick="startLottery(5)">
+                        <span class="btn-main">抽5次</span>
+                    </button>
+                </div>
+                
+                <div class="bind-phone-tip">
+                    绑定手机号以领取更多福利 <a href="javascript:void(0)" onclick="bindPhone()">去绑定</a>
+                </div>
+            </div>
+            
+            <!-- 做任务模块 -->
+            <div class="module-card">
+                <h2 class="module-title">做任务领抽奖机会</h2>
+                <div class="task-list">
+                    <div class="task-item">
+                        <div class="task-info">
+                            <h4>领SVIP专享机会</h4>
+                            <p>SVIP用户可额外获得1次抽奖机会</p>
+                        </div>
+                        <button class="task-btn primary" onclick="claimTask(this, '领取成功！获得1次抽奖机会')">领取</button>
+                    </div>
+                    <div class="task-item">
+                        <div class="task-info">
+                            <h4>订阅福利社通知</h4>
+                            <p>前往福利社点击"订阅提醒"完成订阅，获得1次抽奖机会</p>
+                        </div>
+                        <button class="task-btn" onclick="goToTask(this)">前往</button>
+                    </div>
+                    <div class="task-item">
+                        <div class="task-info">
+                            <h4>领取"本周福利"中任意券</h4>
+                            <p>前往福利社领取"本周福利"中任意券，获得1次抽奖机会</p>
+                        </div>
+                        <button class="task-btn" onclick="goToTask(this)">前往</button>
+                    </div>
+                    <div class="task-item">
+                        <div class="task-info">
+                            <h4>领第一弹任意券</h4>
+                            <p>领取第一弹神券获得1次抽奖机会</p>
+                        </div>
+                        <button class="task-btn" onclick="claimTask(this, '领取成功！获得1次抽奖机会')">领取</button>
+                    </div>
+                    <div class="task-item">
+                        <div class="task-info">
+                            <h4>开通SVIP月卡</h4>
+                            <p>开通SVIP月卡获得2次抽奖机会</p>
+                        </div>
+                        <button class="task-btn" onclick="goToTask(this)">开通</button>
+                    </div>
+                </div>
+                
+                <!-- 邀请好友 -->
+                <div class="invite-section">
+                    <div class="invite-header">
+                        <div class="invite-info">
+                            <h4>
+                                邀好友助力
+                                <span class="invite-count">已获得 <span class="num" id="inviteCount">1</span>/15</span>
+                            </h4>
+                            <p>累计获得15助力值可解锁最高4次机会</p>
+                        </div>
+                        <button class="task-btn" onclick="inviteFriend()">邀请</button>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-columns">
+                            <div class="progress-column">
+                                <span class="progress-label active">1人</span>
+                                <div class="progress-segment completed">
+                                    <div class="progress-segment-fill"></div>
+                                </div>
+                                <div class="reward-tag claimable" onclick="claimInviteReward(this, 0)">可领取</div>
+                            </div>
+                            <div class="progress-column">
+                                <span class="progress-label">5人</span>
+                                <div class="progress-segment">
+                                    <div class="progress-segment-fill"></div>
+                                </div>
+                                <div class="reward-tag locked">未领取</div>
+                            </div>
+                            <div class="progress-column">
+                                <span class="progress-label">10人</span>
+                                <div class="progress-segment">
+                                    <div class="progress-segment-fill"></div>
+                                </div>
+                                <div class="reward-tag locked">未领取</div>
+                            </div>
+                            <div class="progress-column">
+                                <span class="progress-label">15人</span>
+                                <div class="progress-segment">
+                                    <div class="progress-segment-fill"></div>
+                                </div>
+                                <div class="reward-tag locked">未领取</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2月大事件 -->
+            <div class="module-card">
+                <h2 class="module-title">2月大事件</h2>
+                <div class="event-grid">
+                    <div class="event-card" onclick="goToEvent('svip2026')">
+                        <img src="assets/CodeBubbyAssets/45_550/48.png" alt="SVIP启航2026" />
+                        <div class="event-overlay">
+                            <div class="event-title">SVIP启航2026</div>
+                            <div class="event-desc">60抽必得12个月SVIP</div>
+                        </div>
+                    </div>
+                    <div class="event-card" onclick="goToEvent('wangzhe')">
+                        <img src="assets/CodeBubbyAssets/45_550/49.png" alt="SVIP×王者荣耀" />
+                        <div class="event-overlay blue">
+                            <div class="event-title">SVIP×王者荣耀</div>
+                            <div class="event-desc">开通得稀有史诗皮肤</div>
+                        </div>
+                    </div>
+                    <div class="event-card" onclick="goToEvent('huangzuan')">
+                        <img src="assets/CodeBubbyAssets/45_550/50.png" alt="0元抽豪华黄钻" />
+                        <div class="event-overlay blue">
+                            <div class="event-title">0元抽豪华黄钻</div>
+                            <div class="event-desc">兑换成长值</div>
+                        </div>
+                    </div>
+                    <div class="event-card" onclick="goToEvent('lianghao')">
+                        <img src="assets/CodeBubbyAssets/45_550/51.png" alt="靓号买断活动回归" />
+                        <div class="event-overlay gold">
+                            <div class="event-title">靓号买断活动回归</div>
+                            <div class="event-desc">享个人专属靓号</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部Logo -->
+        <div class="footer">
+            <div class="footer-logo">
+                <img src="assets/CodeBubbyAssets/45_550/1.png" alt="SVIP Logo" />
+            </div>
+        </div>
+    </div>
+    
+    <!-- 中奖弹窗 -->
+    <div class="modal-overlay" id="prizeModal">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" onclick="closeModal()"></button>
+            <div class="modal-title" id="modalTitle">恭喜获得</div>
+            <div class="modal-subtitle" id="modalSubtitle" style="display: none;"></div>
+            <div class="modal-prize" id="singlePrize">
+                <img id="prizeImg" src="" alt="奖品" />
+                <div class="modal-prize-name" id="prizeName"></div>
+            </div>
+            <div class="modal-prize-grid" id="multiPrize" style="display: none;"></div>
+            <button class="modal-btn" onclick="closeModal()">开心收下</button>
+        </div>
+    </div>
+    
+    <!-- 抽奖动画层 -->
+    <div class="lottery-animation" id="lotteryAnimation">
+        <div class="flip-cards" id="flipCards">
+            <div class="flip-card" onclick="flipCard(this, 0)">
+                <div class="flip-card-front"></div>
+                <div class="flip-card-back">
+                    <img src="assets/CodeBubbyAssets/45_550/39.png" alt="" />
+                </div>
+            </div>
+            <div class="flip-card" onclick="flipCard(this, 1)">
+                <div class="flip-card-front"></div>
+                <div class="flip-card-back">
+                    <img src="assets/CodeBubbyAssets/45_550/40.png" alt="" />
+                </div>
+            </div>
+            <div class="flip-card" onclick="flipCard(this, 2)">
+                <div class="flip-card-front"></div>
+                <div class="flip-card-back">
+                    <img src="assets/CodeBubbyAssets/45_550/41.png" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- 背包页面 -->
+    <div class="backpack-page" id="backpackPage">
+        <div class="backpack-header">
+            <div class="backpack-back" onclick="closeBackpack()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </div>
+            <div class="backpack-title">我的背包</div>
+        </div>
+        <div class="backpack-content">
+            <!-- 优惠券区域 -->
+            <div class="backpack-section">
+                <div class="backpack-section-title">优惠券</div>
+                <div class="backpack-list" id="couponList">
+                    <div class="backpack-item">
+                        <div class="backpack-item-icon">
+                            <img src="assets/CodeBubbyAssets/45_550/16.png" alt="">
+                        </div>
+                        <div class="backpack-item-info">
+                            <div class="backpack-item-name">美团20元无门槛券</div>
+                            <div class="backpack-item-desc">有效期至 2026-02-28</div>
+                        </div>
+                        <div class="backpack-item-status unused" onclick="useCoupon(this)">去使用</div>
+                    </div>
+                    <div class="backpack-item">
+                        <div class="backpack-item-icon">
+                            <img src="assets/CodeBubbyAssets/45_550/17.png" alt="">
+                        </div>
+                        <div class="backpack-item-info">
+                            <div class="backpack-item-name">京东满100减20券</div>
+                            <div class="backpack-item-desc">有效期至 2026-02-28</div>
+                        </div>
+                        <div class="backpack-item-status unused" onclick="useCoupon(this)">去使用</div>
+                    </div>
+                    <div class="backpack-item">
+                        <div class="backpack-item-icon">
+                            <img src="assets/CodeBubbyAssets/45_550/18.png" alt="">
+                        </div>
+                        <div class="backpack-item-info">
+                            <div class="backpack-item-name">饿了么满30减10券</div>
+                            <div class="backpack-item-desc">已使用</div>
+                        </div>
+                        <div class="backpack-item-status used">已使用</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 礼品区域 -->
+            <div class="backpack-section">
+                <div class="backpack-section-title">礼品</div>
+                <div class="backpack-list" id="giftList">
+                    <div class="backpack-item">
+                        <div class="backpack-item-icon">
+                            <img src="assets/CodeBubbyAssets/45_550/36.png" alt="">
+                        </div>
+                        <div class="backpack-item-info">
+                            <div class="backpack-item-name">66Q币</div>
+                            <div class="backpack-item-desc">已发放至账户</div>
+                        </div>
+                        <div class="backpack-item-status used">已领取</div>
+                    </div>
+                    <div class="backpack-item">
+                        <div class="backpack-item-icon">
+                            <img src="assets/CodeBubbyAssets/45_550/39.png" alt="">
+                        </div>
+                        <div class="backpack-item-info">
+                            <div class="backpack-item-name">SVIP时长2个月</div>
+                            <div class="backpack-item-desc">待领取</div>
+                        </div>
+                        <div class="backpack-item-status unused" onclick="claimGift(this)">去领取</div>
+                    </div>
+                    <div class="backpack-item">
+                        <div class="backpack-item-icon">
+                            <img src="assets/CodeBubbyAssets/45_550/37.png" alt="">
+                        </div>
+                        <div class="backpack-item-info">
+                            <div class="backpack-item-name">3Q币</div>
+                            <div class="backpack-item-desc">待领取</div>
+                        </div>
+                        <div class="backpack-item-status unused" onclick="claimGift(this)">去领取</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 虚拟道具区域 -->
+            <div class="backpack-section">
+                <div class="backpack-section-title">虚拟道具</div>
+                <div class="backpack-list" id="propList">
+                    <div class="backpack-item">
+                        <div class="backpack-item-icon">
+                            <img src="assets/CodeBubbyAssets/45_550/32.png" alt="">
+                        </div>
+                        <div class="backpack-item-info">
+                            <div class="backpack-item-name">会员专属头像框</div>
+                            <div class="backpack-item-desc">永久有效</div>
+                        </div>
+                        <div class="backpack-item-status unused" onclick="equipProp(this)">去装扮</div>
+                    </div>
+                    <div class="backpack-item">
+                        <div class="backpack-item-icon">
+                            <img src="assets/CodeBubbyAssets/45_550/33.png" alt="">
+                        </div>
+                        <div class="backpack-item-info">
+                            <div class="backpack-item-name">限定表情包</div>
+                            <div class="backpack-item-desc">永久有效</div>
+                        </div>
+                        <div class="backpack-item-status used">使用中</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 规则浮层 -->
+    <div class="rules-sheet" id="rulesSheet">
+        <div class="rules-sheet-overlay" onclick="closeRules()"></div>
+        <div class="rules-sheet-content">
+            <div class="rules-sheet-header">
+                <div class="rules-sheet-title">活动规则</div>
+                <button class="rules-sheet-close" onclick="closeRules()"></button>
+            </div>
+            <div class="rules-sheet-body">
+                <div class="rules-section">
+                    <div class="rules-section-title">活动时间</div>
+                    <p class="rules-text">2026年1月1日 00:00:00 - 2026年2月28日 23:59:59</p>
+                </div>
+                
+                <div class="rules-section">
+                    <div class="rules-section-title">参与资格</div>
+                    <ul class="rules-list">
+                        <li>QQ会员/SVIP用户可参与本活动</li>
+                        <li>每个QQ号码每日可参与1次</li>
+                        <li>活动期间最多可获得99次抽奖机会</li>
+                    </ul>
+                </div>
+                
+                <div class="rules-section">
+                    <div class="rules-section-title">奖品说明</div>
+                    <ul class="rules-list">
+                        <li>Q币奖励将在领取后24小时内发放至账户</li>
+                        <li>优惠券需在有效期内使用，逾期作废</li>
+                        <li>SVIP时长将自动叠加至当前会员有效期</li>
+                        <li>实物奖品需填写收货地址，15个工作日内发货</li>
+                    </ul>
+                </div>
+                
+                <div class="rules-section">
+                    <div class="rules-section-title">邀请规则</div>
+                    <ul class="rules-list">
+                        <li>每成功邀请1位好友开通会员，可获得1次抽奖机会</li>
+                        <li>邀请进度达到指定人数可领取额外奖励</li>
+                        <li>邀请记录可在"我的背包"中查看</li>
+                    </ul>
+                </div>
+                
+                <div class="rules-section">
+                    <div class="rules-section-title">其他说明</div>
+                    <ul class="rules-list">
+                        <li>如发现作弊行为，将取消活动参与资格</li>
+                        <li>活动最终解释权归腾讯公司所有</li>
+                        <li>如有疑问，请联系客服：400-670-0700</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 抽奖次数
+        let lotteryCount = 9;
+        // 邀请人数
+        let inviteCount = 1;
+        // 已开奖品
+        const openedPrizes = new Set();
+        // 当前方案
+        let currentScheme = 'A';
+        
+        // 奖品数据
+        const prizes = [
+            { img: 'assets/CodeBubbyAssets/45_550/36.png', name: '66Q币' },
+            { img: 'assets/CodeBubbyAssets/45_550/37.png', name: '3Q币' },
+            { img: 'assets/CodeBubbyAssets/45_550/38.png', name: '美团20元无门槛券' },
+            { img: 'assets/CodeBubbyAssets/45_550/39.png', name: 'SVIP时长2个月' },
+            { img: 'assets/CodeBubbyAssets/45_550/40.png', name: 'SVIP时长2个月' },
+            { img: 'assets/CodeBubbyAssets/45_550/41.png', name: 'SVIP时长2个月' },
+        ];
+        
+        
+        // 检测是否在iframe中
+        function checkIfInIframe() {
+            try {
+                if (window.self !== window.top) {
+                    document.body.classList.add('in-iframe');
+                }
+            } catch (e) {
+                document.body.classList.add('in-iframe');
+            }
+        }
+        
+        // 页面加载时检测
+        checkIfInIframe();
+        
+        // 领取优惠券
+        function claimCoupon(btn) {
+            if (btn.classList.contains('claimed')) return;
+            
+            const couponItem = btn.closest('.coupon-item');
+            
+            // 按钮成功动画
+            btn.classList.add('btn-success');
+            
+            // 粒子效果
+            const particles = couponItem.querySelector('.success-particles');
+            if (particles) {
+                createParticles(particles);
+            }
+            
+            // 延迟后变为已领取状态
+            setTimeout(() => {
+                btn.classList.remove('btn-success');
+                btn.classList.add('claimed');
+                const btnText = btn.querySelector('.btn-text');
+                if (btnText) btnText.textContent = '已领取';
+            }, 500);
+        }
+        
+        // 创建粒子效果
+        function createParticles(container) {
+            container.innerHTML = '';
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9', '#F8B500', '#FF69B4'];
+            
+            for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('span');
+                particle.className = 'particle';
+                const angle = (i / 12) * 360;
+                const distance = 30 + Math.random() * 20;
+                const x = Math.cos(angle * Math.PI / 180) * distance;
+                const y = Math.sin(angle * Math.PI / 180) * distance;
+                particle.style.background = colors[i];
+                particle.style.setProperty('--tx', x + 'px');
+                particle.style.setProperty('--ty', y + 'px');
+                particle.style.animation = `particleExplode 0.6s ease-out forwards`;
+                particle.style.transform = `translate(${x}px, ${y}px)`;
+                container.appendChild(particle);
+            }
+        }
+        
+        // 一键领取所有优惠券
+        function claimAllCoupons(btn) {
+            if (btn.classList.contains('disabled')) return;
+            
+            const moduleCard = btn.closest('.module-card');
+            const couponItems = moduleCard.querySelectorAll('.coupon-item');
+            const unclaimedItems = [];
+            
+            couponItems.forEach(item => {
+                const couponBtn = item.querySelector('.coupon-btn');
+                if (!couponBtn.classList.contains('claimed')) {
+                    unclaimedItems.push({ item, btn: couponBtn });
+                }
+            });
+            
+            if (unclaimedItems.length === 0) {
+                showToast('已全部领取');
+                return;
+            }
+            
+            btn.classList.add('disabled');
+            btn.textContent = '领取中...';
+            
+            // 依次聚焦并领取 - 0.1秒间隔
+            unclaimedItems.forEach((data, index) => {
+                setTimeout(() => {
+                    // 聚焦动画
+                    data.item.classList.add('focusing');
+                    
+                    setTimeout(() => {
+                        // 领取
+                        claimCoupon(data.btn);
+                        data.item.classList.remove('focusing');
+                        
+                        // 最后一个完成
+                        if (index === unclaimedItems.length - 1) {
+                            setTimeout(() => {
+                                btn.classList.remove('disabled');
+                                btn.classList.add('use-now');
+                                btn.textContent = '立即使用';
+                                btn.onclick = function() { openBackpack(); };
+                                createConfetti(btn);
+                                showToast('🎉 全部领取成功！');
+                            }, 200);
+                        }
+                    }, 50);
+                }, index * 100);
+            });
+        }
+        
+        // 开始抽奖 - 九宫格闪烁动画（老虎机效果）
+        function startLottery(times = 1) {
+            if (lotteryCount < times) {
+                showToast(times === 1 ? '抽奖次数不足' : `抽奖次数不足，需要${times}次`);
+                return;
+            }
+            
+            // 获取当前使用的按钮
+            let btn, btnText;
+            if (currentScheme === 'A') {
+                btn = document.getElementById('lotteryBtn');
+                btnText = '立即抽奖';
+            } else {
+                btn = document.querySelector(times === 1 ? '.btn-draw1' : '.btn-draw5');
+                btnText = times === 1 ? '抽1次' : '抽5次';
+            }
+            
+            btn.classList.add('spinning');
+            if (currentScheme === 'A') {
+                btn.textContent = '抽奖中...';
+            } else {
+                btn.querySelector('.btn-main').textContent = '抽奖中...';
+            }
+            btn.disabled = true;
+            
+            const prizeCards = document.querySelectorAll('.prize-card:not(.opened)');
+            const allCards = Array.from(document.querySelectorAll('.prize-card'));
+            
+            // 随机闪烁效果 - 约3秒
+            let elapsed = 0;
+            const duration = 3000;
+            let lastFlashTime = 0;
+            let interval = 80;
+            
+            function flash(timestamp) {
+                if (!lastFlashTime) lastFlashTime = timestamp;
+                
+                if (elapsed >= duration) {
+                    // 动画结束，选中最终奖品
+                    allCards.forEach(card => card.classList.remove('flashing'));
+                    
+                    const availableCards = Array.from(prizeCards);
+                    if (availableCards.length > 0) {
+                        // 选择多个奖品（根据times数量）
+                        const selectedCards = [];
+                        const tempAvailable = [...availableCards];
+                        const actualTimes = Math.min(times, tempAvailable.length);
+                        
+                        for (let i = 0; i < actualTimes; i++) {
+                            const randomIndex = Math.floor(Math.random() * tempAvailable.length);
+                            selectedCards.push(tempAvailable[randomIndex]);
+                            tempAvailable.splice(randomIndex, 1);
+                        }
+                        
+                        const finalCard = selectedCards[0];
+                        
+                        // 最终闪烁效果
+                        let blinkCount = 0;
+                        const blinkInterval = setInterval(() => {
+                            finalCard.classList.toggle('flashing');
+                            blinkCount++;
+                            if (blinkCount >= 8) {
+                                clearInterval(blinkInterval);
+                                finalCard.classList.add('flashing');
+                                
+                                setTimeout(() => {
+                                    finalCard.classList.remove('flashing');
+                                    btn.classList.remove('spinning');
+                                    if (currentScheme === 'A') {
+                                        btn.textContent = btnText;
+                                    } else {
+                                        btn.querySelector('.btn-main').textContent = btnText;
+                                    }
+                                    btn.disabled = false;
+                                    
+                                    // 减少抽奖次数
+                                    lotteryCount -= actualTimes;
+                                    document.getElementById('lotteryCount').textContent = lotteryCount;
+                                    
+                                    // 标记所有选中的卡片为已开
+                                    selectedCards.forEach(card => card.classList.add('opened'));
+                                    
+                                    // 显示奖品信息
+                                    if (actualTimes === 1) {
+                                        const prizeImg = finalCard.querySelector('img').src;
+                                        const prizeName = finalCard.querySelector('.prize-card-title').textContent;
+                                        const prizeDesc = finalCard.querySelector('.prize-card-desc').textContent;
+                                        showPrizeModal(prizeImg, prizeName + ' ' + prizeDesc);
+                                    } else {
+                                        // 多次抽奖显示多奖品弹窗
+                                        const prizeList = selectedCards.map(card => ({
+                                            img: card.querySelector('img').src,
+                                            name: card.querySelector('.prize-card-title').textContent
+                                        }));
+                                        showMultiPrizeModal(prizeList);
+                                    }
+                                    createConfetti();
+                                }, 400);
+                            }
+                        }, 120);
+                    } else {
+                        btn.classList.remove('spinning');
+                        if (currentScheme === 'A') {
+                            btn.textContent = btnText;
+                        } else {
+                            btn.querySelector('.btn-main').textContent = btnText;
+                        }
+                        btn.disabled = false;
+                        showToast('所有奖品已抽完');
+                    }
+                    return;
+                }
+                
+                if (timestamp - lastFlashTime >= interval) {
+                    // 随机点亮1-2个格子
+                    allCards.forEach(card => card.classList.remove('flashing'));
+                    const randomCount = Math.random() > 0.5 ? 2 : 1;
+                    for (let i = 0; i < randomCount; i++) {
+                        const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
+                        randomCard.classList.add('flashing');
+                    }
+                    
+                    elapsed += timestamp - lastFlashTime;
+                    lastFlashTime = timestamp;
+                    
+                    // 后期逐渐减慢
+                    if (elapsed > duration * 0.7) {
+                        interval = Math.min(interval + 15, 250);
+                    }
+                }
+                
+                requestAnimationFrame(flash);
+            }
+            
+            requestAnimationFrame(flash);
+        }
+        
+        // 翻牌
+        function flipCard(card, index) {
+            if (card.classList.contains('flipped')) return;
+            
+            card.classList.add('flipped');
+            
+            // 减少抽奖次数
+            lotteryCount--;
+            document.getElementById('lotteryCount').textContent = lotteryCount;
+            
+            // 获取奖品信息
+            const img = card.querySelector('.flip-card-back img');
+            const prizeName = img.dataset.name;
+            
+            // 延迟显示中奖弹窗
+            setTimeout(() => {
+                document.getElementById('lotteryAnimation').classList.remove('active');
+                showPrizeModal(img.src, prizeName);
+                createConfetti();
+                
+                // 随机标记一个格子为已开
+                markRandomPrizeOpened();
+            }, 1000);
+        }
+        
+        // 标记随机奖品格子已开
+        function markRandomPrizeOpened() {
+            const cards = document.querySelectorAll('.prize-card:not(.opened)');
+            if (cards.length > 0) {
+                const randomCard = cards[Math.floor(Math.random() * cards.length)];
+                randomCard.classList.add('opened');
+            }
+        }
+        
+        // 显示中奖弹窗（单个奖品）
+        function showPrizeModal(img, name) {
+            const modalContent = document.getElementById('modalContent');
+            const singlePrize = document.getElementById('singlePrize');
+            const multiPrize = document.getElementById('multiPrize');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalSubtitle = document.getElementById('modalSubtitle');
+            const prizeImg = document.getElementById('prizeImg');
+            const prizeName = document.getElementById('prizeName');
+            
+            // 切换为单奖品模式
+            modalContent.classList.remove('multi-prize');
+            singlePrize.style.display = 'flex';
+            multiPrize.style.display = 'none';
+            modalTitle.textContent = '恭喜获得';
+            modalSubtitle.style.display = 'none';
+            
+            // 重置动画状态
+            prizeImg.classList.remove('prize-bounce');
+            prizeName.classList.remove('fade-in');
+            prizeName.style.opacity = '0';
+            
+            prizeImg.src = img;
+            prizeName.textContent = name;
+            document.getElementById('prizeModal').classList.add('active');
+            
+            // 翻转动画完成后触发奖品弹跳（0.8s翻转）
+            setTimeout(() => {
+                prizeImg.classList.add('prize-bounce');
+            }, 750);
+            
+            // 弹跳后显示奖品名称
+            setTimeout(() => {
+                prizeName.style.opacity = '';
+                prizeName.classList.add('fade-in');
+            }, 1150);
+        }
+        
+        // 显示多奖品弹窗
+        function showMultiPrizeModal(prizeList) {
+            const modalContent = document.getElementById('modalContent');
+            const singlePrize = document.getElementById('singlePrize');
+            const multiPrize = document.getElementById('multiPrize');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalSubtitle = document.getElementById('modalSubtitle');
+            
+            // 切换为多奖品模式
+            modalContent.classList.add('multi-prize');
+            singlePrize.style.display = 'none';
+            multiPrize.style.display = 'flex';
+            modalTitle.textContent = '恭喜获得';
+            modalSubtitle.textContent = `共 ${prizeList.length} 个奖品`;
+            modalSubtitle.style.display = 'block';
+            
+            // 清空之前的奖品
+            multiPrize.innerHTML = '';
+            
+            // 依次添加奖品，带动画延迟
+            prizeList.forEach((prize, index) => {
+                const item = document.createElement('div');
+                item.className = 'modal-prize-item';
+                item.style.animationDelay = (index * 0.15) + 's';
+                item.innerHTML = `
+                    <img src="${prize.img}" alt="${prize.name}" />
+                    <span>${prize.name}</span>
+                `;
+                multiPrize.appendChild(item);
+                
+                // 翻转完成后，每个奖品图片依次弹跳
+                setTimeout(() => {
+                    const img = item.querySelector('img');
+                    if (img) img.classList.add('prize-bounce');
+                }, 800 + index * 150 + 400);
+            });
+            
+            document.getElementById('prizeModal').classList.add('active');
+        }
+        
+        // 关闭弹窗
+        function closeModal() {
+            const modal = document.getElementById('prizeModal');
+            modal.classList.remove('active');
+            // 重置动画状态，确保下次打开时能重新播放
+            const prizeImg = document.getElementById('prizeImg');
+            const prizeName = document.getElementById('prizeName');
+            if (prizeImg) prizeImg.classList.remove('prize-bounce');
+            if (prizeName) prizeName.classList.remove('fade-in');
+            // 重置多奖品的弹跳
+            document.querySelectorAll('.modal-prize-item img.prize-bounce').forEach(img => {
+                img.classList.remove('prize-bounce');
+            });
+        }
+        
+        // 创建从顶部下落的碎片效果
+        function createConfetti(target, isModal) {
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FF69B4', '#98D8C8', '#F7DC6F', '#FFA500', '#FF1493', '#00CED1'];
+            const container = document.body;
+            const screenWidth = 375;
+            
+            // 判断是否是弹窗场景
+            const isModalScene = isModal || (!target || !target.getBoundingClientRect);
+            
+            // 粒子数量
+            const particleCount = isModalScene ? 50 : 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // 随机水平位置 - 覆盖整个屏幕宽度
+                const startX = Math.random() * screenWidth;
+                // 随机下落距离
+                const fallDistance = 400 + Math.random() * 400;
+                // 随机旋转
+                const rotation = (Math.random() - 0.5) * 720;
+                // 随机延迟
+                const delay = Math.random() * 0.8;
+                // 随机持续时间
+                const duration = 1.5 + Math.random() * 1;
+                
+                confetti.style.setProperty('--fall-distance', fallDistance + 'px');
+                confetti.style.setProperty('--rot', rotation + 'deg');
+                
+                const shapeType = Math.floor(Math.random() * 6);
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const size = 8 + Math.random() * 12;
+                
+                if (shapeType === 0) {
+                    // 圆形
+                    confetti.style.width = size + 'px';
+                    confetti.style.height = size + 'px';
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.background = color;
+                } else if (shapeType === 1) {
+                    // 方形
+                    confetti.style.width = size + 'px';
+                    confetti.style.height = size + 'px';
+                    confetti.style.background = color;
+                } else if (shapeType === 2) {
+                    // 长条
+                    confetti.style.width = (size * 0.4) + 'px';
+                    confetti.style.height = (size * 1.5) + 'px';
+                    confetti.style.background = color;
+                    confetti.style.borderRadius = '2px';
+                } else if (shapeType === 3) {
+                    confetti.textContent = '★';
+                    confetti.style.fontSize = size + 'px';
+                    confetti.style.color = color;
+                } else if (shapeType === 4) {
+                    confetti.textContent = '●';
+                    confetti.style.fontSize = size + 'px';
+                    confetti.style.color = color;
+                } else {
+                    confetti.textContent = '◆';
+                    confetti.style.fontSize = size + 'px';
+                    confetti.style.color = color;
+                }
+                
+                confetti.style.left = startX + 'px';
+                confetti.style.top = '-20px';
+                confetti.style.lineHeight = '1';
+                confetti.style.animation = `confettiFall ${duration}s ease-out forwards`;
+                confetti.style.animationDelay = delay + 's';
+                
+                container.appendChild(confetti);
+                setTimeout(() => confetti.remove(), (delay + duration) * 1000 + 100);
+            }
+        }
+        
+        // 显示Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        // 领取任务
+        function claimTask(btn, message) {
+            if (btn.classList.contains('completed')) return;
+            
+            btn.classList.add('completed');
+            btn.textContent = '已完成';
+            
+            // 增加抽奖次数
+            lotteryCount++;
+            document.getElementById('lotteryCount').textContent = lotteryCount;
+            
+            showToast(message);
+        }
+        
+        // 前往任务
+        function goToTask(btn) {
+            showToast('正在跳转...');
+            
+            // 模拟跳转
+            setTimeout(() => {
+                btn.classList.add('completed');
+                btn.textContent = '已完成';
+                lotteryCount++;
+                document.getElementById('lotteryCount').textContent = lotteryCount;
+                showToast('任务完成！获得1次抽奖机会');
+            }, 1500);
+        }
+        
+        // 邀请好友
+        function inviteFriend() {
+            showToast('已复制邀请链接');
+            
+            // 模拟邀请成功
+            setTimeout(() => {
+                inviteCount++;
+                document.getElementById('inviteCount').textContent = inviteCount;
+                
+                // 更新分段进度条
+                updateSegmentProgress();
+                
+                // 更新奖励标签状态
+                updateRewardTags();
+            }, 500);
+        }
+        
+        // 更新分段进度条
+        function updateSegmentProgress() {
+            const thresholds = [1, 5, 10, 15];
+            const segments = document.querySelectorAll('.progress-segment');
+            const labels = document.querySelectorAll('.progress-label');
+            
+            segments.forEach((segment, i) => {
+                if (inviteCount >= thresholds[i]) {
+                    segment.classList.add('completed');
+                    labels[i].classList.add('active');
+                } else {
+                    // 计算当前区间的进度
+                    const prevThreshold = i > 0 ? thresholds[i-1] : 0;
+                    if (inviteCount > prevThreshold) {
+                        const segmentProgress = ((inviteCount - prevThreshold) / (thresholds[i] - prevThreshold)) * 100;
+                        segment.querySelector('.progress-segment-fill').style.width = segmentProgress + '%';
+                    }
+                }
+            });
+        }
+        
+        // 更新奖励标签状态
+        function updateRewardTags() {
+            const thresholds = [1, 5, 10, 15];
+            const rewardTags = document.querySelectorAll('.reward-tag');
+            
+            rewardTags.forEach((tag, i) => {
+                if (tag.classList.contains('claimed')) return; // 已领取的不变
+                
+                if (inviteCount >= thresholds[i]) {
+                    tag.classList.remove('locked');
+                    tag.classList.add('claimable');
+                    tag.textContent = '可领取';
+                    tag.onclick = function() { claimInviteReward(this, i); };
+                }
+            });
+        }
+        
+        // 领取邀请奖励
+        function claimInviteReward(tag, index) {
+            if (tag.classList.contains('claimed') || tag.classList.contains('locked')) return;
+            
+            tag.classList.remove('claimable');
+            tag.classList.add('claimed');
+            tag.textContent = '已领取';
+            tag.onclick = null;
+            
+            createConfetti(null, true);
+            showToast('领取成功！获得1次抽奖机会');
+            
+            // 增加抽奖次数
+            lotteryCount++;
+            document.querySelector('.lottery-count .num').textContent = lotteryCount;
+        }
+        
+        // 前往活动
+        function goToEvent(eventId) {
+            showToast('正在跳转至活动页面...');
+        }
+        
+        // 打开背包
+        function openBackpack() {
+            document.getElementById('backpackPage').classList.add('active');
+        }
+        
+        // 关闭背包
+        function closeBackpack() {
+            document.getElementById('backpackPage').classList.remove('active');
+        }
+        
+        // 打开规则
+        function openRules() {
+            document.getElementById('rulesSheet').classList.add('active');
+        }
+        
+        // 关闭规则
+        function closeRules() {
+            document.getElementById('rulesSheet').classList.remove('active');
+        }
+        
+        // 使用优惠券
+        function useCoupon(btn) {
+            showToast('正在跳转使用...');
+        }
+        
+        // 领取礼品
+        function claimGift(btn) {
+            btn.classList.remove('unused');
+            btn.classList.add('used');
+            btn.textContent = '已领取';
+            btn.onclick = null;
+            
+            // 更新描述
+            const desc = btn.parentElement.querySelector('.backpack-item-desc');
+            desc.textContent = '已发放至账户';
+            
+            createConfetti(null, true);
+            showToast('领取成功！');
+        }
+        
+        // 装扮道具
+        function equipProp(btn) {
+            btn.classList.remove('unused');
+            btn.classList.add('used');
+            btn.textContent = '使用中';
+            btn.onclick = null;
+            showToast('装扮成功！');
+        }
+        
+        // 绑定手机
+        function bindPhone() {
+            showToast('跳转至绑定手机页面');
+        }
+        
+        // 我的奖励
+        function showMyRewards() {
+            showToast('查看我的奖励');
+        }
+        
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', () => {
+            // 添加入场动画
+            const cards = document.querySelectorAll('.module-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach(card => observer.observe(card));
+        });
+    </script>
+</body>
+</html>
