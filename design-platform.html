@@ -731,6 +731,173 @@
         
         .preview-modal-close:hover { background: rgba(255, 255, 255, 0.2); }
         
+        /* 模版管理弹窗 */
+        .tpl-modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .tpl-modal-overlay.active { display: flex; }
+        .tpl-modal {
+            width: 640px; max-height: 80vh;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            animation: tplModalIn 0.25s ease;
+        }
+        @keyframes tplModalIn { from { opacity: 0; transform: translateY(16px) scale(0.97); } to { opacity: 1; transform: none; } }
+        .tpl-modal-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 24px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+        }
+        .tpl-modal-title { font-size: 16px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .tpl-modal-close {
+            width: 32px; height: 32px; border-radius: 8px; border: none;
+            background: var(--bg-tertiary); color: var(--text-secondary);
+            cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s;
+        }
+        .tpl-modal-close:hover { background: var(--accent-red); color: #fff; }
+        .tpl-modal-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+        .tpl-modal-body::-webkit-scrollbar { width: 4px; }
+        .tpl-modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+        .tpl-section { margin-bottom: 24px; }
+        .tpl-section:last-child { margin-bottom: 0; }
+        .tpl-section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .tpl-section-title {
+            font-size: 13px; font-weight: 600; color: var(--text-primary);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .tpl-section-badge {
+            font-size: 10px; padding: 2px 8px; border-radius: 10px;
+            background: var(--brand-light); color: var(--brand);
+        }
+        .tpl-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .tpl-card {
+            background: var(--bg-tertiary); border-radius: 12px; border: 2px solid transparent;
+            padding: 14px; cursor: pointer; transition: all 0.2s; position: relative;
+        }
+        .tpl-card:hover { border-color: var(--brand); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,153,255,0.12); }
+        .tpl-card.active { border-color: var(--brand); background: var(--brand-light); }
+        .tpl-card-preview {
+            width: 100%; height: 120px; border-radius: 8px; overflow: hidden;
+            margin-bottom: 10px; background: #f0f0f0; position: relative;
+        }
+        .tpl-card-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .tpl-card-preview .tpl-preview-placeholder {
+            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+            color: var(--text-tertiary); font-size: 28px;
+        }
+        .tpl-card-name { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+        .tpl-card-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+        .tpl-card-meta { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+        .tpl-card-tag {
+            font-size: 9px; padding: 2px 6px; border-radius: 4px;
+            background: var(--brand-light); color: var(--brand);
+        }
+        .tpl-card-time { font-size: 9px; color: var(--text-tertiary); }
+        .tpl-card-actions {
+            position: absolute; top: 8px; right: 8px;
+            display: none; gap: 4px;
+        }
+        .tpl-card:hover .tpl-card-actions { display: flex; }
+        .tpl-card-action-btn {
+            width: 24px; height: 24px; border-radius: 6px;
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            color: var(--text-secondary); cursor: pointer; font-size: 11px;
+            display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+        }
+        .tpl-card-action-btn:hover { background: var(--accent-red); border-color: var(--accent-red); color: #fff; }
+        .tpl-card-action-btn.apply-btn:hover { background: var(--brand); border-color: var(--brand); color: #fff; }
+        .tpl-actions-bar {
+            display: flex; gap: 10px; flex-wrap: wrap;
+        }
+        .tpl-action-btn {
+            flex: 1; min-width: 140px;
+            padding: 12px 16px; border-radius: 10px;
+            border: 1px dashed var(--border); background: var(--bg-tertiary);
+            color: var(--text-secondary); font-size: 12px; font-weight: 500;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all 0.2s; font-family: inherit;
+        }
+        .tpl-action-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-light); }
+        .tpl-action-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .tpl-action-btn.primary-action {
+            border-style: solid; background: var(--brand); color: #fff; border-color: var(--brand);
+        }
+        .tpl-action-btn.primary-action:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,153,255,0.3); }
+        .tpl-empty-hint {
+            text-align: center; padding: 24px; color: var(--text-tertiary); font-size: 12px;
+        }
+        .tpl-save-form { display: flex; gap: 10px; align-items: flex-end; }
+        .tpl-save-input {
+            flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+            font-size: 13px; background: var(--bg-tertiary); color: var(--text-primary); font-family: inherit;
+        }
+        .tpl-save-input:focus { outline: none; border-color: var(--brand); }
+        .tpl-save-btn {
+            padding: 10px 20px; border-radius: 8px; border: none;
+            background: var(--brand); color: #fff; font-size: 13px; font-weight: 500;
+            cursor: pointer; white-space: nowrap; font-family: inherit; transition: all 0.15s;
+        }
+        .tpl-save-btn:hover { opacity: 0.9; }
+        .tpl-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+        /* 模版管理下拉菜单 */
+        .tpl-dropdown-wrapper { position: relative; }
+        .tpl-dropdown {
+            position: absolute; top: calc(100% + 8px); right: 0;
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+            min-width: 220px; z-index: 100; overflow: hidden;
+            display: none; animation: tplDropIn 0.15s ease;
+        }
+        @keyframes tplDropIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+        .tpl-dropdown.show { display: block; }
+        .tpl-dropdown-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 16px; cursor: pointer;
+            font-size: 13px; font-weight: 500; color: var(--text-primary);
+            transition: all 0.15s; border: none; background: none; width: 100%;
+            font-family: inherit; text-align: left;
+        }
+        .tpl-dropdown-item:hover { background: var(--brand-light); color: var(--brand); }
+        .tpl-dropdown-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .tpl-dropdown-item + .tpl-dropdown-item { border-top: 1px solid var(--border); }
+        .tpl-dropdown-item .tpl-dd-label { flex: 1; }
+        .tpl-dropdown-item .tpl-dd-hint { font-size: 10px; color: var(--text-tertiary); font-weight: 400; }
+
+        /* 保存命名弹窗 */
+        .tpl-name-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 1001; display: none; align-items: center; justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .tpl-name-overlay.active { display: flex; }
+        .tpl-name-dialog {
+            background: var(--bg-secondary); border-radius: 16px; padding: 24px;
+            width: 400px; border: 1px solid var(--border);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+            animation: tplModalIn 0.2s ease;
+        }
+        .tpl-name-dialog h3 {
+            font-size: 16px; font-weight: 700; color: var(--text-primary);
+            margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+        }
+        .tpl-name-dialog-actions {
+            display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end;
+        }
+
         @media (max-height: 950px) { .phone-container { transform: scale(0.85); } }
         @media (max-height: 800px) { .phone-container { transform: scale(0.7); } }
         
@@ -952,13 +1119,40 @@
                 </select>
             </div>
             <div class="toolbar-right">
-                <button class="toolbar-btn" onclick="saveConfig()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                    保存
-                </button>
+                <div class="tpl-dropdown-wrapper">
+                    <button class="toolbar-btn" onclick="toggleTplDropdown(event)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                        模版管理
+                        <svg style="margin-left:2px;opacity:0.6;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="tpl-dropdown" id="tplDropdown">
+                        <button class="tpl-dropdown-item" onclick="saveCurrentAsTemplate()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            <div>
+                                <div class="tpl-dd-label">保存当前设计为模版</div>
+                                <div class="tpl-dd-hint">保存并导出完整代码</div>
+                            </div>
+                        </button>
+                        <button class="tpl-dropdown-item" onclick="document.getElementById('tplImportInput').click();closeTplDropdown();">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <div>
+                                <div class="tpl-dd-label">导入模版文件</div>
+                                <div class="tpl-dd-hint">支持 .json 格式</div>
+                            </div>
+                        </button>
+                        <button class="tpl-dropdown-item" onclick="openTemplateManager();closeTplDropdown();">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+                            <div>
+                                <div class="tpl-dd-label">预制模版</div>
+                                <div class="tpl-dd-hint">官方示例与我的模版</div>
+                            </div>
+                        </button>
+                    </div>
+                    <input type="file" id="tplImportInput" accept=".json,.tpl" style="display:none" onchange="importTemplate(event)">
+                </div>
                 <button class="toolbar-btn" onclick="previewPage()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    预览
+                    体验预览
                 </button>
                 <button class="toolbar-btn primary" onclick="exportHTML()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -1036,7 +1230,7 @@
                         
                         <!-- 主视觉专用编辑区 -->
                         <div class="property-group" id="heroEditorGroup" style="display: none;">
-                            <div class="property-group-title">📷 媒体上传</div>
+                            <div class="property-group-title"><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>媒体上传</div>
                             <div class="property-item">
                                 <div class="image-upload hero-upload" onclick="document.getElementById('heroMediaInput').click()">
                                     <div class="image-upload-icon">
@@ -1059,7 +1253,7 @@
                         
                         <!-- 纯图片编辑区 -->
                         <div class="property-group" id="imageEditorGroup" style="display: none;">
-                            <div class="property-group-title">📷 图片上传</div>
+                            <div class="property-group-title"><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>图片上传</div>
                             <div class="property-item">
                                 <div class="image-upload" onclick="document.getElementById('pureImageInput').click()">
                                     <div class="image-upload-icon">
@@ -1082,7 +1276,7 @@
                         
                         <!-- 功能导流专属编辑区 -->
                         <div class="property-group" id="appDownloadEditorGroup" style="display: none;">
-                            <div class="property-group-title">📱 应用信息</div>
+                            <div class="property-group-title"><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>应用信息</div>
                             <div class="property-item">
                                 <label class="property-label">应用图标</label>
                                 <div class="image-upload" style="height:60px;" onclick="document.getElementById('appIconInput').click()">
@@ -1110,7 +1304,7 @@
                         
                         <!-- 通用文案编辑区 -->
                         <div class="property-group" id="textEditorGroup">
-                            <div class="property-group-title">✏️ 文案编辑</div>
+                            <div class="property-group-title"><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>文案编辑</div>
                             <div class="property-item">
                                 <label class="property-label">标题 <span class="tip">必填</span></label>
                                 <input type="text" class="property-input" id="propTitle" placeholder="如：新年福利大放送" oninput="updateProp('title', this.value)">
@@ -1127,7 +1321,7 @@
                         
                         <!-- 列表数量配置区 -->
                         <div class="property-group" id="listCountGroup" style="display:none;">
-                            <div class="property-group-title">📋 列表配置</div>
+                            <div class="property-group-title"><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>列表配置</div>
                             <div class="property-item">
                                 <label class="property-label">显示数量</label>
                                 <div class="count-control">
@@ -1141,7 +1335,7 @@
                         
                         <!-- 进度条阶段配置区 -->
                         <div class="property-group" id="progressStageGroup" style="display:none;">
-                            <div class="property-group-title">📊 阶段配置</div>
+                            <div class="property-group-title"><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>阶段配置</div>
                             <div class="property-item">
                                 <label class="property-label">阶段数量</label>
                                 <div class="count-control">
@@ -1155,7 +1349,7 @@
                         
                         <!-- 抽奖布局配置区 -->
                         <div class="property-group" id="lotteryLayoutGroup" style="display:none;">
-                            <div class="property-group-title">🎰 奖品布局</div>
+                            <div class="property-group-title"><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 0 0-8 0v2"/><circle cx="12" cy="14" r="2"/></svg>奖品布局</div>
                             <div class="property-item">
                                 <div class="lottery-layout-options">
                                     <label class="lottery-layout-option">
@@ -1202,7 +1396,7 @@
                         <!-- 配色方案 - 折叠面板 -->
                         <div class="collapsible-section open" id="colorSection">
                             <div class="collapsible-header" onclick="toggleCollapsible('colorSection')">
-                                <span>🎨 配色方案</span>
+                                <span><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="8" r="1.5"/><circle cx="8" cy="14" r="1.5"/><circle cx="16" cy="14" r="1.5"/></svg>配色方案</span>
                                 <span class="arrow">▼</span>
                             </div>
                             <div class="collapsible-content">
@@ -1232,7 +1426,7 @@
                         <!-- 自定义颜色 - 折叠面板 -->
                         <div class="collapsible-section" id="customColorSection">
                             <div class="collapsible-header" onclick="toggleCollapsible('customColorSection')">
-                                <span>🔧 自定义颜色</span>
+                                <span><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>自定义颜色</span>
                                 <span class="arrow">▼</span>
                             </div>
                             <div class="collapsible-content">
@@ -1276,9 +1470,47 @@
         <button class="preview-modal-close" onclick="closePreview()">✕</button>
         <div class="phone-container">
             <div class="phone-screen" id="previewScreen">
-                <div class="canvas-wrapper">
-                    <div class="canvas-content" id="previewContent"></div>
+                <iframe id="previewIframe" style="width:100%;height:100%;border:none;border-radius:38px;" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模版管理弹窗（预制模版 + 我的模版列表） -->
+    <div class="tpl-modal-overlay" id="tplModalOverlay" onclick="if(event.target===this)closeTemplateManager()">
+        <div class="tpl-modal">
+            <div class="tpl-modal-header">
+                <span class="tpl-modal-title"><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>预制模版</span>
+                <button class="tpl-modal-close" onclick="closeTemplateManager()">✕</button>
+            </div>
+            <div class="tpl-modal-body">
+                <!-- 预制模版 -->
+                <div class="tpl-section">
+                    <div class="tpl-section-header">
+                        <span class="tpl-section-title"><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>官方示例 <span class="tpl-section-badge">官方</span></span>
+                    </div>
+                    <div class="tpl-grid" id="builtinTplGrid"></div>
                 </div>
+                
+                <!-- 我的模版 -->
+                <div class="tpl-section">
+                    <div class="tpl-section-header">
+                        <span class="tpl-section-title"><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>我的模版 <span class="tpl-section-badge" id="myTplCount">0</span></span>
+                    </div>
+                    <div class="tpl-grid" id="myTplGrid"></div>
+                    <div class="tpl-empty-hint" id="myTplEmpty">还没有保存的模版，通过「模版管理 → 保存当前设计为模版」开始</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 保存模版命名弹窗 -->
+    <div class="tpl-name-overlay" id="tplNameOverlay" onclick="if(event.target===this)closeSaveDialog()">
+        <div class="tpl-name-dialog">
+            <h3><svg style="display:inline-block;vertical-align:-2px;margin-right:4px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>保存当前设计为模版</h3>
+            <input type="text" class="tpl-save-input" id="tplSaveName" placeholder="输入模版名称，如：春节活动页" maxlength="30">
+            <div class="tpl-name-dialog-actions">
+                <button class="tpl-save-btn" style="background:var(--bg-tertiary);color:var(--text-secondary);" onclick="closeSaveDialog()">取消</button>
+                <button class="tpl-save-btn" onclick="confirmSaveTemplate()">保存并导出</button>
             </div>
         </div>
     </div>
@@ -1553,7 +1785,7 @@
                         return `<div class="hero-module hero-placeholder" style="width:100%;aspect-ratio:1/1;background:${customColors.primary};display:flex;flex-direction:column;align-items:center;justify-content:center;color:${txtColor};"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><div style="font-size:14px;font-weight:500;margin-top:12px;">主视觉区域</div><div style="font-size:12px;opacity:0.8;margin-top:4px;">上传视频或图片</div></div>`;
                     }
                 case 'coupon':
-                    return `<div class="module-card"><div class="module-title editable-text" contenteditable="true" style="color:${titleColor}">${comp.props.title}</div><div>${comp.props.items.map((item, idx) => `<div class="coupon-item"><div class="coupon-left"><span class="clickable-img-wrapper" style="border-radius:8px;"><img class="coupon-icon clickable-img" src="${item.icon || 'assets/CodeBubbyAssets/45_550/33.png'}" data-comp-id="${comp.id}" data-item-idx="${idx}" data-img-type="coupon" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/40x40/FFF8E3/F68910?text=C'"></span><div class="coupon-info"><div class="coupon-tag editable-text" contenteditable="true">${item.tag}</div><div class="coupon-name editable-text" contenteditable="true">${item.name}</div></div></div><button class="coupon-btn" style="color:${txtColor}">${comp.props.buttonText}</button></div>`).join('')}</div></div>`;
+                    return `<div class="module-card"><div class="module-title editable-text" contenteditable="true" style="color:${titleColor}">${comp.props.title}</div><div>${comp.props.items.map((item, idx) => `<div class="coupon-item"><div class="coupon-left"><span class="clickable-img-wrapper" style="border-radius:8px;"><img class="coupon-icon clickable-img" src="${item.iconUrl || item.icon || 'assets/CodeBubbyAssets/45_550/33.png'}" data-comp-id="${comp.id}" data-item-idx="${idx}" data-img-type="coupon" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/40x40/FFF8E3/F68910?text=C'"></span><div class="coupon-info"><div class="coupon-tag editable-text" contenteditable="true">${item.tag}</div><div class="coupon-name editable-text" contenteditable="true">${item.name}</div></div></div><button class="coupon-btn" style="color:${txtColor}">${comp.props.buttonText}</button></div>`).join('')}</div></div>`;
                 case 'lottery':
                     const layout = comp.props.layout || 6;
                     const isCarousel = layout === 'carousel' || layout > 9;
@@ -1565,14 +1797,16 @@
                         comp.props.prizes.push('');
                     }
                     
+                    const _pImg = (p, i) => (typeof p === 'object' && p && p.img) ? p.img : (p || 'assets/CodeBubbyAssets/45_550/'+(39+(i%6))+'.png');
+                    const _pName = (p, i) => (typeof p === 'object' && p && p.name) ? p.name : ('奖品'+(i+1));
                     let prizeGridHtml = '';
                     if (isCarousel) {
                         // 轮播模式：一排横向滚动
                         prizeGridHtml = `<div class="prize-carousel-container" style="overflow:hidden;position:relative;">
                             <div class="prize-carousel" style="display:flex;gap:8px;overflow-x:auto;padding:8px 0;scroll-behavior:smooth;">
                                 ${Array.from({length: prizeCount}, (_, i) => `<div class="prize-card prize-carousel-item" style="flex:0 0 72px;min-width:72px;">
-                                    <span class="clickable-img-wrapper" style="border-radius:8px;"><img class="clickable-img" src="${comp.props.prizes[i] || 'assets/CodeBubbyAssets/45_550/'+(39+(i%6))+'.png'}" data-comp-id="${comp.id}" data-item-idx="${i}" data-img-type="lottery" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/48x48/F5F5F5/999?text=P'"></span>
-                                    <div class="prize-card-title">奖品${i+1}</div>
+                                    <span class="clickable-img-wrapper" style="border-radius:8px;"><img class="clickable-img" src="${_pImg(comp.props.prizes[i], i)}" data-comp-id="${comp.id}" data-item-idx="${i}" data-img-type="lottery" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/48x48/F5F5F5/999?text=P'"></span>
+                                    <div class="prize-card-title">${_pName(comp.props.prizes[i], i)}</div>
                                 </div>`).join('')}
                             </div>
                             <div class="carousel-indicator" style="text-align:center;margin-top:8px;">
@@ -1583,8 +1817,8 @@
                         // 网格模式：3/6/9个
                         prizeGridHtml = `<div class="prize-grid" style="grid-template-rows:repeat(${Math.ceil(prizeCount/3)}, 1fr);">
                             ${Array.from({length: prizeCount}, (_, i) => `<div class="prize-card">
-                                <span class="clickable-img-wrapper" style="border-radius:8px;"><img class="clickable-img" src="${comp.props.prizes[i] || 'assets/CodeBubbyAssets/45_550/'+(39+(i%6))+'.png'}" data-comp-id="${comp.id}" data-item-idx="${i}" data-img-type="lottery" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/48x48/F5F5F5/999?text=P'"></span>
-                                <div class="prize-card-title">奖品${i+1}</div>
+                                <span class="clickable-img-wrapper" style="border-radius:8px;"><img class="clickable-img" src="${_pImg(comp.props.prizes[i], i)}" data-comp-id="${comp.id}" data-item-idx="${i}" data-img-type="lottery" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/48x48/F5F5F5/999?text=P'"></span>
+                                <div class="prize-card-title">${_pName(comp.props.prizes[i], i)}</div>
                             </div>`).join('')}
                         </div>`;
                     }
@@ -1597,7 +1831,7 @@
                     const eventCount = comp.props.events.length;
                     const isSingleColumn = eventCount % 2 !== 0;
                     const gridClass = isSingleColumn ? 'event-grid single-column' : 'event-grid';
-                    return `<div class="module-card"><div class="module-title editable-text" contenteditable="true" style="color:${titleColor}">${comp.props.title}</div><div class="${gridClass}">${comp.props.events.map((ev,i) => `<div class="event-card clickable-event-card"><img class="clickable-img" src="${ev.image || 'assets/CodeBubbyAssets/45_550/'+(48+(i%4))+'.png'}" data-comp-id="${comp.id}" data-item-idx="${i}" data-img-type="event" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/160x80/667eea/fff?text=E'"><div class="event-overlay"><div class="event-title editable-text" contenteditable="true">${ev.title}</div><div class="event-desc editable-text" contenteditable="true">${ev.desc}</div></div><div class="event-replace-hint">点击替换</div></div>`).join('')}</div></div>`;
+                    return `<div class="module-card"><div class="module-title editable-text" contenteditable="true" style="color:${titleColor}">${comp.props.title}</div><div class="${gridClass}">${comp.props.events.map((ev,i) => `<div class="event-card clickable-event-card"><img class="clickable-img" src="${ev.imageUrl || ev.image || 'assets/CodeBubbyAssets/45_550/'+(48+(i%4))+'.png'}" data-comp-id="${comp.id}" data-item-idx="${i}" data-img-type="event" onclick="triggerItemImageUpload(this)" onerror="this.src='https://placehold.co/160x80/667eea/fff?text=E'"><div class="event-overlay"><div class="event-title editable-text" contenteditable="true">${ev.title}</div><div class="event-desc editable-text" contenteditable="true">${ev.desc}</div></div><div class="event-replace-hint">点击替换</div></div>`).join('')}</div></div>`;
                 case 'progress':
                     return `<div class="module-card"><div class="module-title editable-text" contenteditable="true" style="color:${titleColor}">${comp.props.title}</div><p style="font-size:10px;color:rgba(60,60,67,0.76);margin-bottom:12px;" class="editable-text" contenteditable="true">${comp.props.subtitle}</p><div class="progress-container"><div class="progress-columns">${comp.props.milestones.map((m,i) => `<div class="progress-column"><span class="progress-label ${i<comp.props.current?'active':''}">${m}</span><div class="progress-segment ${i<comp.props.current?'completed':''}"><div class="progress-segment-fill"></div></div><div class="reward-tag ${i<comp.props.current?'claimable':''}">${i<comp.props.current?'可领取':'未领取'}</div></div>`).join('')}</div></div></div>`;
                 case 'image':
@@ -2390,39 +2624,955 @@
             }
         }
         
-        // 预览
-        function previewPage() {
-            const modal = document.getElementById('previewModal');
-            const content = document.getElementById('previewContent');
-            content.innerHTML = document.getElementById('canvasContent').innerHTML;
-            content.style.background = customColors.background;
-            modal.classList.add('active');
+        // ==================== 模版管理系统 ====================
+        
+        // 预制模版数据 —— SVIP福利社完整示例，包含所有图片/视频资源
+        const BUILTIN_TEMPLATES = [
+            {
+                id: 'builtin_svip_2026',
+                name: 'SVIP福利社 2026',
+                desc: '包含头图视频、优惠券、抽奖、任务、活动Banner、邀请助力等完整运营模块，所有图片视频资源已内置',
+                builtin: true,
+                createdAt: '2026-01-01',
+                data: {
+                    components: [
+                        { id: 'comp_1', type: 'hero', props: { title: '主视觉', mediaType: 'video', mediaUrl: '头图视频2.mp4', aspectRatio: '1:1' } },
+                        { id: 'comp_2', type: 'coupon', props: {
+                            title: '第一弹「美团神券」',
+                            items: [
+                                { name: '美团外卖满38-16', tag: '美团专属礼', iconUrl: 'assets/CodeBubbyAssets/45_550/33.png' },
+                                { name: '美团100-5台球券', tag: '美团专属礼', iconUrl: 'assets/CodeBubbyAssets/45_550/34.png' },
+                                { name: '美团外卖108券包', tag: '美团惊喜礼', iconUrl: 'assets/CodeBubbyAssets/45_550/33.png' }
+                            ],
+                            buttonText: '开心收下'
+                        }},
+                        { id: 'comp_3', type: 'lottery', props: {
+                            title: '第二弹「9抽赢Q币&美团无门槛券」',
+                            subtitle: '剩余抽奖次数：9/11',
+                            buttonText: '立即抽奖',
+                            layout: 9,
+                            prizes: [
+                                { name: 'SVIP时长', img: 'assets/CodeBubbyAssets/45_550/39.png' },
+                                { name: 'SVIP时长', img: 'assets/CodeBubbyAssets/45_550/40.png' },
+                                { name: 'SVIP时长', img: 'assets/CodeBubbyAssets/45_550/41.png' },
+                                { name: 'SVIP时长', img: 'assets/CodeBubbyAssets/45_550/42.png' },
+                                { name: 'SVIP时长', img: 'assets/CodeBubbyAssets/45_550/43.png' },
+                                { name: 'SVIP时长', img: 'assets/CodeBubbyAssets/45_550/44.png' },
+                                { name: 'SVIP时长', img: 'assets/CodeBubbyAssets/45_550/45.png' },
+                                { name: 'SVIP时长', img: 'assets/CodeBubbyAssets/45_550/46.png' },
+                                { name: 'SVIP时长', img: 'assets/CodeBubbyAssets/45_550/47.png' }
+                            ]
+                        }},
+                        { id: 'comp_4', type: 'task', props: {
+                            title: '做任务领抽奖机会',
+                            tasks: [
+                                { name: '领SVIP专享机会', desc: 'SVIP用户可额外获得1次抽奖机会', btn: '领取' },
+                                { name: '订阅福利社通知', desc: '完成订阅获得1次抽奖机会', btn: '前往' }
+                            ]
+                        }},
+                        { id: 'comp_5', type: 'progress', props: {
+                            title: '邀好友助力',
+                            subtitle: '累计获得15助力值可解锁最高4次机会',
+                            milestones: ['1人', '5人', '10人', '15人'],
+                            current: 1
+                        }},
+                        { id: 'comp_6', type: 'event', props: {
+                            title: '2月大事件',
+                            events: [
+                                { title: 'SVIP启航2026', desc: '60抽必得12个月SVIP', imageUrl: 'assets/CodeBubbyAssets/45_550/48.png' },
+                                { title: 'SVIP×王者荣耀', desc: '开通得稀有史诗皮肤', imageUrl: 'assets/CodeBubbyAssets/45_550/49.png' },
+                                { title: '0元抽豪华黄钻', desc: '兑换成长值', imageUrl: 'assets/CodeBubbyAssets/45_550/50.png' },
+                                { title: '靓号买断活动回归', desc: '享个人专属靓号', imageUrl: 'assets/CodeBubbyAssets/45_550/51.png' }
+                            ]
+                        }}
+                    ],
+                    colors: { primary: '#FEDF9C', accent: '#F68910', background: '#FFE23A', btnBg: '#FFF8E3', textColor: '#000000' },
+                    scheme: 'gold'
+                }
+            }
+        ];
+        
+        function getMyTemplates() {
+            try { return JSON.parse(localStorage.getItem('myTemplates') || '[]'); }
+            catch(e) { return []; }
         }
         
-        function closePreview() {
-            document.getElementById('previewModal').classList.remove('active');
+        function setMyTemplates(list) {
+            localStorage.setItem('myTemplates', JSON.stringify(list));
         }
         
-        // 导出HTML
-        function exportHTML() {
-            const canvasHTML = document.getElementById('canvasContent').innerHTML;
-            const styles = `<style>:root{--primary-gold:${customColors.primary};--primary-orange:${customColors.accent};--primary-yellow:${customColors.background};}body{font-family:'PingFang SC',sans-serif;background:${customColors.background};margin:0;padding:0;}${document.querySelector('style').textContent}</style>`;
+        // 下拉菜单控制
+        function toggleTplDropdown(e) {
+            e.stopPropagation();
+            const dd = document.getElementById('tplDropdown');
+            dd.classList.toggle('show');
+        }
+        function closeTplDropdown() {
+            document.getElementById('tplDropdown').classList.remove('show');
+        }
+        // 点击其他地方关闭下拉
+        document.addEventListener('click', function() { closeTplDropdown(); });
+        
+        function openTemplateManager() {
+            document.getElementById('tplModalOverlay').classList.add('active');
+            renderBuiltinTemplates();
+            renderMyTemplates();
+        }
+        
+        function closeTemplateManager() {
+            document.getElementById('tplModalOverlay').classList.remove('active');
+        }
+        
+        // 保存命名弹窗
+        function openSaveDialog() {
+            document.getElementById('tplNameOverlay').classList.add('active');
+            const input = document.getElementById('tplSaveName');
+            input.value = '';
+            setTimeout(() => input.focus(), 100);
+        }
+        function closeSaveDialog() {
+            document.getElementById('tplNameOverlay').classList.remove('active');
+        }
+        
+        function renderBuiltinTemplates() {
+            const grid = document.getElementById('builtinTplGrid');
+            grid.innerHTML = BUILTIN_TEMPLATES.map(tpl => `
+                <div class="tpl-card" onclick="applyTemplate('builtin','${tpl.id}')">
+                    <div class="tpl-card-preview">
+                        <div class="tpl-preview-placeholder" style="background:linear-gradient(135deg,${tpl.data.colors.background},${tpl.data.colors.primary});">
+                            <span style="font-size:32px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="tpl-card-name">${tpl.name}</div>
+                    <div class="tpl-card-desc">${tpl.desc}</div>
+                    <div class="tpl-card-meta">
+                        <span class="tpl-card-tag">官方预制</span>
+                        <span class="tpl-card-time">${tpl.data.components.length} 个组件</span>
+                    </div>
+                    <div class="tpl-card-actions">
+                        <button class="tpl-card-action-btn apply-btn" onclick="event.stopPropagation();exportTemplateCode('builtin','${tpl.id}')" title="导出完整代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function renderMyTemplates() {
+            const list = getMyTemplates();
+            const grid = document.getElementById('myTplGrid');
+            const empty = document.getElementById('myTplEmpty');
+            const badge = document.getElementById('myTplCount');
+            badge.textContent = list.length;
+            empty.style.display = list.length === 0 ? 'block' : 'none';
+            grid.innerHTML = list.map((tpl, i) => `
+                <div class="tpl-card" onclick="applyTemplate('my','${i}')">
+                    <div class="tpl-card-preview">
+                        <div class="tpl-preview-placeholder" style="background:linear-gradient(135deg,${tpl.data.colors.background},${tpl.data.colors.primary});">
+                            <span style="font-size:28px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
+                        </div>
+                    </div>
+                    <div class="tpl-card-name">${escapeHtml(tpl.name)}</div>
+                    <div class="tpl-card-desc">${tpl.data.components.length} 个组件 · ${tpl.data.scheme || 'gold'} 配色</div>
+                    <div class="tpl-card-meta">
+                        <span class="tpl-card-tag">我的模版</span>
+                        <span class="tpl-card-time">${tpl.createdAt || ''}</span>
+                    </div>
+                    <div class="tpl-card-actions">
+                        <button class="tpl-card-action-btn apply-btn" onclick="event.stopPropagation();exportTemplateCode('my','${i}')" title="导出完整代码"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></button>
+                        <button class="tpl-card-action-btn apply-btn" onclick="event.stopPropagation();exportTemplateFile('${i}')" title="导出模版JSON"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></button>
+                        <button class="tpl-card-action-btn" onclick="event.stopPropagation();deleteMyTemplate(${i})" title="删除">✕</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function escapeHtml(str) {
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+        
+        // 同步颜色面板辅助函数
+        function syncColorPanel() {
+            try {
+                document.getElementById('primaryColor').value = customColors.primary;
+                document.getElementById('primaryHex').value = customColors.primary;
+                document.getElementById('accentColor').value = customColors.accent;
+                document.getElementById('accentHex').value = customColors.accent;
+                document.getElementById('bgColor').value = customColors.background;
+                document.getElementById('bgHex').value = customColors.background;
+                document.querySelectorAll('.color-preset').forEach(el => el.classList.toggle('active', el.dataset.scheme === currentColorScheme));
+                if (customColors.textColor) {
+                    document.querySelectorAll('input[name="btnTextColor"]').forEach(r => { r.checked = (r.value === customColors.textColor); });
+                }
+            } catch(e) {}
+        }
+        
+        // 应用模版到画布
+        function applyTemplate(source, id) {
+            let tplData;
+            if (source === 'builtin') {
+                const tpl = BUILTIN_TEMPLATES.find(t => t.id === id);
+                if (!tpl) return;
+                tplData = JSON.parse(JSON.stringify(tpl.data));
+            } else {
+                const list = getMyTemplates();
+                const idx = parseInt(id);
+                if (!list[idx]) return;
+                tplData = JSON.parse(JSON.stringify(list[idx].data));
+            }
             
-            const html = `<!DOCTYPE html>
+            canvasComponents = tplData.components || [];
+            customColors = tplData.colors || colorSchemes.gold;
+            currentColorScheme = tplData.scheme || 'gold';
+            componentIdCounter = canvasComponents.length;
+            selectedComponentId = null;
+            
+            syncColorPanel();
+            renderCanvas();
+            saveConfig();
+            closeTemplateManager();
+            showToast('模版已应用');
+        }
+        
+        // 保存当前设计为模版（从下拉菜单触发）
+        function saveCurrentAsTemplate() {
+            closeTplDropdown();
+            if (canvasComponents.length === 0) {
+                showToast('画布为空，请先添加组件');
+                return;
+            }
+            openSaveDialog();
+        }
+        
+        // 确认保存：永久存入我的模版 + 导出完整HTML代码
+        async function confirmSaveTemplate() {
+            const name = document.getElementById('tplSaveName').value.trim();
+            if (!name) { showToast('请输入模版名称'); return; }
+            
+            const tpl = {
+                name: name,
+                createdAt: new Date().toLocaleDateString('zh-CN'),
+                data: {
+                    components: JSON.parse(JSON.stringify(canvasComponents)),
+                    colors: { ...customColors },
+                    scheme: currentColorScheme
+                }
+            };
+            
+            // 1. 永久保存到我的模版（localStorage）
+            const list = getMyTemplates();
+            list.unshift(tpl);
+            setMyTemplates(list);
+            
+            // 2. 同时保存当前画布状态
+            saveConfig();
+            
+            // 3. 导出完整可交互HTML代码（含内嵌资源）
+            closeSaveDialog();
+            showToast('正在打包资源，请稍候...');
+            let htmlContent = generateInteractiveHTML();
+            htmlContent = await embedResourcesInHTML(htmlContent);
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = name + '.html';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('模版已保存并导出完整代码');
+        }
+        
+        // 导入模版
+        function importTemplate(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    const tpl = JSON.parse(ev.target.result);
+                    if (!tpl.name || !tpl.data || !tpl.data.components) {
+                        showToast('模版文件格式不正确');
+                        return;
+                    }
+                    tpl.createdAt = tpl.createdAt || new Date().toLocaleDateString('zh-CN');
+                    const list = getMyTemplates();
+                    list.unshift(tpl);
+                    setMyTemplates(list);
+                    showToast('模版「' + tpl.name + '」导入成功');
+                } catch(err) {
+                    showToast('文件解析失败，请检查格式');
+                }
+            };
+            reader.readAsText(file);
+            e.target.value = '';
+        }
+        
+        // 导出模版为 JSON 文件
+        function exportTemplateFile(idx) {
+            const list = getMyTemplates();
+            const tpl = list[parseInt(idx)];
+            if (!tpl) return;
+            const blob = new Blob([JSON.stringify(tpl, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (tpl.name || '模版') + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('模版文件已导出');
+        }
+        
+        // 导出模版的完整可交互HTML代码
+        // 将HTML中所有相对路径的图片和视频资源转为base64 Data URL，使导出文件完全自包含
+        async function embedResourcesInHTML(html) {
+            // 收集所有需要内嵌的资源路径
+            const srcRegex = /(<(?:img|video|source)\s[^>]*\bsrc\s*=\s*")([^"]+)(")/gi;
+            const matches = [];
+            let m;
+            while ((m = srcRegex.exec(html)) !== null) {
+                const url = m[2];
+                // 跳过已经是 data: / http: / https: / blob: 的URL
+                if (/^(data:|https?:|blob:)/i.test(url)) continue;
+                matches.push({ full: m[0], prefix: m[1], url: url, suffix: m[3] });
+            }
+            if (matches.length === 0) return html;
+
+            // 去重
+            const uniqueUrls = [...new Set(matches.map(m => m.url))];
+            const cache = {};
+
+            // 并行加载所有资源并转为 base64
+            await Promise.all(uniqueUrls.map(async (url) => {
+                try {
+                    const resp = await fetch(url);
+                    if (!resp.ok) { cache[url] = url; return; }
+                    const blob = await resp.blob();
+                    const dataUrl = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.readAsDataURL(blob);
+                    });
+                    cache[url] = dataUrl;
+                } catch(e) {
+                    cache[url] = url; // 失败时保留原路径
+                }
+            }));
+
+            // 替换所有匹配
+            let result = html;
+            for (const item of matches) {
+                const dataUrl = cache[item.url];
+                if (dataUrl && dataUrl !== item.url) {
+                    result = result.split(item.prefix + item.url + item.suffix).join(item.prefix + dataUrl + item.suffix);
+                }
+            }
+            return result;
+        }
+
+        async function exportTemplateCode(source, id) {
+            let tplData, tplName;
+            if (source === 'builtin') {
+                const tpl = BUILTIN_TEMPLATES.find(t => t.id === id);
+                if (!tpl) return;
+                tplData = JSON.parse(JSON.stringify(tpl.data));
+                tplName = tpl.name;
+            } else {
+                const list = getMyTemplates();
+                const idx = parseInt(id);
+                if (!list[idx]) return;
+                tplData = JSON.parse(JSON.stringify(list[idx].data));
+                tplName = list[idx].name;
+            }
+            
+            // 临时应用模版数据来生成HTML
+            const origComponents = canvasComponents;
+            const origColors = customColors;
+            const origScheme = currentColorScheme;
+            
+            canvasComponents = tplData.components;
+            customColors = tplData.colors;
+            currentColorScheme = tplData.scheme || 'gold';
+            
+            let htmlContent = generateInteractiveHTML();
+            
+            // 恢复原始数据
+            canvasComponents = origComponents;
+            customColors = origColors;
+            currentColorScheme = origScheme;
+            
+            showToast('正在打包资源，请稍候...');
+            // 将所有图片/视频资源内嵌为base64
+            htmlContent = await embedResourcesInHTML(htmlContent);
+            
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (tplName || '运营活动页面') + '.html';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('完整HTML代码已导出（含所有资源）');
+        }
+        
+        // 删除我的模版
+        function deleteMyTemplate(idx) {
+            if (!confirm('确定要删除这个模版吗？')) return;
+            const list = getMyTemplates();
+            list.splice(idx, 1);
+            setMyTemplates(list);
+            renderMyTemplates();
+            showToast('模版已删除');
+        }
+        
+        // ==================== 模版管理系统结束 ====================
+        
+        // 生成可交互 HTML
+        function generateInteractiveHTML() {
+            const bg = customColors.background;
+            const primary = customColors.primary;
+            const accent = customColors.accent;
+            const btnBg = customColors.btnBg || '#FFF8E3';
+            const txtColor = customColors.textColor || '#000';
+
+            // 分离 hero 和非 hero 组件
+            let heroHTML = '';
+            let contentHTML = '';
+
+            canvasComponents.forEach(comp => {
+                const html = generateInteractiveComponentHTML(comp);
+                if (comp.type === 'hero') {
+                    heroHTML += html;
+                } else {
+                    contentHTML += html;
+                }
+            });
+
+            const hasModal = canvasComponents.some(c => c.type === 'coupon' || c.type === 'lottery');
+
+            return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>运营活动页面</title>
-    ${styles}
+    <style>${generateInteractiveCSS()}</style>
 </head>
 <body>
-    <div style="max-width:430px;margin:0 auto;min-height:100vh;background:${customColors.background};">
-        ${canvasHTML}
+    <div class="container">
+        ${heroHTML}
+        <div class="content-area">
+            ${contentHTML}
+        </div>
+        <div class="footer"></div>
     </div>
+    ${hasModal ? `<div class="modal-overlay" id="prizeModal">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" onclick="closeModal()"></button>
+            <div class="modal-title" id="modalTitle">恭喜获得</div>
+            <div class="modal-prize" id="singlePrize">
+                <img id="prizeImg" src="" alt="奖品">
+                <div class="modal-prize-name" id="prizeName"></div>
+            </div>
+            <button class="modal-btn" onclick="closeModal()">开心收下</button>
+        </div>
+    </div>` : ''}
+    <div class="toast" id="toast"></div>
+    <script>${generateInteractiveJS()}<\/script>
 </body>
 </html>`;
-            
+        }
+
+        // 生成可交互 CSS
+        function generateInteractiveCSS() {
+            const bg = customColors.background;
+            const primary = customColors.primary;
+            const accent = customColors.accent;
+            const btnBg = customColors.btnBg || '#FFF8E3';
+            return `:root{--brand:${primary};--brand-light:${btnBg};--brand-glow:rgba(255,179,71,0.4);--bg:${bg};--bg-secondary:#fff;--bg-tertiary:#F5F5F5;--text-primary:#000;--text-secondary:#999;--text-tertiary:rgba(60,60,67,0.36);--border:#f0f0f0;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{font-size:100px;background:${bg}}
+body{font-family:'PingFang SC',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:${bg};min-height:100vh;width:100%;margin:0 auto;-webkit-overflow-scrolling:touch}
+body::-webkit-scrollbar{display:none}body{-ms-overflow-style:none;scrollbar-width:none}
+.container{width:100%;margin:0 auto;position:relative;padding-bottom:12.8vw}
+.main-kv{width:100%;position:relative}.main-kv img,.main-kv video{width:100%;display:block}
+.main-kv-fade{position:absolute;bottom:0;left:0;right:0;height:12.53vw;background:linear-gradient(0deg,${bg} 0%,rgba(255,226,58,0) 100%);pointer-events:none}
+.content-area{padding:0 4.27vw;display:flex;flex-direction:column;gap:3.2vw;position:relative;z-index:1}
+.module-card{background:var(--bg-secondary);border-radius:4.27vw;padding:4.27vw;animation:fadeInUp 0.6s ease forwards;opacity:0;width:100%}
+.module-card:nth-child(1){animation-delay:0.1s}.module-card:nth-child(2){animation-delay:0.2s}
+.module-card:nth-child(3){animation-delay:0.3s}.module-card:nth-child(4){animation-delay:0.4s}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(8vw)}to{opacity:1;transform:translateY(0)}}
+.module-title{font-size:4.53vw;font-weight:600;color:var(--text-primary);margin-bottom:4.27vw}
+.coupon-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:3.2vw}
+.coupon-header .module-title{margin-bottom:0}
+.coupon-list{display:flex;flex-direction:column;gap:3.2vw}
+.coupon-item{background:${btnBg};border-radius:3.2vw;padding:3.2vw;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;transition:all 0.3s ease}
+.coupon-item::before,.coupon-item::after{content:'';position:absolute;width:3.2vw;height:3.2vw;background:var(--bg-secondary);border-radius:50%;right:20.8vw}
+.coupon-item::before{top:-1.6vw}.coupon-item::after{bottom:-1.6vw}
+.coupon-left{display:flex;align-items:center;gap:2.67vw;flex:1}
+.coupon-icon{width:10.67vw;height:10.67vw;border-radius:1.87vw;object-fit:cover}
+.coupon-tag{font-size:3.2vw;color:rgba(0,0,0,0.9);margin-bottom:1.07vw}
+.coupon-name{font-size:3.73vw;font-weight:600;color:var(--text-primary)}
+.coupon-btn{background:var(--brand);border-radius:4.27vw;padding:2.13vw 3.73vw;font-size:3.2vw;font-weight:500;color:#000;border:none;cursor:pointer;white-space:nowrap}
+.coupon-btn:active{opacity:0.8}.coupon-btn.claimed{background:var(--bg-tertiary);color:var(--text-secondary);pointer-events:none}
+.coupon-btn.btn-success .btn-text{display:none}.coupon-btn .btn-check{display:none}
+.coupon-btn.btn-success .btn-check{display:inline;animation:checkBounce 0.4s ease}
+@keyframes checkBounce{0%{transform:scale(0)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+.claim-all-btn{font-size:3.2vw;font-weight:500;color:#214CA5;cursor:pointer}
+.claim-all-btn:active{opacity:0.7}.claim-all-btn.disabled{color:#999;pointer-events:none}
+.coupon-item.focusing{transform:scale(1.02);box-shadow:0 0 3.2vw var(--brand-glow);border:0.53vw solid var(--brand)}
+.success-particles{position:absolute;top:50%;right:13.33vw;width:0;height:0;pointer-events:none}
+.particle{position:absolute;width:2.13vw;height:2.13vw;border-radius:50%;animation:particleExplode 0.6s ease-out forwards}
+@keyframes particleExplode{0%{transform:translate(0,0) scale(1);opacity:1}100%{opacity:0}}
+.lottery-module{padding:4.27vw}
+.lottery-header{display:flex;flex-direction:column;gap:2.13vw;margin-bottom:4.27vw}
+.lottery-title-row{display:flex;justify-content:space-between;align-items:flex-start}
+.lottery-subtitle{font-size:3.2vw;color:rgba(60,60,67,0.76);display:flex;justify-content:space-between;align-items:center}
+.lottery-count{display:flex;align-items:center;gap:1.07vw}
+.lottery-count .num{font-weight:600;color:#F74C30;font-size:3.73vw}
+.my-rewards{font-size:3.2vw;font-weight:500;color:#214CA5;cursor:pointer}
+.prize-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.13vw;margin-bottom:3.2vw}
+.prize-card{background:var(--bg-tertiary);border-radius:3.2vw;padding:0.53vw 1.6vw 1.6vw;text-align:center;cursor:pointer;position:relative;overflow:hidden;height:26.13vw;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 0.15s ease}
+.prize-card img{width:16vw;height:16vw;object-fit:contain}
+.prize-card-title{font-size:2.67vw;font-weight:500;color:rgba(0,0,0,0.9);margin-top:0.53vw}
+.prize-card.flashing{background:#FFF6E0!important;box-shadow:0 0 2.13vw rgba(245,166,35,0.6)}
+.prize-card.opened{opacity:0.6}
+.prize-card.opened::after{content:'已抽';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.6);color:#fff;padding:1.07vw 2.13vw;border-radius:1.07vw;font-size:2.67vw}
+.lottery-btn{width:100%;background:var(--brand);border:none;border-radius:3.73vw;padding:4.27vw;font-size:4.53vw;font-weight:600;color:#000;cursor:pointer;display:block;position:relative;overflow:hidden}
+.lottery-btn:active{opacity:0.9}.lottery-btn.spinning{pointer-events:none;opacity:0.8}
+.task-list{display:flex;flex-direction:column;gap:3.2vw}
+.task-item{display:flex;align-items:center;justify-content:space-between}
+.task-info h4{font-size:3.73vw;font-weight:500;color:var(--text-primary);margin-bottom:1.07vw}
+.task-info p{font-size:2.67vw;color:rgba(60,60,67,0.76);max-width:58.67vw}
+.task-btn{background:var(--bg-tertiary);border:none;border-radius:4.27vw;padding:2.13vw 3.73vw;font-size:3.2vw;font-weight:500;color:var(--text-primary);cursor:pointer;white-space:nowrap}
+.task-btn:active{opacity:0.8}.task-btn.primary{background:var(--brand)}.task-btn.completed{background:var(--bg-tertiary);color:var(--text-secondary);pointer-events:none}
+.event-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2.13vw}
+.event-grid.single-column{grid-template-columns:1fr}
+.event-card{position:relative;border-radius:3.2vw;overflow:hidden;cursor:pointer}
+.event-card:active{opacity:0.9}.event-card img{width:100%;height:29.33vw;object-fit:cover;display:block}
+.event-grid.single-column .event-card img{height:40vw}
+.event-overlay{position:absolute;bottom:0;left:0;right:0;padding:8vw 2.67vw 2.67vw;background:linear-gradient(0deg,rgba(62,62,133,0.9) 0%,transparent 100%)}
+.event-title{font-size:3.2vw;font-weight:600;color:#fff;margin-bottom:0.53vw}
+.event-desc{font-size:2.67vw;color:rgba(255,255,255,0.9)}
+.progress-container{background:rgba(255,223,156,0.3);border-radius:3.2vw;padding:4.27vw 3.2vw}
+.progress-columns{display:flex;justify-content:space-between;gap:2.13vw}
+.progress-column{flex:1;display:flex;flex-direction:column;align-items:center;gap:2.13vw}
+.progress-label{font-size:2.67vw;color:var(--text-secondary);text-align:center}
+.progress-label.active{color:var(--text-primary);font-weight:500}
+.progress-segment{width:100%;height:1.07vw;background:rgba(0,0,0,0.1);border-radius:0.53vw;overflow:hidden}
+.progress-segment-fill{height:100%;width:0;background:linear-gradient(90deg,${accent},${primary});border-radius:0.53vw;transition:width 0.8s cubic-bezier(0.4,0,0.2,1)}
+.progress-segment.completed .progress-segment-fill{width:100%}
+.reward-tag{font-size:2.4vw;padding:1.07vw 2.67vw;border-radius:2.67vw;text-align:center;white-space:nowrap}
+.reward-tag.claimable{background:${primary};color:#000;cursor:pointer}
+.reward-tag.claimed{background:var(--bg-tertiary);color:var(--text-secondary)}
+.reward-tag.locked{background:var(--bg-tertiary);color:var(--text-secondary)}
+.modal-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;visibility:hidden;transition:all 0.3s ease;perspective:800px}
+.modal-overlay.active{opacity:1;visibility:visible}
+.modal-content{background:var(--bg-secondary);border-radius:4.27vw;padding:6.4vw;width:69.33vw;min-height:85.33vw;text-align:center;transform:rotateY(180deg);transition:none;position:relative;display:flex;flex-direction:column;justify-content:space-between;transform-style:preserve-3d}
+.modal-overlay.active .modal-content{animation:cardFlipIn 0.8s ease-out forwards}
+.modal-overlay:not(.active) .modal-content{transform:rotateY(180deg);animation:none}
+@keyframes cardFlipIn{0%{transform:rotateY(180deg) scale(0.85);opacity:0}15%{opacity:1}65%{transform:rotateY(-8deg) scale(1.02)}82%{transform:rotateY(3deg) scale(1)}100%{transform:rotateY(0deg) scale(1)}}
+.modal-prize{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.modal-prize img{width:32vw;height:32vw;object-fit:contain}
+.modal-prize img.prize-bounce{animation:prizeBounce 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards}
+@keyframes prizeBounce{0%{transform:scale(1)}30%{transform:scale(1.35)}50%{transform:scale(0.9)}70%{transform:scale(1.15)}85%{transform:scale(0.97)}100%{transform:scale(1)}}
+.modal-prize-name{font-size:3.73vw;font-weight:600;color:var(--text-primary);margin-top:2.13vw}
+.modal-prize-name.fade-in{animation:nameFadeIn 0.4s ease forwards}
+@keyframes nameFadeIn{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
+.modal-title{font-size:4.27vw;font-weight:600;color:var(--text-primary)}
+.modal-btn{background:var(--brand);border:none;border-radius:3.73vw;padding:3.2vw 12.8vw;font-size:3.73vw;font-weight:600;color:#000;cursor:pointer;flex-shrink:0}
+.modal-btn:active{opacity:0.9}
+.modal-close{position:absolute;top:4.27vw;right:4.27vw;width:6.4vw;height:6.4vw;background:rgba(0,0,0,0.1);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-close::before,.modal-close::after{content:'';position:absolute;width:3.2vw;height:0.53vw;background:#666}
+.modal-close::before{transform:rotate(45deg)}.modal-close::after{transform:rotate(-45deg)}
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.8);color:#fff;padding:3.73vw 7.47vw;border-radius:2.13vw;font-size:3.73vw;z-index:1002;opacity:0;transition:opacity 0.3s ease}
+.toast.show{opacity:1}
+.confetti{position:fixed;pointer-events:none;z-index:1001}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(var(--fall-distance)) rotate(var(--rot))}}
+.footer{text-align:center;height:2.13vw;display:flex;align-items:center;justify-content:center}`;
+        }
+
+        // 生成单个组件的可交互 HTML
+        function generateInteractiveComponentHTML(comp) {
+            const txtColor = customColors.textColor || '#000';
+            const primary = customColors.primary;
+            const btnBg = customColors.btnBg || '#FFF8E3';
+            switch(comp.type) {
+                case 'hero':
+                    if (comp.props.mediaUrl) {
+                        if (comp.props.mediaType === 'video') {
+                            return `<div class="main-kv"><video src="${comp.props.mediaUrl}" autoplay loop muted playsinline></video><div class="main-kv-fade"></div></div>`;
+                        } else {
+                            return `<div class="main-kv"><img src="${comp.props.mediaUrl}" alt="主视觉"><div class="main-kv-fade"></div></div>`;
+                        }
+                    } else {
+                        return `<div class="main-kv" style="aspect-ratio:1/1;background:${primary};display:flex;align-items:center;justify-content:center;color:${txtColor};font-size:4vw;">主视觉区域</div>`;
+                    }
+                case 'coupon':
+                    return `<div class="module-card" id="couponModule">
+                        <div class="coupon-header">
+                            <h2 class="module-title">${comp.props.title}</h2>
+                            <span class="claim-all-btn" onclick="claimAllCoupons(this)">一键领取</span>
+                        </div>
+                        <div class="coupon-list">
+                            ${comp.props.items.map(item => `<div class="coupon-item">
+                                <div class="coupon-left">
+                                    <img class="coupon-icon" src="${item.iconUrl || item.icon || 'assets/CodeBubbyAssets/45_550/33.png'}" alt="">
+                                    <div class="coupon-info">
+                                        <div class="coupon-tag">${item.tag}</div>
+                                        <div class="coupon-name">${item.name}</div>
+                                    </div>
+                                </div>
+                                <button class="coupon-btn" onclick="claimCoupon(this)">
+                                    <span class="btn-text">${comp.props.buttonText}</span>
+                                    <span class="btn-check">✓</span>
+                                </button>
+                                <div class="success-particles"></div>
+                            </div>`).join('')}
+                        </div>
+                    </div>`;
+                case 'lottery':
+                    const layout = comp.props.layout || 6;
+                    const isCarousel = layout === 'carousel' || layout > 9;
+                    let prizeCount = isCarousel ? 12 : layout;
+                    if (!comp.props.prizes) comp.props.prizes = [];
+                    while (comp.props.prizes.length < prizeCount) comp.props.prizes.push('');
+                    let prizeGridHTML = '';
+                    if (isCarousel) {
+                        const getPrizeImg = (p, i) => (typeof p === 'object' && p && p.img) ? p.img : (p || 'assets/CodeBubbyAssets/45_550/'+(39+(i%6))+'.png');
+                        const getPrizeName = (p, i) => (typeof p === 'object' && p && p.name) ? p.name : ('奖品'+(i+1));
+                        prizeGridHTML = `<div style="overflow:hidden;"><div style="display:flex;gap:2.13vw;overflow-x:auto;padding:2.13vw 0;">
+                            ${Array.from({length: prizeCount}, (_, i) => `<div class="prize-card" data-prize="p${i}" style="flex:0 0 19.2vw;min-width:19.2vw;">
+                                <img src="${getPrizeImg(comp.props.prizes[i], i)}" alt="">
+                                <div class="prize-card-title">${getPrizeName(comp.props.prizes[i], i)}</div>
+                            </div>`).join('')}
+                        </div></div>`;
+                    } else {
+                        const getPrizeImg = (p, i) => (typeof p === 'object' && p && p.img) ? p.img : (p || 'assets/CodeBubbyAssets/45_550/'+(39+(i%6))+'.png');
+                        const getPrizeName = (p, i) => (typeof p === 'object' && p && p.name) ? p.name : ('奖品'+(i+1));
+                        prizeGridHTML = `<div class="prize-grid">
+                            ${Array.from({length: prizeCount}, (_, i) => `<div class="prize-card" data-prize="p${i}">
+                                <img src="${getPrizeImg(comp.props.prizes[i], i)}" alt="">
+                                <div class="prize-card-title">${getPrizeName(comp.props.prizes[i], i)}</div>
+                            </div>`).join('')}
+                        </div>`;
+                    }
+                    return `<div class="module-card lottery-module">
+                        <div class="lottery-header">
+                            <div class="lottery-title-row">
+                                <h2 class="module-title" style="margin-bottom:0;">${comp.props.title}</h2>
+                            </div>
+                            <div class="lottery-subtitle">
+                                <div class="lottery-count">剩余抽奖次数：<span class="num" id="lotteryCount">${prizeCount}</span>/${prizeCount+2}</div>
+                                <span class="my-rewards" onclick="showToast('查看我的奖励')">我的奖励</span>
+                            </div>
+                        </div>
+                        ${prizeGridHTML}
+                        <button class="lottery-btn" id="lotteryBtn" onclick="startLottery()">${comp.props.buttonText}</button>
+                    </div>`;
+                case 'task':
+                    return `<div class="module-card">
+                        <h2 class="module-title">${comp.props.title}</h2>
+                        <div class="task-list">
+                            ${comp.props.tasks.map((t, i) => `<div class="task-item">
+                                <div class="task-info"><h4>${t.name}</h4><p>${t.desc}</p></div>
+                                <button class="task-btn${i===0?' primary':''}" onclick="claimTask(this)">${t.btn}</button>
+                            </div>`).join('')}
+                        </div>
+                    </div>`;
+                case 'event':
+                    const evtCount = comp.props.events.length;
+                    const singleCol = evtCount % 2 !== 0;
+                    return `<div class="module-card">
+                        <h2 class="module-title">${comp.props.title}</h2>
+                        <div class="event-grid${singleCol ? ' single-column' : ''}">
+                            ${comp.props.events.map((ev, i) => `<div class="event-card" onclick="showToast('正在跳转...')">
+                                <img src="${ev.imageUrl || ev.image || 'assets/CodeBubbyAssets/45_550/'+(48+(i%4))+'.png'}" alt="${ev.title}">
+                                <div class="event-overlay">
+                                    <div class="event-title">${ev.title}</div>
+                                    <div class="event-desc">${ev.desc}</div>
+                                </div>
+                            </div>`).join('')}
+                        </div>
+                    </div>`;
+                case 'progress':
+                    return `<div class="module-card">
+                        <h2 class="module-title">${comp.props.title}</h2>
+                        <p style="font-size:2.67vw;color:rgba(60,60,67,0.76);margin-bottom:3.2vw;">${comp.props.subtitle}</p>
+                        <div class="progress-container">
+                            <div class="progress-columns">
+                                ${comp.props.milestones.map((m, i) => `<div class="progress-column">
+                                    <span class="progress-label${i < comp.props.current ? ' active' : ''}">${m}</span>
+                                    <div class="progress-segment${i < comp.props.current ? ' completed' : ''}"><div class="progress-segment-fill"></div></div>
+                                    <div class="reward-tag${i < comp.props.current ? ' claimable' : ' locked'}" onclick="claimReward(this)">${i < comp.props.current ? '可领取' : '未领取'}</div>
+                                </div>`).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+                case 'image':
+                    if (comp.props.imageUrl) {
+                        return `<div class="module-card" style="padding:0;overflow:hidden;"><img src="${comp.props.imageUrl}" style="width:100%;display:block;"></div>`;
+                    }
+                    return '';
+                case 'appDownload':
+                    const appIcon = comp.props.iconUrl || 'assets/logo.png';
+                    return `<div class="module-card" style="padding:3.2vw 4.27vw;">
+                        <div style="display:flex;align-items:center;gap:3.2vw;">
+                            <div style="width:12.8vw;height:12.8vw;border-radius:3.2vw;overflow:hidden;flex-shrink:0;background:#f5f5f5;border:0.5px solid rgba(0,0,0,0.08);">
+                                <img src="${appIcon}" style="width:100%;height:100%;object-fit:cover;">
+                            </div>
+                            <div style="flex:1;min-width:0;">
+                                <div style="font-size:4vw;font-weight:600;color:#000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${comp.props.appName || '应用名称'}</div>
+                                <div style="font-size:3.2vw;color:#999;margin-top:0.53vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${comp.props.appDesc || '应用描述'}</div>
+                            </div>
+                            <button onclick="showToast('正在跳转...')" style="background:${primary};color:${customColors.textColor||'#000'};border:none;border-radius:5.33vw;padding:2.13vw 4.27vw;font-size:3.47vw;font-weight:500;white-space:nowrap;flex-shrink:0;cursor:pointer;">${comp.props.buttonText || '立即下载'}</button>
+                        </div>
+                    </div>`;
+                default:
+                    return '';
+            }
+        }
+
+        // 生成可交互 JS
+        function generateInteractiveJS() {
+            return `
+var lotteryCount = parseInt(document.getElementById('lotteryCount')?.textContent || '0');
+
+function showToast(msg) {
+    var t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 2000);
+}
+
+function claimCoupon(btn) {
+    if (btn.classList.contains('claimed')) return;
+    var item = btn.closest('.coupon-item');
+    btn.classList.add('btn-success');
+    var particles = item.querySelector('.success-particles');
+    if (particles) createParticles(particles);
+    setTimeout(function(){
+        btn.classList.remove('btn-success');
+        btn.classList.add('claimed');
+        var txt = btn.querySelector('.btn-text');
+        if (txt) txt.textContent = '已领取';
+    }, 500);
+}
+
+function createParticles(container) {
+    container.innerHTML = '';
+    var colors = ['#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#F7DC6F','#BB8FCE','#85C1E9','#F8B500','#FF69B4'];
+    for (var i = 0; i < 12; i++) {
+        var p = document.createElement('span');
+        p.className = 'particle';
+        var angle = (i / 12) * 360;
+        var dist = 30 + Math.random() * 20;
+        var x = Math.cos(angle * Math.PI / 180) * dist;
+        var y = Math.sin(angle * Math.PI / 180) * dist;
+        p.style.background = colors[i];
+        p.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        p.style.animation = 'particleExplode 0.6s ease-out forwards';
+        container.appendChild(p);
+    }
+}
+
+function claimAllCoupons(btn) {
+    if (btn.classList.contains('disabled')) return;
+    var moduleCard = btn.closest('.module-card');
+    var items = moduleCard.querySelectorAll('.coupon-item');
+    var unclaimed = [];
+    items.forEach(function(item){
+        var cb = item.querySelector('.coupon-btn');
+        if (!cb.classList.contains('claimed')) unclaimed.push({item:item, btn:cb});
+    });
+    if (unclaimed.length === 0) { showToast('已全部领取'); return; }
+    btn.classList.add('disabled');
+    btn.textContent = '领取中...';
+    unclaimed.forEach(function(data, idx){
+        setTimeout(function(){
+            data.item.classList.add('focusing');
+            setTimeout(function(){
+                claimCoupon(data.btn);
+                data.item.classList.remove('focusing');
+                if (idx === unclaimed.length - 1) {
+                    setTimeout(function(){
+                        btn.classList.remove('disabled');
+                        btn.textContent = '已全部领取';
+                        btn.style.color = '#999';
+                        createConfetti();
+                        showToast('全部领取成功！');
+                    }, 200);
+                }
+            }, 50);
+        }, idx * 100);
+    });
+}
+
+function startLottery() {
+    if (lotteryCount <= 0) { showToast('抽奖次数不足'); return; }
+    var btn = document.getElementById('lotteryBtn');
+    var btnText = btn.textContent;
+    btn.classList.add('spinning');
+    btn.textContent = '抽奖中...';
+    btn.disabled = true;
+    var allCards = Array.from(document.querySelectorAll('.prize-card'));
+    var available = Array.from(document.querySelectorAll('.prize-card:not(.opened)'));
+    var elapsed = 0, duration = 3000, lastTime = 0, interval = 80;
+    function flash(ts) {
+        if (!lastTime) lastTime = ts;
+        if (elapsed >= duration) {
+            allCards.forEach(function(c){ c.classList.remove('flashing'); });
+            if (available.length > 0) {
+                var winner = available[Math.floor(Math.random() * available.length)];
+                var blink = 0;
+                var bi = setInterval(function(){
+                    winner.classList.toggle('flashing');
+                    blink++;
+                    if (blink >= 8) {
+                        clearInterval(bi);
+                        winner.classList.add('flashing');
+                        setTimeout(function(){
+                            winner.classList.remove('flashing');
+                            btn.classList.remove('spinning');
+                            btn.textContent = btnText;
+                            btn.disabled = false;
+                            lotteryCount--;
+                            var countEl = document.getElementById('lotteryCount');
+                            if (countEl) countEl.textContent = lotteryCount;
+                            winner.classList.add('opened');
+                            var img = winner.querySelector('img');
+                            var name = winner.querySelector('.prize-card-title');
+                            showPrizeModal(img ? img.src : '', name ? name.textContent : '奖品');
+                            createConfetti();
+                        }, 400);
+                    }
+                }, 120);
+            } else {
+                btn.classList.remove('spinning');
+                btn.textContent = btnText;
+                btn.disabled = false;
+                showToast('所有奖品已抽完');
+            }
+            return;
+        }
+        if (ts - lastTime >= interval) {
+            allCards.forEach(function(c){ c.classList.remove('flashing'); });
+            var rc = Math.random() > 0.5 ? 2 : 1;
+            for (var i = 0; i < rc; i++) {
+                allCards[Math.floor(Math.random() * allCards.length)].classList.add('flashing');
+            }
+            elapsed += ts - lastTime;
+            lastTime = ts;
+            if (elapsed > duration * 0.7) interval = Math.min(interval + 15, 250);
+        }
+        requestAnimationFrame(flash);
+    }
+    requestAnimationFrame(flash);
+}
+
+function showPrizeModal(imgSrc, name) {
+    var modal = document.getElementById('prizeModal');
+    if (!modal) return;
+    var prizeImg = document.getElementById('prizeImg');
+    var prizeName = document.getElementById('prizeName');
+    prizeImg.classList.remove('prize-bounce');
+    prizeName.classList.remove('fade-in');
+    prizeName.style.opacity = '0';
+    prizeImg.src = imgSrc;
+    prizeName.textContent = name;
+    modal.classList.add('active');
+    setTimeout(function(){ prizeImg.classList.add('prize-bounce'); }, 750);
+    setTimeout(function(){ prizeName.style.opacity = ''; prizeName.classList.add('fade-in'); }, 1150);
+}
+
+function closeModal() {
+    var modal = document.getElementById('prizeModal');
+    if (modal) modal.classList.remove('active');
+}
+
+function claimTask(btn) {
+    if (btn.classList.contains('completed')) return;
+    btn.classList.add('completed');
+    btn.textContent = '已完成';
+    showToast('任务完成！');
+}
+
+function claimReward(tag) {
+    if (tag.classList.contains('claimed') || tag.classList.contains('locked')) return;
+    tag.classList.remove('claimable');
+    tag.classList.add('claimed');
+    tag.textContent = '已领取';
+    tag.onclick = null;
+    createConfetti();
+    showToast('领取成功！');
+}
+
+function createConfetti() {
+    var colors = ['#FFD700','#FF6B6B','#4ECDC4','#45B7D1','#FF69B4','#98D8C8','#F7DC6F','#FFA500'];
+    for (var i = 0; i < 40; i++) {
+        var c = document.createElement('div');
+        c.className = 'confetti';
+        var x = Math.random() * window.innerWidth;
+        var fall = 400 + Math.random() * 400;
+        var rot = (Math.random()-0.5)*720;
+        var delay = Math.random()*0.8;
+        var dur = 1.5+Math.random();
+        c.style.setProperty('--fall-distance', fall+'px');
+        c.style.setProperty('--rot', rot+'deg');
+        var size = 8+Math.random()*12;
+        var color = colors[Math.floor(Math.random()*colors.length)];
+        var shape = Math.floor(Math.random()*3);
+        if (shape===0) { c.style.width=size+'px';c.style.height=size+'px';c.style.borderRadius='50%';c.style.background=color; }
+        else if (shape===1) { c.style.width=size+'px';c.style.height=size+'px';c.style.background=color; }
+        else { c.style.width=(size*0.4)+'px';c.style.height=(size*1.5)+'px';c.style.background=color;c.style.borderRadius='2px'; }
+        c.style.left=x+'px';c.style.top='-20px';
+        c.style.animation='confettiFall '+dur+'s ease-out forwards';
+        c.style.animationDelay=delay+'s';
+        document.body.appendChild(c);
+        setTimeout(function(el){return function(){el.remove()}}(c),(delay+dur)*1000+100);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+    var cards = document.querySelectorAll('.module-card');
+    var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+            if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
+        });
+    }, {threshold:0.1});
+    cards.forEach(function(card){ observer.observe(card); });
+});`;
+        }
+
+        // 预览 - 使用 iframe 加载可交互页面
+        function previewPage() {
+            const html = generateInteractiveHTML();
+            const modal = document.getElementById('previewModal');
+            const iframe = document.getElementById('previewIframe');
+            iframe.srcdoc = html;
+            modal.classList.add('active');
+            // 隐藏主题切换控件，避免遮挡预览弹窗
+            const themeSwitchEl = document.querySelector('.theme-switch-wrapper');
+            if (themeSwitchEl) themeSwitchEl.style.display = 'none';
+        }
+        
+        function closePreview() {
+            const modal = document.getElementById('previewModal');
+            const iframe = document.getElementById('previewIframe');
+            modal.classList.remove('active');
+            // 清空 iframe 防止后台音视频播放
+            setTimeout(() => { iframe.srcdoc = ''; }, 300);
+            // 恢复主题切换控件
+            const themeSwitchEl = document.querySelector('.theme-switch-wrapper');
+            if (themeSwitchEl) themeSwitchEl.style.display = 'flex';
+        }
+        
+        // 导出HTML - 导出包含完整交互逻辑的 HTML
+        async function exportHTML() {
+            showToast('正在打包资源，请稍候...');
+            let html = generateInteractiveHTML();
+            html = await embedResourcesInHTML(html);
             const blob = new Blob([html], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -2430,7 +3580,7 @@
             a.download = '运营活动页面.html';
             a.click();
             URL.revokeObjectURL(url);
-            showToast('HTML已导出');
+            showToast('HTML已导出（含完整交互和资源）');
         }
         
         // Toast提示
